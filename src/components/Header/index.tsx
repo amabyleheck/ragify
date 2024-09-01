@@ -1,11 +1,17 @@
-import { Box } from "@mui/system";
+import { Box } from '@mui/system'
+import React from 'react'
 
-function Header() {
+const Header: React.FC = () => {
   return (
     <header>
-      <Box sx={{ backgroundColor: "#FFFFFF", minHeight: "7vh" }}></Box>
+      <Box
+        sx={{
+          backgroundColor: '#FFFFFF',
+          minHeight: '7vh'
+        }}
+      ></Box>
     </header>
-  );
+  )
 }
 
-export default Header;
+export default Header

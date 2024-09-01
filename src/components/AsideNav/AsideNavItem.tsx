@@ -1,50 +1,52 @@
-import { Typography } from '@mui/material'
-import Icon from '@mui/material/Icon'
-import { Box, Stack } from '@mui/system'
+import { GlobalContext } from "@/contexts/global";
+import { NavigationOptionType } from "@/types";
+import { Typography } from "@mui/material";
+import Icon from "@mui/material/Icon";
+import { Box, Stack } from "@mui/system";
+import React, { useContext } from "react";
 
-interface Props {
-  id: Number
-  icon: string
-  title: string
-  selected: boolean
-  onSwitch: React.Dispatch<React.SetStateAction<string>>
+interface AsideNavProps {
+  id: Number;
+  icon: string;
+  title: NavigationOptionType;
 }
 
-function AsideNavItem(props: Props) {
-  const elementId = `nav-${props.id}`
+const AsideNavItem: React.FC<AsideNavProps> = ({ id, icon, title }) => {
+  const { pageType, setPageType } = useContext(GlobalContext);
+  const selected = pageType === title;
+
+  const elementId = `nav-${id}`;
   return (
     <>
       <input
-        className='nav-tab hidden'
-        type='checkbox'
+        className="nav-tab hidden"
+        type="checkbox"
         id={elementId}
-        checked={props.selected}
-        onChange={() => props.onSwitch(props.title)}
+        checked={selected}
+        onChange={() => setPageType(title)}
       />
       <label htmlFor={elementId}>
         <Box
-          className={`aside-nav-item ${props.selected ? 'selected' : ''} flex max-h-[6vh] min-h-[6vh] max-w-full items-center rounded-bl-[50px] rounded-tl-[50px] text-left`}
+          className={`aside-nav-item ${selected ? "selected" : ""} flex max-h-[6vh] min-h-[6vh] max-w-full items-center rounded-bl-[50px] rounded-tl-[50px] text-left`}
         >
           <Stack
-            direction={'row'}
+            direction={"row"}
             spacing={1}
-            sx={{ paddingLeft: '15px' }}
-            alignItems={'center'}
+            sx={{ paddingLeft: "15px" }}
+            alignItems={"center"}
           >
             <Icon
-              className={'material-symbols-outlined'}
-              sx={{ fontSize: '10px' }}
+              className={"material-symbols-outlined"}
+              sx={{ fontSize: "10px" }}
             >
-              {props.icon}
+              {icon}
             </Icon>
-            <Typography variant='subtitle1'>
-              {props.title}
-            </Typography>
+            <Typography variant="subtitle1">{title}</Typography>
           </Stack>
         </Box>
       </label>
     </>
-  )
-}
+  );
+};
 
-export default AsideNavItem
+export default AsideNavItem;

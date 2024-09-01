@@ -1,17 +1,17 @@
 import { Box, Stack } from "@mui/system";
 import { NavigationOption } from "@/utils/consts";
 import AsideNavItem from "@/components/AsideNav/AsideNavItem";
+import React, { useContext } from "react";
+import { NavigationOptionType } from "@/types";
+import { GlobalContext } from "@/contexts/global";
 
-interface Props {
-  selectedOption: string;
-  setSelectedOption: React.Dispatch<React.SetStateAction<string>>;
-}
+const AsideNav: React.FC = () => {
+  const { pageType } = useContext(GlobalContext);
 
-function AsideNav(props: Props) {
   const options = Object.entries(NavigationOption);
   // Get the index of the selected item
   const selectedIndex = options.findIndex(
-    ([, item]) => item.title === props.selectedOption
+    ([, item]) => item.title === pageType
   );
 
   const gapPx = 4;
@@ -19,9 +19,7 @@ function AsideNav(props: Props) {
 
   return (
     <aside>
-      <Box
-        className="default-shadow bg-white min-h-[93vh] min-w-[15vw] max-w-[15vw]"
-      >
+      <Box className="default-shadow min-h-[93vh] min-w-[15vw] max-w-[15vw] bg-white">
         <Stack
           direction="column"
           spacing={0.5}
@@ -32,21 +30,19 @@ function AsideNav(props: Props) {
               key={key}
               id={item.id}
               icon={item.icon}
-              title={item.title}
-              selected={props.selectedOption === item.title}
-              onSwitch={props.setSelectedOption}
+              title={item.title as NavigationOptionType}
             ></AsideNavItem>
           ))}
           <span
             className="glider"
             style={{
-              transform: `translateY(calc(${selectedIndex} * (6vh + ${gapVh}vh)))`,
+              transform: `translateY(calc(${selectedIndex} * (6vh + ${gapVh}vh)))`
             }}
           ></span>
         </Stack>
       </Box>
     </aside>
   );
-}
+};
 
 export default AsideNav;
