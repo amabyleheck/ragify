@@ -11,7 +11,7 @@ import { NavigationOptionType } from "@/types";
 
 export default function Home() {
   const [pageType, setPageType] = useState<NavigationOptionType>(
-    NavigationOption.DOCUMENTS.title as NavigationOptionType
+    NavigationOption.VARIABLES.title as NavigationOptionType
   );
 
   const componentMap = {

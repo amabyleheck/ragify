@@ -1,32 +1,18 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Stack } from "@mui/material";
-import { useForm } from "react-hook-form";
-import {
-  NewUploadedFileFormData,
-  newUploadedFileSchema
-} from "@/forms/FileUploadForm";
-import DragAndDrop from "@/components/DragAndDrop";
+import { Stack, Typography } from "@mui/material";
+import TabSwitcher from "@/components/TabSwitcher";
 import FilesList from "@/components/FilesList";
-import { NavigationOptionType } from "@/types";
 
 const VariablesAnnotationPanel: React.FC = () => {
-  const {
-    formState: { errors },
-    setValue,
-    getValues
-  } = useForm<NewUploadedFileFormData>({
-    resolver: zodResolver(newUploadedFileSchema),
-    defaultValues: { uploadedFiles: undefined }
-  });
-
   return (
     <div className="panel">
       <Stack direction={"column"} spacing={5}>
-        <DragAndDrop
-          errors={errors}
-          setValue={setValue}
-          getValues={getValues}
-        />
+        <Stack direction={"column"} spacing={3}>
+          <Typography variant="h1" fontWeight={800} align="left" fontSize={25}>
+            Annotate Variables
+          </Typography>
+          <TabSwitcher tabs={["Variable 1", "Variable 2"]} />
+        </Stack>
+        <FilesList />
       </Stack>
     </div>
   );
