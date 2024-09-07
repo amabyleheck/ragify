@@ -27,7 +27,7 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
   // Add your component logic here
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={2}>
       <Typography variant="h5" fontWeight={800} align="left" fontSize={25}>
         Upload documents
       </Typography>

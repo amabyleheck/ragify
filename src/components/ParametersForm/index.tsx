@@ -41,7 +41,7 @@ const FormComponent: React.FC = () => {
 
   const handlePromptsChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     const newPrompts = [...formData.prompts];
@@ -63,12 +63,12 @@ const FormComponent: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <Grid2 container spacing={2}>
           {/* Model Field */}
-          <Grid2 xs={12}>
+          <Grid2 >
             <TextField
               label="Model"
               name="model"
               value={formData.model}
-              onChange={handleChange}
+              onChange={() => handleChange}
               fullWidth
             />
           </Grid2>
@@ -76,7 +76,7 @@ const FormComponent: React.FC = () => {
           {/* Prompts Fields */}
           {formData.prompts.map((prompt, index) => (
             <React.Fragment key={index}>
-              <Grid2 xs={6}>
+              <Grid2 >
                 <TextField
                   label="Prompt Key"
                   name="key"
@@ -85,7 +85,7 @@ const FormComponent: React.FC = () => {
                   fullWidth
                 />
               </Grid2>
-              <Grid2 xs={6}>
+              <Grid2 >
                 <TextField
                   label="Question"
                   name="question"
@@ -98,94 +98,94 @@ const FormComponent: React.FC = () => {
           ))}
 
           {/* Embeddings Fields */}
-          <Grid2 xs={12}>
+          <Grid2 >
             <Typography variant="h6" gutterBottom>
               Embeddings
             </Typography>
           </Grid2>
-          <Grid2 xs={6}>
+          <Grid2 >
             <TextField
               label="BERT Model"
               name="bert_model"
               value={formData.embeddings.bert_model}
-              onChange={handleChange}
+              onChange={() => handleChange}
               fullWidth
             />
           </Grid2>
-          <Grid2 xs={6}>
+          <Grid2 >
             <TextField
               label="Chunk Size"
               name="chunk_size"
               type="number"
               value={formData.embeddings.chunk_size}
-              onChange={handleChange}
+              onChange={() => handleChange}
               fullWidth
             />
           </Grid2>
-          <Grid2 xs={6}>
+          <Grid2 >
             <TextField
               label="Chunk Overlap"
               name="chunk_overlap"
               type="number"
               value={formData.embeddings.chunk_overlap}
-              onChange={handleChange}
+              onChange={() => handleChange}
               fullWidth
             />
           </Grid2>
-          <Grid2 xs={6}>
+          <Grid2 >
             <TextField
               label="Embedding Model"
               name="embedding_model"
               value={formData.embeddings.embedding_model}
-              onChange={handleChange}
+              onChange={() => handleChange}
               fullWidth
             />
           </Grid2>
-          <Grid2 xs={6}>
+          <Grid2 >
             <TextField
               label="Vector DB"
               name="vector_db"
               value={formData.embeddings.vector_db}
-              onChange={handleChange}
+              onChange={() => handleChange}
               fullWidth
             />
           </Grid2>
-          <Grid2 xs={6}>
+          <Grid2 >
             <TextField
               label="Text Splitter"
               name="text_splitter"
               value={formData.embeddings.text_splitter}
-              onChange={handleChange}
+              onChange={() => handleChange}
               fullWidth
             />
           </Grid2>
 
           {/* Retrieval Fields */}
-          <Grid2 xs={12}>
+          <Grid2 >
             <Typography variant="h6" gutterBottom>
               Retrieval
             </Typography>
           </Grid2>
-          <Grid2 xs={6}>
+          <Grid2 >
             <TextField
               label="Chain Type"
               name="chain_type"
               value={formData.retrieval.chain_type}
-              onChange={handleChange}
+              onChange={() => handleChange}
               fullWidth
             />
           </Grid2>
-          <Grid2 xs={6}>
+          <Grid2 >
             <TextField
               label="Top K"
               name="top_k"
               type="number"
               value={formData.retrieval.top_k}
-              onChange={handleChange}
+              onChange={() => handleChange}
               fullWidth
             />
           </Grid2>
-          <Grid2 xs={12}>
+          <Grid2 >
             <TextField
               label="Device Map"
               name="device"

@@ -6,7 +6,7 @@ interface TabContextProps {
 }
 
 export const TabContext = createContext<TabContextProps>({
-  activeTab: "",
+  activeTab: "Variable 1",
   setActiveTab: () => {}
 });
 

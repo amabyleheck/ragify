@@ -10,7 +10,7 @@ const FilesList: React.FC = () => {
         <Typography variant="h5" fontWeight={800} align="left" fontSize={20}>
           List of documents
         </Typography>
-        <UploadedFilesGrid files={[]} />
+        <UploadedFilesGrid files={[new File([], "1231556.pdf"), new File([], "13313456.pdf")]} />
       </Stack>
     </>
   );

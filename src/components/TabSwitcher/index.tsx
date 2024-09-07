@@ -1,6 +1,6 @@
 import { TabContext } from "@/contexts/tab";
 import { Box, Stack } from "@mui/system";
-import React, { useContext } from "react";
+import React, { act, useContext, useState } from "react";
 import TabItem from "./Tab";
 
 interface TabSwitcherProps {
@@ -9,11 +9,15 @@ interface TabSwitcherProps {
 
 const TabSwitcher: React.FC<TabSwitcherProps> = ({ tabs }) => {
   const { activeTab, setActiveTab } = useContext(TabContext);
+  const [currentTabs, setTabs] = useState<string[]>(tabs);
 
   return (
     <Stack className={""} direction={"row"} spacing={2}>
-      {tabs && tabs.map(tab => <TabItem selected title={tab} />)}
-      <TabItem newTab />
+      {tabs &&
+        tabs.map(tab => (
+          <TabItem selected={tab === activeTab} title={tab} setActiveTab={setActiveTab} />
+        ))}
+      <TabItem setActiveTab={setActiveTab} />
     </Stack>
   );
 };

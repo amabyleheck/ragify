@@ -22,21 +22,20 @@ const UploadedFilesGrid: React.FC<UploadedFilesGridProps> = ({ files }) => {
   }
 
   return (
-    <PanelBox height={30}>
-      <Stack direction={"column"}>
-        {!!files && (
+    <PanelBox height={20}>
+      <Stack direction={"column"} className="w-full">
+        {!files ? (
           <Typography variant="subtitle1" fontWeight={400}>
             No uploaded files yet.
           </Typography>
-        )}
-        {files &&
+        ) : (
           files.map((file, index) => (
             <UploadedFileRow
               index={index}
               file={file}
               handleDeleteFile={handleDeleteFile}
             />
-          ))}
+          )))}
       </Stack>
     </PanelBox>
   );

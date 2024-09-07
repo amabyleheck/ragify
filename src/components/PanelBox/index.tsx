@@ -11,10 +11,13 @@ const PanelBox: React.FC<React.PropsWithChildren<PanelBoxProps>> = ({
 }) => {
   return (
     <Box
-      className={`rounded-border max-h-[${height}vh] min-h-[${height}vh] border border-[#DBDBDB] px-[10px] py-[10px]`}
+      className={`rounded-border border border-[#DBDBDB] px-[10px] py-[10px]`}
+      sx={{
+        height: `${height}vh`
+      }}
     >
       <Box
-        className={`styled-scrollbar flex content-center items-center justify-center max-h-[${height - 2}vh] min-h-[${height - 2}vh] overflow-y-auto px-[10px]`}
+        className={`styled-scrollbar flex content-center items-center justify-center h-[${height - 2}vh] overflow-y-auto px-[10px]`}
       >
         {children}
       </Box>

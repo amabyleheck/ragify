@@ -23,7 +23,7 @@ const DocumentsUploadPanel: React.FC = () => {
 
   return (
     <div className="panel">
-      <Stack direction={"column"} spacing={5}>
+      <Stack direction={"column"} spacing={8}>
         <DragAndDrop
           errors={errors}
           setValue={setValue}

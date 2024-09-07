@@ -8,6 +8,8 @@ import DocumentsUploadPanel from "@/pages/DocumentsUploadPanel";
 import VariablesAnnotationPanel from "@/pages/VariablesAnnotationPanel";
 import { GlobalContext } from "@/contexts/global";
 import { NavigationOptionType } from "@/types";
+import ParametersFormPanel from "@/pages/ParametersFormPanel";
+import PageTracker from "@/components/PageTracker";
 
 export default function Home() {
   const [pageType, setPageType] = useState<NavigationOptionType>(
@@ -17,7 +19,7 @@ export default function Home() {
   const componentMap = {
     [NavigationOption.DOCUMENTS.title]: DocumentsUploadPanel,
     [NavigationOption.VARIABLES.title]: VariablesAnnotationPanel,
-    [NavigationOption.PARAMETERS.title]: VariablesAnnotationPanel
+    [NavigationOption.PARAMETERS.title]: ParametersFormPanel
   };
 
   const CurrentPanel = componentMap[pageType];
@@ -28,7 +30,8 @@ export default function Home() {
       <div className="flex">
         <AsideNav />
         <main>
-          <div className="content-wrapper flex min-h-full min-w-[85vw] items-center justify-center bg-gray-200">
+          <div className="content-wrapper relative flex min-h-full min-w-[85vw] items-center justify-center bg-gray-200">
+            <PageTracker />
             <CurrentPanel />
           </div>
         </main>
