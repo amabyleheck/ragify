@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint:full": "pnpm run lint && pnpm run format:check",
+    "lint": "eslint '**/*.{ts,tsx}' --max-warnings 0 && tsc",
+    "lint:fix": "eslint '**/*.{ts,tsx}' --fix",
+    "format:check": "prettier --check \"**/*.{md,html,mjml,json,graphql,yml,css,scss}\"",
+    "format": "prettier --write \"**/*.{md,html,mjml,json,graphql,yml,css,scss}\""
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",

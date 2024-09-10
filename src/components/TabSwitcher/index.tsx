@@ -14,8 +14,13 @@ const TabSwitcher: React.FC<TabSwitcherProps> = ({ tabs }) => {
   return (
     <Stack className={""} direction={"row"} spacing={2}>
       {tabs &&
-        tabs.map(tab => (
-          <TabItem selected={tab === activeTab} title={tab} setActiveTab={setActiveTab} />
+        tabs.map((tab, index) => (
+          <TabItem
+            key={index}
+            selected={tab === activeTab}
+            title={tab}
+            setActiveTab={setActiveTab}
+          />
         ))}
       <TabItem setActiveTab={setActiveTab} />
     </Stack>

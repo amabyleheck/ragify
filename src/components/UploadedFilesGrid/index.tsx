@@ -31,11 +31,13 @@ const UploadedFilesGrid: React.FC<UploadedFilesGridProps> = ({ files }) => {
         ) : (
           files.map((file, index) => (
             <UploadedFileRow
+              key={index}
               index={index}
               file={file}
               handleDeleteFile={handleDeleteFile}
             />
-          )))}
+          ))
+        )}
       </Stack>
     </PanelBox>
   );
