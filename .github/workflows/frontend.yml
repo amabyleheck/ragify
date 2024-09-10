@@ -25,8 +25,16 @@ jobs:
         with:
           node-version: 20
 
-      - name: Load cache
-        uses: ./.github/actions/run-pnpm-ci
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install
+        shell: bash
 
       - name: Run linter
         run: pnpm run lint:full
