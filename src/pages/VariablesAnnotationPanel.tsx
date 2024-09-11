@@ -13,17 +13,30 @@ const VariablesAnnotationPanel: React.FC = () => {
       <Stack direction={"column"} spacing={3}>
         <Stack direction={"column"} spacing={3}>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
-            <Typography variant="h1" fontWeight={800} align="left" fontSize={25}>
-            Annotate Variables
+            <Typography
+              variant="h1"
+              fontWeight={800}
+              align="left"
+              fontSize={25}
+            >
+              Annotate Variables
             </Typography>
-            <InfoOutlined fontSize="small"/>
+            <InfoOutlined fontSize="small" />
           </Stack>
           <TabSwitcher tabs={["Variable 1", "Variable 2"]} />
           <Stack direction={"column"} spacing={1}>
-            <Typography variant="h5" fontWeight={800} align="left" fontSize={20}>
-            Prompt
+            <Typography
+              variant="h5"
+              fontWeight={800}
+              align="left"
+              fontSize={20}
+            >
+              Prompt
             </Typography>
-            <TextareaAutosize className="size-full overflow-y-auto styled-scrollbar rounded-border border border-[#DBDBDB] p-2 focus:border-[#DBDBDB]" style={{height: "15vh"}}/>
+            <TextareaAutosize
+              className="styled-scrollbar rounded-border size-full overflow-y-auto border border-[#DBDBDB] p-2 focus:border-[#DBDBDB]"
+              style={{ height: "15vh" }}
+            />
           </Stack>
         </Stack>
         <FilesList />

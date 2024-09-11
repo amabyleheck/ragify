@@ -1,13 +1,13 @@
-import BottomContainer from '@/components/BottomContainer';
-import { NavigationOptionType } from '@/types';
-import { NavigationOption } from '@/utils/consts';
-import { Typography } from '@mui/material';
-import { Stack } from '@mui/system';
-import React from 'react';
+import BottomContainer from "@/components/BottomContainer";
+import { NavigationOptionType } from "@/types";
+import { NavigationOption } from "@/utils/consts";
+import { Typography } from "@mui/material";
+import { Stack } from "@mui/system";
+import React from "react";
 
 const ParametersFormPanel: React.FC = () => {
-    return (
-        <div className="panel">
+  return (
+    <div className="panel">
       <Stack direction={"column"} spacing={3}>
         <Stack direction={"column"} spacing={3}>
           <Typography variant="h1" fontWeight={800} align="left" fontSize={25}>
@@ -20,7 +20,7 @@ const ParametersFormPanel: React.FC = () => {
         /> */}
       </Stack>
     </div>
-    );
+  );
 };
 
 export default ParametersFormPanel;

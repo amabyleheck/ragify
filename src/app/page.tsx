@@ -10,6 +10,7 @@ import { GlobalContext } from "@/contexts/global";
 import { NavigationOptionType } from "@/types";
 import ParametersFormPanel from "@/pages/ParametersFormPanel";
 import PageTracker from "@/components/PageTracker";
+import VariablesDefinition from "@/pages/VariablesDefinition";
 
 export default function Home() {
   const [pageType, setPageType] = useState<NavigationOptionType>(
@@ -18,7 +19,8 @@ export default function Home() {
 
   const componentMap = {
     [NavigationOption.DOCUMENTS.title]: DocumentsUploadPanel,
-    [NavigationOption.VARIABLES.title]: VariablesAnnotationPanel,
+    [NavigationOption.VARIABLES.title]: VariablesDefinition,
+    [NavigationOption.ANNOTATION.title]: VariablesAnnotationPanel,
     [NavigationOption.PARAMETERS.title]: ParametersFormPanel
   };
 
