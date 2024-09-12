@@ -63,6 +63,7 @@
 }
 
 .panel {
+  position: relative;
   background-color: #ffffff;
   height: 80vh;
   width: 75vw;
