@@ -52,7 +52,6 @@ const VariablesGrid: React.FC<VariablesGridProps> = ({ setOpen }) => {
 export default VariablesGrid;
 
 function transformData(data: Variable[] | null): GridRowsProp | [] {
-  console.log(data);
   return data
     ? data.map((item, index) => ({
         id: index,

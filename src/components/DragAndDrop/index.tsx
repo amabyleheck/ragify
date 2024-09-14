@@ -41,8 +41,8 @@ const DragAndDrop: React.FC = () => {
           padding: 0,
           ":hover": { borderRadius: "15px" }
         }}
-        onDrag={e => console.log(e)}
-        onDrop={e => console.log(e)}
+        // onDrag={e => handleFileUpload(e.target)}
+        // onDrop={e => console.log(e)}
       >
         <Box className="rounded-border min-h-[20vh] min-w-full content-center border-2 border-dotted border-[#DBDBDB]">
           <CloudUploadIcon sx={{ fontSize: "10vh", color: "#EBEBEB" }} />
