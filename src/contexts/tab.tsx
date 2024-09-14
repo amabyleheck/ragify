@@ -6,8 +6,8 @@ interface TabContextProps {
 }
 
 export const TabContext = createContext<TabContextProps>({
-  activeTab: "Variable 1",
-  setActiveTab: () => {}
+  activeTab: "",
+  setActiveTab: (tab: string) => {}
 });
 
 export const TabProvider: React.FC<PropsWithChildren> = ({ children }) => {

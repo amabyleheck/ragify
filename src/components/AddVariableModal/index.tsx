@@ -5,10 +5,7 @@ import {
   Button,
   Chip,
   FormControl,
-  Input,
-  InputLabel,
   MenuItem,
-  Select,
   TextField,
   Typography
 } from "@mui/material";
@@ -47,7 +44,6 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
     };
 
     const newVariables = [...variables, newVariable];
-    console.log(newVariables);
     setVariables(newVariables);
 
     handleClearForm();

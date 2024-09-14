@@ -4,15 +4,10 @@ import { NavigationOption } from "@/utils/consts";
 import { NavigationOptionType } from "@/types";
 import { InfoOutlined } from "@mui/icons-material";
 import VariablesGrid from "@/components/VariablesGrid";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import AddVariableModal from "@/components/AddVariableModal";
-import { FormContext } from "@/contexts/form";
 
 const VariablesDefinition: React.FC = () => {
-  const {
-    formData: { variables }
-  } = useContext(FormContext);
-
   const [open, setOpen] = useState(false);
 
   return (

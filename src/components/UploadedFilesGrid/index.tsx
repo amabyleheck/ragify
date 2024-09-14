@@ -12,15 +12,16 @@ const UploadedFilesGrid: React.FC = () => {
 
   function handleDeleteFile(name: string) {
     // TODO: Add are you sure alert
-    setFiles(
-      files.filter(files => {
-        files.name !== name;
-      })
-    );
+    const updatedFiles = files.filter(files => {
+      return files.name !== name;
+    });
+
+    setFiles(updatedFiles);
+    // TODO: Add success alert (notistack)
   }
 
   return (
-    <PanelBox height={20} className="overflow-y-scroll">
+    <PanelBox height={20} className="overflow-y-auto">
       <Stack direction={"column"} className="w-full">
         {files.length === 0 ? (
           <Typography variant="subtitle1" fontWeight={400}>
