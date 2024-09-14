@@ -1,5 +1,8 @@
 import type { Config } from "tailwindcss";
 
+const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
+
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,6 +11,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {sans: ['Roboto']},
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

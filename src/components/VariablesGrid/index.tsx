@@ -12,9 +12,10 @@ import BottomContainer from "../BottomContainer";
 
 interface VariablesGridProps {
   rows: GridRowsProp;
+  setOpen: (state: boolean) => void;
 }
 
-const VariablesGrid: React.FC<VariablesGridProps> = ({ rows }) => {
+const VariablesGrid: React.FC<VariablesGridProps> = ({ rows, setOpen }) => {
   const handleDeleteVariable = (id: GridRowId) => {
     // Add your code here
   };
@@ -24,7 +25,6 @@ const VariablesGrid: React.FC<VariablesGridProps> = ({ rows }) => {
       <DataGrid
         rows={rows}
         columns={columns(handleDeleteVariable)}
-        hideFooter
         rowHeight={40}
         columnHeaderHeight={40}
       />
@@ -34,6 +34,7 @@ const VariablesGrid: React.FC<VariablesGridProps> = ({ rows }) => {
           variant="contained"
           tabIndex={-1}
           className="w-60"
+          onClick={() => setOpen(true)}
         >
           Add new variable
         </Button>
@@ -100,6 +101,7 @@ const columns = (
       getActions: ({ id }) => {
         return [
           <GridActionsCellItem
+            key={id}
             icon={<GridDeleteIcon />}
             label="Delete"
             onClick={() => handleDeleteVariable(id)}

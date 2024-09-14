@@ -24,8 +24,6 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
   setValue,
   getValues
 }) => {
-  // Add your component logic here
-
   return (
     <Stack spacing={2}>
       <Typography variant="h5" fontWeight={800} align="left" fontSize={25}>
