@@ -1,6 +1,5 @@
-import { DeleteRounded } from "@mui/icons-material";
-import { Box, Stack, Typography } from "@mui/material";
-import React, { useContext, useState } from "react";
+import { Stack, Typography } from "@mui/material";
+import React, { useContext } from "react";
 import UploadedFileRow from "./UploadedFileRow";
 import PanelBox from "../PanelBox";
 import { FormContext } from "@/contexts/form";

@@ -1,10 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Stack } from "@mui/material";
-import { useForm } from "react-hook-form";
-import {
-  NewUploadedFileFormData,
-  newUploadedFileSchema
-} from "@/forms/FileUploadForm";
 import DragAndDrop from "@/components/DragAndDrop";
 import FilesList from "@/components/FilesList";
 import BottomContainer from "@/components/BottomContainer";
