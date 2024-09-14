@@ -6,12 +6,13 @@ interface PanelBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const PanelBox: React.FC<React.PropsWithChildren<PanelBoxProps>> = ({
+  className,
   height,
   children
 }) => {
   return (
     <Box
-      className={`rounded-border border border-[#DBDBDB] px-[10px] py-[10px]`}
+      className={`rounded-border border border-[#DBDBDB] px-[10px] py-[10px] ${className ? className : ""}`}
       sx={{
         height: `${height}vh`
       }}

@@ -1,29 +1,33 @@
 import { Button, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import React from "react";
+import React, { useContext } from "react";
 import CloudUploadIcon from "@mui/icons-material/FileUploadOutlined";
-import {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormSetValue
-} from "react-hook-form";
 import HiddenInput from "@/components/DragAndDrop/HiddenInput";
+import { FormContext } from "@/contexts/form";
 
-interface DragAndDropProps {
-  errors: FieldErrors<{ uploadedFiles: FileList }>;
-  setValue: UseFormSetValue<{
-    uploadedFiles: FileList;
-  }>;
-  getValues: UseFormGetValues<{
-    uploadedFiles: FileList;
-  }>;
-}
+const DragAndDrop: React.FC = () => {
+  const {
+    formData: { files },
+    setFiles
+  } = useContext(FormContext);
 
-const DragAndDrop: React.FC<DragAndDropProps> = ({
-  errors,
-  setValue,
-  getValues
-}) => {
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const uploadedFiles = event.target.files && Array.from(event.target.files);
+    if (
+      uploadedFiles &&
+      uploadedFiles.length > 0 &&
+      uploadedFiles.some(file => file.type !== "application/pdf")
+    ) {
+      alert("Only .pdf documents are allowed");
+      // TODO: Update error to toast
+      return;
+    }
+    if (uploadedFiles) {
+      const filesArray = uploadedFiles.concat(files);
+      setFiles(filesArray);
+    }
+  };
+
   return (
     <Stack spacing={2}>
       <Typography variant="h5" fontWeight={800} align="left" fontSize={25}>
@@ -62,18 +66,11 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
             textTransform={"none"}
           >
             Only .pdf documents are allowed
-            {errors.uploadedFiles?.message}
           </Typography>
           <HiddenInput
             type="file"
             multiple={true}
-            onChange={args => {
-              args.target.files &&
-                setValue("uploadedFiles", args.target.files, {
-                  shouldValidate: true
-                });
-              console.log(getValues());
-            }}
+            onChange={handleFileUpload}
           />
         </Box>
       </Button>

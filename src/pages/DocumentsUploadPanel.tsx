@@ -12,23 +12,10 @@ import { NavigationOption } from "@/utils/consts";
 import { NavigationOptionType } from "@/types";
 
 const DocumentsUploadPanel: React.FC = () => {
-  const {
-    formState: { errors },
-    setValue,
-    getValues
-  } = useForm<NewUploadedFileFormData>({
-    resolver: zodResolver(newUploadedFileSchema),
-    defaultValues: { uploadedFiles: undefined }
-  });
-
   return (
     <div className="panel">
       <Stack direction={"column"} spacing={8}>
-        <DragAndDrop
-          errors={errors}
-          setValue={setValue}
-          getValues={getValues}
-        />
+        <DragAndDrop />
         <FilesList />
         <BottomContainer
           nextPage={NavigationOption.PARAMETERS.title as NavigationOptionType}

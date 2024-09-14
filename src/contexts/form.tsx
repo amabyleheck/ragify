@@ -16,7 +16,33 @@ interface FormContextProps {
   setVariables: (variables: Variable[]) => void;
 }
 
-const FormContext = createContext<FormContextProps | undefined>(undefined);
+export const FormContext = createContext<FormContextProps>({
+  formData: {
+    files: [],
+    parameters: {
+      prompts: [],
+      model: [],
+      embeddings: {
+        bert_model: "bert-large-portuuguese-cased",
+        chunk_size: 512,
+        chunk_overlap: 20,
+        embedding_model: "HuggingFaceBgeEmbeddings",
+        vector_db: "Chroma",
+        text_splitter: ""
+      },
+      retrieval: {
+        chain_type: "stuff",
+        top_k: 3,
+        device_map: { device: "cuda:0" }
+      }
+    },
+    variables: []
+  },
+  setFormData: () => {},
+  setFiles: () => {},
+  setParameters: () => {},
+  setVariables: () => {}
+});
 
 export const useFormContext = () => {
   const context = useContext(FormContext);
