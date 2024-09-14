@@ -4,10 +4,15 @@ import { NavigationOption } from "@/utils/consts";
 import { NavigationOptionType } from "@/types";
 import { InfoOutlined } from "@mui/icons-material";
 import VariablesGrid from "@/components/VariablesGrid";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import AddVariableModal from "@/components/AddVariableModal";
+import { FormContext } from "@/contexts/form";
 
 const VariablesDefinition: React.FC = () => {
+  const {
+    formData: { variables }
+  } = useContext(FormContext);
+
   const [open, setOpen] = useState(false);
 
   return (
@@ -27,24 +32,7 @@ const VariablesDefinition: React.FC = () => {
               <InfoOutlined fontSize="small" />
             </Tooltip>
           </Stack>
-          <VariablesGrid
-            setOpen={setOpen}
-            rows={[
-              {
-                id: 0,
-                name: "Número da Licitação",
-                prompt: "This is a large prompt...",
-                label: "ONE-SHOT"
-              },
-              {
-                id: 1,
-                name: "Município de Irregularidade",
-                prompt:
-                  "This is a large prompt with a lot of characters and phrases that wouldn't fit on a normal column width",
-                label: "ONE-SHOT"
-              }
-            ]}
-          />
+          <VariablesGrid setOpen={setOpen} />
           <AddVariableModal open={open} handleClose={() => setOpen(false)} />
         </Stack>
         <BottomContainer

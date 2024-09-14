@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import Modal from "@mui/material/Modal";
-import { border, borderRadius, Box, padding, Stack } from "@mui/system";
-import { Button, Input, TextareaAutosize, Typography } from "@mui/material";
-import BottomContainer from "../BottomContainer";
+import { Box, Stack } from "@mui/system";
+import {
+  Button,
+  Chip,
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography
+} from "@mui/material";
+import { Variable, VariableLabel, VariableLabelType } from "@/types/Variables";
+import { FormContext } from "@/contexts/form";
 
 interface ModalProps {
   open: boolean;
@@ -10,6 +21,39 @@ interface ModalProps {
 }
 
 const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
+  const {
+    formData: { variables },
+    setVariables
+  } = useContext(FormContext);
+
+  const [variableName, setVariableName] = useState("");
+  const [label, setLabel] = useState<VariableLabelType | undefined>(undefined);
+  const [prompt, setPrompt] = useState("");
+
+  const handleClearForm = () => {
+    setVariableName("");
+    setLabel(undefined);
+    setPrompt("");
+  };
+
+  const handleSubmit = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    // TODO: Add validation to check if the variable name is unique
+    const newVariable: Variable = {
+      name: variableName,
+      label: label,
+      prompt: prompt
+    };
+
+    const newVariables = [...variables, newVariable];
+    console.log(newVariables);
+    setVariables(newVariables);
+
+    handleClearForm();
+    handleClose();
+  };
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -28,36 +72,50 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
           <Typography variant="h1" fontWeight={800} fontSize={30}>
             Add Variable
           </Typography>
-          <Stack>
-            <Typography
-              variant="h5"
-              fontWeight={500}
-              align="left"
-              fontSize={18}
-            >
-              Name
-            </Typography>
-            <input
-              className="focus:outline-none"
-              placeholder="Variable name"
-              style={{ width: "30vw", ...inputSyle }}
-            />
-          </Stack>
-          <Stack>
-            <Typography
-              variant="h5"
-              fontWeight={500}
-              align="left"
-              fontSize={18}
-            >
-              Prompt
-            </Typography>
-            <textarea
-              className="focus:outline-none"
-              style={{ height: "30vh", width: "30vw", ...inputSyle }}
-              placeholder="Write your prompt..."
-            />
-          </Stack>
+          <FormControl required>
+            <Stack spacing={3}>
+              <TextField
+                id="outlined-basic"
+                label="Variable Name"
+                variant="outlined"
+                value={variableName}
+                onChange={e => setVariableName(e.target.value)}
+              />
+              <Box className="w-full">
+                <TextField
+                  select
+                  label="Label"
+                  value={label ? label : ""}
+                  onChange={e => setLabel(e.target.value as VariableLabelType)}
+                  sx={{ width: "100%" }}
+                >
+                  {Object.keys(VariableLabel).map((key, index) => (
+                    <MenuItem key={index} value={key}>
+                      <Chip
+                        key={index}
+                        label={VariableLabel[
+                          key as VariableLabelType
+                        ].name.toUpperCase()}
+                        sx={{
+                          color: VariableLabel[key as VariableLabelType].color,
+                          border: `1px solid ${VariableLabel[key as VariableLabelType].color}`,
+                          backgroundColor: `${VariableLabel[key as VariableLabelType].color}10`
+                        }}
+                      />
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
+              <TextField
+                placeholder="Write your prompt..."
+                label="Prompt"
+                multiline
+                rows={5}
+                value={prompt}
+                onChange={e => setPrompt(e.target.value)}
+              />
+            </Stack>
+          </FormControl>
 
           <Stack direction={"row"} justifyContent={"flex-end"} spacing={2}>
             {/* TODO: Add onClick event to save the variable */}
@@ -65,7 +123,7 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
               type="button"
               variant="contained"
               tabIndex={-1}
-              onClick={() => handleClose()}
+              onClick={handleSubmit}
             >
               Save
             </Button>
@@ -79,7 +137,7 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
 export default AddVariableModal;
 
 const style = {
-  height: "70vh",
+  height: "80vh",
   width: "40vw",
   position: "absolute",
   top: "50%",
@@ -93,8 +151,5 @@ const style = {
 const inputSyle = {
   border: "1px solid #EBEBEB",
   borderRadius: 5,
-  padding: 10,
-  ":focus-visible": {
-    border: "1px solid #EBEBEB"
-  }
+  padding: 10
 };

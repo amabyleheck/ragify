@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Chip, Grid2, Stack, Tooltip, Typography } from "@mui/material";
 import {
   DataGrid,
@@ -9,21 +9,27 @@ import {
   GridRowsProp
 } from "@mui/x-data-grid";
 import BottomContainer from "../BottomContainer";
+import { FormContext } from "@/contexts/form";
+import { Variable, VariableLabel, VariableLabelType } from "@/types/Variables";
 
 interface VariablesGridProps {
-  rows: GridRowsProp;
   setOpen: (state: boolean) => void;
 }
 
-const VariablesGrid: React.FC<VariablesGridProps> = ({ rows, setOpen }) => {
-  const handleDeleteVariable = (id: GridRowId) => {
-    // Add your code here
+const VariablesGrid: React.FC<VariablesGridProps> = ({ setOpen }) => {
+  const {
+    formData: { variables },
+    setVariables
+  } = useContext(FormContext);
+
+  const handleDeleteVariable = (name: string) => {
+    setVariables(variables.filter(variable => variable.name !== name));
   };
 
   return (
     <Stack direction={"column"} spacing={1} sx={{ height: "55vh" }}>
       <DataGrid
-        rows={rows}
+        rows={transformData(variables)}
         columns={columns(handleDeleteVariable)}
         rowHeight={40}
         columnHeaderHeight={40}
@@ -45,8 +51,20 @@ const VariablesGrid: React.FC<VariablesGridProps> = ({ rows, setOpen }) => {
 
 export default VariablesGrid;
 
+function transformData(data: Variable[] | null): GridRowsProp | [] {
+  console.log(data);
+  return data
+    ? data.map((item, index) => ({
+        id: index,
+        name: item.name,
+        label: item.label,
+        prompt: item.prompt
+      }))
+    : [];
+}
+
 const columns = (
-  handleDeleteVariable: (id: GridRowId) => void
+  handleDeleteVariable: (name: string) => void
 ): GridColDef[] => {
   const sharedProps = {
     hideSortIcons: true,
@@ -80,12 +98,16 @@ const columns = (
       headerName: "Label",
       width: 300,
       renderCell: params => {
+        const label = VariableLabel[params.value as VariableLabelType];
         return (
-          params.value && (
+          label && (
             <Chip
-              label={params.value}
-              variant="outlined"
-              style={{ borderColor: "#FFC107", color: "#FFC107" }}
+              label={label.name.toUpperCase()}
+              sx={{
+                color: label.color,
+                border: `1px solid ${label.color}`,
+                backgroundColor: `${label.color}10`
+              }}
             />
           )
         );
@@ -98,13 +120,13 @@ const columns = (
       headerName: "Actions",
       width: 100,
       cellClassName: "actions",
-      getActions: ({ id }) => {
+      getActions: ({ id, row }) => {
         return [
           <GridActionsCellItem
             key={id}
             icon={<GridDeleteIcon />}
             label="Delete"
-            onClick={() => handleDeleteVariable(id)}
+            onClick={() => handleDeleteVariable(row.name)}
             color="inherit"
           />
         ];
