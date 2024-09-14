@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { TextField, Button, Typography, Paper, Grid2 } from "@mui/material";
+import { ParametersFormData } from "@/types/Parameters";
 
 const initialFormData: ParametersFormData = {
-  prompts: [
-    {
-      key: "zero_shot",
-      question: ""
-    }
-  ],
+  prompts: [],
   model: "",
   embeddings: {
     bert_model: "bert-large-portuguese-cased",
@@ -63,7 +59,7 @@ const FormComponent: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <Grid2 container spacing={2}>
           {/* Model Field */}
-          <Grid2 >
+          <Grid2>
             <TextField
               label="Model"
               name="model"
@@ -76,7 +72,7 @@ const FormComponent: React.FC = () => {
           {/* Prompts Fields */}
           {formData.prompts.map((prompt, index) => (
             <React.Fragment key={index}>
-              <Grid2 >
+              <Grid2>
                 <TextField
                   label="Prompt Key"
                   name="key"
@@ -85,7 +81,7 @@ const FormComponent: React.FC = () => {
                   fullWidth
                 />
               </Grid2>
-              <Grid2 >
+              <Grid2>
                 <TextField
                   label="Question"
                   name="question"
@@ -98,12 +94,12 @@ const FormComponent: React.FC = () => {
           ))}
 
           {/* Embeddings Fields */}
-          <Grid2 >
+          <Grid2>
             <Typography variant="h6" gutterBottom>
               Embeddings
             </Typography>
           </Grid2>
-          <Grid2 >
+          <Grid2>
             <TextField
               label="BERT Model"
               name="bert_model"
@@ -112,7 +108,7 @@ const FormComponent: React.FC = () => {
               fullWidth
             />
           </Grid2>
-          <Grid2 >
+          <Grid2>
             <TextField
               label="Chunk Size"
               name="chunk_size"
@@ -122,7 +118,7 @@ const FormComponent: React.FC = () => {
               fullWidth
             />
           </Grid2>
-          <Grid2 >
+          <Grid2>
             <TextField
               label="Chunk Overlap"
               name="chunk_overlap"
@@ -132,7 +128,7 @@ const FormComponent: React.FC = () => {
               fullWidth
             />
           </Grid2>
-          <Grid2 >
+          <Grid2>
             <TextField
               label="Embedding Model"
               name="embedding_model"
@@ -141,7 +137,7 @@ const FormComponent: React.FC = () => {
               fullWidth
             />
           </Grid2>
-          <Grid2 >
+          <Grid2>
             <TextField
               label="Vector DB"
               name="vector_db"
@@ -150,7 +146,7 @@ const FormComponent: React.FC = () => {
               fullWidth
             />
           </Grid2>
-          <Grid2 >
+          <Grid2>
             <TextField
               label="Text Splitter"
               name="text_splitter"
@@ -161,12 +157,12 @@ const FormComponent: React.FC = () => {
           </Grid2>
 
           {/* Retrieval Fields */}
-          <Grid2 >
+          <Grid2>
             <Typography variant="h6" gutterBottom>
               Retrieval
             </Typography>
           </Grid2>
-          <Grid2 >
+          <Grid2>
             <TextField
               label="Chain Type"
               name="chain_type"
@@ -175,7 +171,7 @@ const FormComponent: React.FC = () => {
               fullWidth
             />
           </Grid2>
-          <Grid2 >
+          <Grid2>
             <TextField
               label="Top K"
               name="top_k"
@@ -185,7 +181,7 @@ const FormComponent: React.FC = () => {
               fullWidth
             />
           </Grid2>
-          <Grid2 >
+          <Grid2>
             <TextField
               label="Device Map"
               name="device"
