@@ -11,6 +11,7 @@ import { NavigationOptionType } from "@/types";
 import ParametersFormPanel from "@/pages/ParametersFormPanel";
 import PageTracker from "@/components/PageTracker";
 import VariablesDefinitionPanel from "@/pages/VariablesDefinitionPanel";
+import { FormProvider } from "@/contexts/form";
 
 export default function Home() {
   const [pageType, setPageType] = useState<NavigationOptionType>(
@@ -28,16 +29,18 @@ export default function Home() {
 
   return (
     <GlobalContext.Provider value={{ pageType, setPageType }}>
-      <Header />
-      <div className="flex">
-        <AsideNav />
-        <main>
-          <div className="content-wrapper relative flex min-h-full min-w-[85vw] items-center justify-center bg-gray-200">
-            <PageTracker />
-            <CurrentPanel />
-          </div>
-        </main>
-      </div>
+      <FormProvider>
+        <Header />
+        <div className="flex">
+          <AsideNav />
+          <main>
+            <div className="content-wrapper relative flex min-h-full min-w-[85vw] items-center justify-center bg-gray-200">
+              <PageTracker />
+              <CurrentPanel />
+            </div>
+          </main>
+        </div>
+      </FormProvider>
     </GlobalContext.Provider>
   );
 }
