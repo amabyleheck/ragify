@@ -14,8 +14,6 @@ const VariablesAnnotationPanel: React.FC = () => {
     formData: { variables }
   } = useContext(FormContext);
 
-  const { activeTab } = useContext(TabContext);
-
   return (
     <div className="panel">
       {variables.length === 0 ? (
@@ -24,8 +22,13 @@ const VariablesAnnotationPanel: React.FC = () => {
         </Typography>
       ) : (
         <TabProvider defaultTab={variables[0].name}>
-          <Stack direction={"column"} spacing={3}>
-            <Stack direction={"column"} spacing={3}>
+          <Stack
+            direction={"column"}
+            spacing={1}
+            justifyContent={"space-around"}
+            height={"100%"}
+          >
+            <Stack direction={"column"} spacing={1}>
               <Stack direction={"row"} spacing={1} alignItems={"center"}>
                 <Typography
                   variant="h1"
@@ -37,12 +40,9 @@ const VariablesAnnotationPanel: React.FC = () => {
                 </Typography>
                 <InfoOutlined fontSize="small" />
               </Stack>
-
               <TabSwitcher tabs={variables.map(variable => variable.name)} />
-
-              <Stack direction={"column"} spacing={1}></Stack>
             </Stack>
-            <FilesList />
+            <FilesList annotation />
             <BottomContainer
               nextPage={
                 NavigationOption.PARAMETERS.title as NavigationOptionType

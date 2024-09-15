@@ -13,14 +13,14 @@ interface AnnotationContext {
 
 interface FormContextProps {
   annotationData: AnnotationContext;
-  updateValue: (variable: string, document: string, value: string) => void;
-  removeValue: (variable: string) => void;
+  updateVariable: (variable: string, document: string, value: string) => void;
+  removeVariable: (variable: string) => void;
 }
 
-const AnnotationContext = createContext<FormContextProps>({
+export const AnnotationContext = createContext<FormContextProps>({
   annotationData: {},
-  updateValue: () => {},
-  removeValue: () => {}
+  updateVariable: () => {},
+  removeVariable: () => {}
 });
 
 export const AnnotationProvider = ({ children }: { children: ReactNode }) => {
@@ -30,7 +30,11 @@ export const AnnotationProvider = ({ children }: { children: ReactNode }) => {
 
   const [annotationData, setAnnotationData] = useState<AnnotationContext>({});
 
-  const updateValue = (variable: string, document: string, value: string) => {
+  const updateVariable = (
+    variable: string,
+    document: string,
+    value: string
+  ) => {
     setAnnotationData(prevState => ({
       ...prevState,
       [variable]: {
@@ -40,7 +44,7 @@ export const AnnotationProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-  const removeValue = (variable: string) => {
+  const removeVariable = (variable: string) => {
     const newState = { ...annotationData };
     delete newState[variable];
 
@@ -51,8 +55,9 @@ export const AnnotationProvider = ({ children }: { children: ReactNode }) => {
     const initialValues: AnnotationContext = { ...annotationData };
     variables.forEach(variable => {
       if (
-        !initialValues[variable.name] ||
-        Object.keys(initialValues[variable.name]).length === 0
+        (!initialValues[variable.name] ||
+          Object.keys(initialValues[variable.name]).length === 0) &&
+        files.length > 0
       ) {
         initialValues[variable.name] = {};
         files.forEach(file => {
@@ -61,13 +66,11 @@ export const AnnotationProvider = ({ children }: { children: ReactNode }) => {
       }
     });
     setAnnotationData(initialValues);
-  }, [files, variables]);
-
-  console.log(annotationData);
+  }, [annotationData, files, variables]);
 
   return (
     <AnnotationContext.Provider
-      value={{ annotationData, updateValue, removeValue }}
+      value={{ annotationData, updateVariable, removeVariable }}
     >
       {children}
     </AnnotationContext.Provider>

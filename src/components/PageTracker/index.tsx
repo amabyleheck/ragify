@@ -68,6 +68,23 @@ const pageTrackerMapper = (
         >
           {NavigationOption.VARIABLES.icon}
         </Icon>
+        {original && <Typography fontSize={15}>Defining Variables</Typography>}
+      </>
+    );
+  };
+
+  const AnnotationSection: React.FC<SectionProps> = ({ original = true }) => {
+    return (
+      <>
+        <VariablesSection original={false} />
+        {ArrowIcon}
+        <Icon
+          className={"material-symbols-outlined cursor-pointer"}
+          sx={{ fontSize: "15px" }}
+          onClick={() => setPageType("ANNOTATION")}
+        >
+          {NavigationOption.ANNOTATION.icon}
+        </Icon>
         {original && (
           <Typography fontSize={15}>Annotating Variables</Typography>
         )}
@@ -78,7 +95,7 @@ const pageTrackerMapper = (
   const ParametersSection: React.FC<SectionProps> = ({ original = true }) => {
     return (
       <>
-        <VariablesSection original={false} />
+        <AnnotationSection original={false} />
         {ArrowIcon}
         <Icon
           className={"material-symbols-outlined cursor-pointer"}
@@ -95,7 +112,7 @@ const pageTrackerMapper = (
   return {
     [NavigationOption.DOCUMENTS.title]: DocumentsSection,
     [NavigationOption.VARIABLES.title]: VariablesSection,
-    [NavigationOption.ANNOTATION.title]: VariablesSection,
+    [NavigationOption.ANNOTATION.title]: AnnotationSection,
     [NavigationOption.PARAMETERS.title]: ParametersSection
   };
 };

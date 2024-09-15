@@ -1,34 +1,64 @@
+import { AnnotationContext } from "@/contexts/annotation";
+import { TabContext } from "@/contexts/tab";
 import { DeleteRounded } from "@mui/icons-material";
-import { Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
-import React from "react";
+import React, { useContext } from "react";
 
 interface UploadedFileRowProps {
   file: File;
   index: number;
-  handleDeleteFile: (name: string) => void;
+  handleDeleteFile?: (name: string) => void;
+  annotation?: boolean;
 }
 
 const UploadedFileRow: React.FC<UploadedFileRowProps> = ({
   file,
   index,
-  handleDeleteFile
+  handleDeleteFile,
+  annotation = false
 }) => {
+  const { activeTab } = useContext(TabContext);
+
+  const { annotationData, updateVariable } = useContext(AnnotationContext);
+
   return (
-    <Box
-      key={index}
+    <Stack
+      direction={"row"}
+      justifyContent={"space-between"}
+      paddingY={2}
+      alignItems={"center"}
       sx={{
         paddingX: "10px",
         ":hover": {
           backgroundColor: "#F2F2F2",
           borderRadius: "5px"
-        }
+        },
+        height: "50px"
       }}
     >
-      <Stack direction={"row"} justifyContent={"space-between"} paddingY={2}>
-        <Typography variant="body1">{file.name}</Typography>
+      <Typography
+        variant="body1"
+        color={
+          annotation
+            ? annotationData[activeTab]?.[file.name]
+              ? "success"
+              : "textDisabled"
+            : "textPrimary"
+        }
+      >
+        {file.name}
+      </Typography>
+      {annotation ? (
+        <TextField
+          placeholder="Fill with correct value..."
+          size={"small"}
+          value={annotationData[activeTab]?.[file.name] || ""}
+          onChange={e => updateVariable(activeTab, file.name, e.target.value)}
+        />
+      ) : (
         <DeleteRounded
-          onClick={() => handleDeleteFile(file.name)}
+          onClick={() => handleDeleteFile?.(file.name)}
           color="action"
           sx={{
             ":hover": {
@@ -36,8 +66,8 @@ const UploadedFileRow: React.FC<UploadedFileRowProps> = ({
             }
           }}
         ></DeleteRounded>
-      </Stack>
-    </Box>
+      )}
+    </Stack>
   );
 };
 

@@ -4,7 +4,7 @@ import React from "react";
 import UploadedFilesGrid from "@/components/UploadedFilesGrid";
 
 interface FilesListProps {
-  annotation?: boolean;
+  annotation: boolean;
 }
 
 const FilesList: React.FC<FilesListProps> = ({ annotation }) => {
@@ -13,7 +13,7 @@ const FilesList: React.FC<FilesListProps> = ({ annotation }) => {
       <Typography variant="h5" fontWeight={800} align="left" fontSize={20}>
         List of documents
       </Typography>
-      <UploadedFilesGrid />
+      <UploadedFilesGrid annotation={annotation} />
     </Stack>
   );
 };

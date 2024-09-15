@@ -1,7 +1,7 @@
 interface Prompts {
   key: string;
   question: string;
-  type: string; // TODO: Create enum for prompt type
+  type: string;
 }
 
 interface Embeddings {

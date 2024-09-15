@@ -3,12 +3,21 @@ import React, { useContext } from "react";
 import UploadedFileRow from "@/components/UploadedFilesGrid/UploadedFileRow";
 import PanelBox from "@/components/PanelBox";
 import { FormContext } from "@/contexts/form";
+import { TabContext } from "@/contexts/tab";
 
-const UploadedFilesGrid: React.FC = () => {
+interface UploadedFilesGridProps {
+  annotation: boolean;
+}
+
+const UploadedFilesGrid: React.FC<UploadedFilesGridProps> = ({
+  annotation = false
+}) => {
   const {
     formData: { files },
     setFiles
   } = useContext(FormContext);
+
+  const { activeTab } = useContext(TabContext);
 
   function handleDeleteFile(name: string) {
     // TODO: Add are you sure alert
@@ -21,7 +30,7 @@ const UploadedFilesGrid: React.FC = () => {
   }
 
   return (
-    <PanelBox height={20} className="overflow-y-auto">
+    <PanelBox height={annotation ? 45 : 20} className="overflow-y-auto">
       <Stack direction={"column"} className="w-full">
         {files.length === 0 ? (
           <Typography variant="subtitle1" fontWeight={400}>
@@ -34,6 +43,7 @@ const UploadedFilesGrid: React.FC = () => {
               index={index}
               file={file}
               handleDeleteFile={handleDeleteFile}
+              annotation={annotation}
             />
           ))
         )}

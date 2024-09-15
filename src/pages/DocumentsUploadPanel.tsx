@@ -8,9 +8,14 @@ import { NavigationOptionType } from "@/types";
 const DocumentsUploadPanel: React.FC = () => {
   return (
     <div className="panel">
-      <Stack direction={"column"} spacing={8}>
+      <Stack
+        direction={"column"}
+        spacing={5}
+        height={"100%"}
+        justifyContent={"space-around"}
+      >
         <DragAndDrop />
-        <FilesList />
+        <FilesList annotation={false} />
         <BottomContainer
           nextPage={NavigationOption.PARAMETERS.title as NavigationOptionType}
         />
