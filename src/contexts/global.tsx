@@ -4,7 +4,7 @@ import { NavigationOptionType } from "@/types/index";
 
 export interface GlobalContextType {
   pageType: NavigationOptionType;
-  setPageType: (value: NavigationOptionType) => void;
+  setPageType: (value: string) => void;
 }
 
 export const GlobalContext = createContext<GlobalContextType>({

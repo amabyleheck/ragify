@@ -66,7 +66,7 @@ export const AnnotationProvider = ({ children }: { children: ReactNode }) => {
       }
     });
     setAnnotationData(initialValues);
-  }, [annotationData, files, variables]);
+  }, [files, variables]);
 
   return (
     <AnnotationContext.Provider

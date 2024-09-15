@@ -32,9 +32,7 @@ interface SectionProps {
   original?: boolean;
 }
 
-const pageTrackerMapper = (
-  setPageType: (value: NavigationOptionType) => void
-) => {
+const pageTrackerMapper = (setPageType: (value: string) => void) => {
   const ArrowIcon: React.JSX.Element = (
     <Icon className={"material-symbols-outlined"} sx={{ fontSize: "15px" }}>
       arrow_forward_ios
@@ -47,7 +45,7 @@ const pageTrackerMapper = (
         <Icon
           className={"material-symbols-outlined cursor-pointer"}
           sx={{ fontSize: "15px" }}
-          onClick={() => setPageType("DOCUMENTS")}
+          onClick={() => setPageType(NavigationOption.DOCUMENTS.title)}
         >
           {NavigationOption.DOCUMENTS.icon}
         </Icon>
@@ -64,7 +62,7 @@ const pageTrackerMapper = (
         <Icon
           className={"material-symbols-outlined cursor-pointer"}
           sx={{ fontSize: "15px" }}
-          onClick={() => setPageType("VARIABLES")}
+          onClick={() => setPageType(NavigationOption.VARIABLES.title)}
         >
           {NavigationOption.VARIABLES.icon}
         </Icon>
@@ -81,7 +79,7 @@ const pageTrackerMapper = (
         <Icon
           className={"material-symbols-outlined cursor-pointer"}
           sx={{ fontSize: "15px" }}
-          onClick={() => setPageType("ANNOTATION")}
+          onClick={() => setPageType(NavigationOption.ANNOTATION.title)}
         >
           {NavigationOption.ANNOTATION.icon}
         </Icon>
@@ -100,7 +98,7 @@ const pageTrackerMapper = (
         <Icon
           className={"material-symbols-outlined cursor-pointer"}
           sx={{ fontSize: "15px" }}
-          onClick={() => setPageType("PARAMETERS")}
+          onClick={() => setPageType(NavigationOption.PARAMETERS.title)}
         >
           {NavigationOption.PARAMETERS.icon}
         </Icon>
