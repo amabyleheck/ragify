@@ -7,21 +7,23 @@ import { NavigationOptionType } from "@/types";
 import { InfoOutlined } from "@mui/icons-material";
 import { useContext } from "react";
 import { FormContext } from "@/contexts/form";
-import { TabProvider } from "@/contexts/tab";
+import { TabContext, TabProvider } from "@/contexts/tab";
 
 const VariablesAnnotationPanel: React.FC = () => {
   const {
     formData: { variables }
   } = useContext(FormContext);
 
+  const { activeTab } = useContext(TabContext);
+
   return (
-    <TabProvider>
-      <div className="panel">
-        {variables.length === 0 ? (
-          <Typography variant="subtitle1" fontWeight={400}>
-            No variables yet.
-          </Typography>
-        ) : (
+    <div className="panel">
+      {variables.length === 0 ? (
+        <Typography variant="h5" fontWeight={400}>
+          No created variables yet. Go to the variables page and create some!
+        </Typography>
+      ) : (
+        <TabProvider defaultTab={variables[0].name}>
           <Stack direction={"column"} spacing={3}>
             <Stack direction={"column"} spacing={3}>
               <Stack direction={"row"} spacing={1} alignItems={"center"}>
@@ -47,9 +49,9 @@ const VariablesAnnotationPanel: React.FC = () => {
               }
             />
           </Stack>
-        )}
-      </div>
-    </TabProvider>
+        </TabProvider>
+      )}
+    </div>
   );
 };
 

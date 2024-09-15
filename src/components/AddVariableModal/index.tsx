@@ -36,7 +36,17 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
   const handleSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
 
-    // TODO: Add validation to check if the variable name is unique
+    if (!variableName || !label || !prompt) {
+      // TODO: Add notistack alert
+      return;
+    }
+
+    if (variables.find(variable => variable.name === variableName)) {
+      // TODO: replace with notistack
+      alert("Variable name already exists");
+      return;
+    }
+
     const newVariable: Variable = {
       name: variableName,
       label: label,
@@ -63,12 +73,12 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
           spacing={2}
           alignItems={"center"}
           justifyContent={"space-evenly"}
-          className="h-full"
+          className="h-full w-full"
         >
           <Typography variant="h1" fontWeight={800} fontSize={30}>
             Add Variable
           </Typography>
-          <FormControl required>
+          <FormControl required fullWidth>
             <Stack spacing={3}>
               <TextField
                 id="outlined-basic"
@@ -112,9 +122,7 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
               />
             </Stack>
           </FormControl>
-
           <Stack direction={"row"} justifyContent={"flex-end"} spacing={2}>
-            {/* TODO: Add onClick event to save the variable */}
             <Button
               type="button"
               variant="contained"
@@ -141,7 +149,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   borderRadius: 3,
   boxShadow: 24,
-  p: 4
+  paddingX: 6
 };
 
 const inputSyle = {

@@ -22,6 +22,18 @@ const DragAndDrop: React.FC = () => {
       // TODO: Update error to toast
       return;
     }
+
+    if (
+      uploadedFiles &&
+      uploadedFiles.some(file =>
+        files.map(file => file.name).includes(file.name)
+      )
+    ) {
+      // TODO: update to notistack
+      alert("Duplicate files are not allowed");
+      return;
+    }
+
     if (uploadedFiles) {
       const filesArray = uploadedFiles.concat(files);
       setFiles(filesArray);

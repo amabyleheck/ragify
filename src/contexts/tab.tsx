@@ -10,8 +10,15 @@ export const TabContext = createContext<TabContextProps>({
   setActiveTab: (tab: string) => {}
 });
 
-export const TabProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [activeTab, setActiveTab] = useState("");
+interface TabProviderProps extends PropsWithChildren {
+  defaultTab: string;
+}
+
+export const TabProvider: React.FC<TabProviderProps> = ({
+  defaultTab,
+  children
+}) => {
+  const [activeTab, setActiveTab] = useState(defaultTab);
 
   return (
     <TabContext.Provider value={{ activeTab, setActiveTab }}>

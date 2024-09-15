@@ -1,7 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import React, { useContext } from "react";
-import UploadedFileRow from "./UploadedFileRow";
-import PanelBox from "../PanelBox";
+import UploadedFileRow from "@/components/UploadedFilesGrid/UploadedFileRow";
+import PanelBox from "@/components/PanelBox";
 import { FormContext } from "@/contexts/form";
 
 const UploadedFilesGrid: React.FC = () => {
