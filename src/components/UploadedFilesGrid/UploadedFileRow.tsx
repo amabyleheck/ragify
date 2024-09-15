@@ -23,6 +23,8 @@ const UploadedFileRow: React.FC<UploadedFileRowProps> = ({
 
   const { annotationData, updateVariable } = useContext(AnnotationContext);
 
+  let typingTimer: NodeJS.Timeout;
+
   return (
     <Stack
       key={index}

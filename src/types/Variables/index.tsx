@@ -9,6 +9,6 @@ export type VariableLabelType = keyof typeof VariableLabel;
 
 export interface Variable {
   name: string;
-  prompt: string;
+  prompt?: string;
   label?: VariableLabelType;
 }

@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { Variable, VariableLabel, VariableLabelType } from "@/types/Variables";
 import { FormContext } from "@/contexts/form";
+import { useSnackbar } from "notistack";
 
 interface ModalProps {
   open: boolean;
@@ -27,6 +28,17 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
   const [label, setLabel] = useState<VariableLabelType | undefined>(undefined);
   const [prompt, setPrompt] = useState("");
 
+  const [error, setError] = useState(false);
+  const setTimetoutError = () => {
+    setError(true);
+    setTimeout(() => {
+      setError(false);
+    }, 5000);
+    return;
+  };
+
+  const { enqueueSnackbar } = useSnackbar();
+
   const handleClearForm = () => {
     setVariableName("");
     setLabel(undefined);
@@ -36,14 +48,18 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
   const handleSubmit = (e: React.MouseEvent) => {
     e.preventDefault();
 
-    if (!variableName || !label || !prompt) {
-      // TODO: Add notistack alert
-      return;
+    if (!variableName) {
+      enqueueSnackbar("Please fill in all required fields.", {
+        variant: "error"
+      });
+      setTimetoutError();
     }
 
     if (variables.find(variable => variable.name === variableName)) {
-      // TODO: replace with notistack
-      alert("Variable name already exists");
+      enqueueSnackbar("Variable name already exists. Please try again.", {
+        variant: "error"
+      });
+      setTimetoutError();
       return;
     }
 
@@ -55,6 +71,8 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
 
     const newVariables = [...variables, newVariable];
     setVariables(newVariables);
+
+    enqueueSnackbar("Variable added successfully.", { variant: "success" });
 
     handleClearForm();
     handleClose();
@@ -86,6 +104,8 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
                 variant="outlined"
                 value={variableName}
                 onChange={e => setVariableName(e.target.value)}
+                required
+                error={error}
               />
               <Box className="w-full">
                 <TextField

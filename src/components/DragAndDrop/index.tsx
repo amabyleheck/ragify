@@ -4,12 +4,15 @@ import React, { useContext } from "react";
 import CloudUploadIcon from "@mui/icons-material/FileUploadOutlined";
 import HiddenInput from "@/components/DragAndDrop/HiddenInput";
 import { FormContext } from "@/contexts/form";
+import { useSnackbar } from "notistack";
 
 const DragAndDrop: React.FC = () => {
   const {
     formData: { files },
     setFiles
   } = useContext(FormContext);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFiles = event.target.files && Array.from(event.target.files);
@@ -18,8 +21,7 @@ const DragAndDrop: React.FC = () => {
       uploadedFiles.length > 0 &&
       uploadedFiles.some(file => file.type !== "application/pdf")
     ) {
-      alert("Only .pdf documents are allowed");
-      // TODO: Update error to toast
+      enqueueSnackbar("Only .pdf documents are allowed", { variant: "error" });
       return;
     }
 
@@ -29,14 +31,16 @@ const DragAndDrop: React.FC = () => {
         files.map(file => file.name).includes(file.name)
       )
     ) {
-      // TODO: update to notistack
-      alert("Duplicate files are not allowed");
+      enqueueSnackbar("Duplicate files are not allowed. Please try again.", {
+        variant: "error"
+      });
       return;
     }
 
     if (uploadedFiles) {
       const filesArray = uploadedFiles.concat(files);
       setFiles(filesArray);
+      enqueueSnackbar("Files uploaded successfully.", { variant: "success" });
     }
   };
 

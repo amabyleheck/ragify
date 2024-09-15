@@ -4,6 +4,7 @@ import UploadedFileRow from "@/components/UploadedFilesGrid/UploadedFileRow";
 import PanelBox from "@/components/PanelBox";
 import { FormContext } from "@/contexts/form";
 import { TabContext } from "@/contexts/tab";
+import { useSnackbar } from "notistack";
 
 interface UploadedFilesGridProps {
   annotation: boolean;
@@ -18,6 +19,7 @@ const UploadedFilesGrid: React.FC<UploadedFilesGridProps> = ({
   } = useContext(FormContext);
 
   const { activeTab } = useContext(TabContext);
+  const { enqueueSnackbar } = useSnackbar();
 
   function handleDeleteFile(name: string) {
     // TODO: Add are you sure alert
@@ -26,7 +28,7 @@ const UploadedFilesGrid: React.FC<UploadedFilesGridProps> = ({
     });
 
     setFiles(updatedFiles);
-    // TODO: Add success alert (notistack)
+    enqueueSnackbar("File deleted successfully.", { variant: "success" });
   }
 
   return (

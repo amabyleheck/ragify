@@ -11,6 +11,7 @@ import {
 import BottomContainer from "../BottomContainer";
 import { FormContext } from "@/contexts/form";
 import { Variable, VariableLabel, VariableLabelType } from "@/types/Variables";
+import { useSnackbar } from "notistack";
 
 interface VariablesGridProps {
   setOpen: (state: boolean) => void;
@@ -21,9 +22,11 @@ const VariablesGrid: React.FC<VariablesGridProps> = ({ setOpen }) => {
     formData: { variables },
     setVariables
   } = useContext(FormContext);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleDeleteVariable = (name: string) => {
     setVariables(variables.filter(variable => variable.name !== name));
+    enqueueSnackbar("Variable deleted successfully.", { variant: "success" });
   };
 
   return (

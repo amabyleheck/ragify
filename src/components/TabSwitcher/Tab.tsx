@@ -1,7 +1,6 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import EditableTexInput from "../EditableTextInput";
 
 interface TabProps {
   title: string;
@@ -14,7 +13,7 @@ const TabItem: React.FC<TabProps> = ({ title, selected, setActiveTab }) => {
     <Box onClick={() => setActiveTab(title)} className="cursor-pointer">
       <Typography
         variant="body1"
-        className={`${selected ? "border-b-[3px] border-black pb-1" : "border-b-none"} cursor-pointer pb-1 text-lg font-medium`}
+        className={`${selected ? "border-b-[3px] border-black pb-1" : "border-b-none text-gray-400"} cursor-pointer pb-1 text-lg font-medium`}
       >
         {title}
       </Typography>
