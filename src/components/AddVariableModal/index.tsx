@@ -151,9 +151,3 @@ const style = {
   boxShadow: 24,
   paddingX: 6
 };
-
-const inputSyle = {
-  border: "1px solid #EBEBEB",
-  borderRadius: 5,
-  padding: 10
-};

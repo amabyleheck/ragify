@@ -4,6 +4,7 @@ import { DeleteRounded } from "@mui/icons-material";
 import { TextField, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React, { useContext } from "react";
+import DocumentPreviewer from "../DocumentPreviewer";
 
 interface UploadedFileRowProps {
   file: File;
@@ -24,6 +25,7 @@ const UploadedFileRow: React.FC<UploadedFileRowProps> = ({
 
   return (
     <Stack
+      key={index}
       direction={"row"}
       justifyContent={"space-between"}
       paddingY={2}
@@ -50,22 +52,28 @@ const UploadedFileRow: React.FC<UploadedFileRowProps> = ({
         {file.name}
       </Typography>
       {annotation ? (
-        <TextField
-          placeholder="Fill with correct value..."
-          size={"small"}
-          value={annotationData[activeTab]?.[file.name] || ""}
-          onChange={e => updateVariable(activeTab, file.name, e.target.value)}
-        />
+        <Stack spacing={1} direction={"row"} alignItems={"center"}>
+          <DocumentPreviewer file={file} />
+          <TextField
+            placeholder="Fill with correct value..."
+            size={"small"}
+            value={annotationData[activeTab]?.[file.name] || ""}
+            onChange={e => updateVariable(activeTab, file.name, e.target.value)}
+          />
+        </Stack>
       ) : (
-        <DeleteRounded
-          onClick={() => handleDeleteFile?.(file.name)}
-          color="action"
-          sx={{
-            ":hover": {
-              cursor: "pointer"
-            }
-          }}
-        ></DeleteRounded>
+        <Stack spacing={1} direction={"row"} alignItems={"center"}>
+          <DocumentPreviewer file={file} />
+          <DeleteRounded
+            onClick={() => handleDeleteFile?.(file.name)}
+            color="action"
+            sx={{
+              ":hover": {
+                cursor: "pointer"
+              }
+            }}
+          ></DeleteRounded>
+        </Stack>
       )}
     </Stack>
   );
