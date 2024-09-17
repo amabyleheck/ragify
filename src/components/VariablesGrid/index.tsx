@@ -1,14 +1,12 @@
 import React, { useContext } from "react";
-import { Button, Chip, Grid2, Stack, Tooltip, Typography } from "@mui/material";
+import { Button, Chip, Stack, Tooltip } from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
   GridColDef,
   GridDeleteIcon,
-  GridRowId,
   GridRowsProp
 } from "@mui/x-data-grid";
-import BottomContainer from "../BottomContainer";
 import { FormContext } from "@/contexts/form";
 import { Variable, VariableLabel, VariableLabelType } from "@/types/Variables";
 import { useSnackbar } from "notistack";
@@ -75,6 +73,8 @@ const columns = (
     disableColumnMenu: true
   };
 
+  const valueOrNA = (value: string | undefined) => value || "N/A";
+
   return [
     {
       field: "name",
@@ -87,11 +87,14 @@ const columns = (
       headerName: "Prompt",
       width: 400,
       renderCell: params => {
+        const prompt = valueOrNA(params?.value);
         const truncatedPrompt =
-          params.value?.length > 100
-            ? `${params.value?.substring(0, 100)}...`
-            : params.value;
-        return <Tooltip title={params.value}>{truncatedPrompt}</Tooltip>;
+          prompt.length > 100 ? `${prompt.substring(0, 100)}...` : prompt;
+        return (
+          <Tooltip title={prompt}>
+            <>{truncatedPrompt}</>
+          </Tooltip>
+        );
       },
       ...sharedProps
     },
@@ -101,17 +104,17 @@ const columns = (
       width: 300,
       renderCell: params => {
         const label = VariableLabel[params.value as VariableLabelType];
-        return (
-          label && (
-            <Chip
-              label={label.name.toUpperCase()}
-              sx={{
-                color: label.color,
-                border: `1px solid ${label.color}`,
-                backgroundColor: `${label.color}10`
-              }}
-            />
-          )
+        return label ? (
+          <Chip
+            label={label.name.toUpperCase()}
+            sx={{
+              color: label.color,
+              border: `1px solid ${label.color}`,
+              backgroundColor: `${label.color}10`
+            }}
+          />
+        ) : (
+          "N/A"
         );
       },
       ...sharedProps

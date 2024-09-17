@@ -1,17 +1,11 @@
 import React, { useContext, useState } from "react";
 import Modal from "@mui/material/Modal";
 import { Box, Stack } from "@mui/system";
-import {
-  Button,
-  Chip,
-  FormControl,
-  MenuItem,
-  TextField,
-  Typography
-} from "@mui/material";
-import { Variable, VariableLabel, VariableLabelType } from "@/types/Variables";
+import { Button, FormControl, TextField, Typography } from "@mui/material";
+import { Variable, VariableLabelType } from "@/types/Variables";
 import { FormContext } from "@/contexts/form";
 import { useSnackbar } from "notistack";
+import LabelSelect from "./VariableSelect";
 
 interface ModalProps {
   open: boolean;
@@ -108,29 +102,7 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
                 error={error}
               />
               <Box className="w-full">
-                <TextField
-                  select
-                  label="Label"
-                  value={label ? label : ""}
-                  onChange={e => setLabel(e.target.value as VariableLabelType)}
-                  sx={{ width: "100%" }}
-                >
-                  {Object.keys(VariableLabel).map((key, index) => (
-                    <MenuItem key={index} value={key}>
-                      <Chip
-                        key={index}
-                        label={VariableLabel[
-                          key as VariableLabelType
-                        ].name.toUpperCase()}
-                        sx={{
-                          color: VariableLabel[key as VariableLabelType].color,
-                          border: `1px solid ${VariableLabel[key as VariableLabelType].color}`,
-                          backgroundColor: `${VariableLabel[key as VariableLabelType].color}10`
-                        }}
-                      />
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <LabelSelect label={label} setLabel={setLabel} />
               </Box>
               <TextField
                 placeholder="Write your prompt..."

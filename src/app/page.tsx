@@ -21,7 +21,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 export default function Home() {
-  const [pageType, setPageType] = useState(NavigationOption.DOCUMENTS.title);
+  const [pageType, setPageType] = useState(NavigationOption.PARAMETERS.title);
 
   const componentMap = {
     [NavigationOption.DOCUMENTS.title]: DocumentsUploadPanel,

@@ -34,7 +34,10 @@ interface SectionProps {
 
 const pageTrackerMapper = (setPageType: (value: string) => void) => {
   const ArrowIcon: React.JSX.Element = (
-    <Icon className={"material-symbols-outlined"} sx={{ fontSize: "15px" }}>
+    <Icon
+      className={"material-symbols-outlined text-gray-400"}
+      sx={{ fontSize: "15px" }}
+    >
       arrow_forward_ios
     </Icon>
   );
@@ -43,13 +46,17 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
     return (
       <>
         <Icon
-          className={"material-symbols-outlined cursor-pointer"}
+          className={"material-symbols-outlined cursor-pointer text-gray-400"}
           sx={{ fontSize: "15px" }}
           onClick={() => setPageType(NavigationOption.DOCUMENTS.title)}
         >
           {NavigationOption.DOCUMENTS.icon}
         </Icon>
-        {original && <Typography fontSize={15}>Uploading Documents</Typography>}
+        {original && (
+          <Typography fontSize={15} className="text-gray-400">
+            Uploading Documents
+          </Typography>
+        )}
       </>
     );
   };
@@ -60,13 +67,17 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
         <DocumentsSection original={false} />
         {ArrowIcon}
         <Icon
-          className={"material-symbols-outlined cursor-pointer"}
+          className={"material-symbols-outlined cursor-pointer text-gray-400"}
           sx={{ fontSize: "15px" }}
           onClick={() => setPageType(NavigationOption.VARIABLES.title)}
         >
           {NavigationOption.VARIABLES.icon}
         </Icon>
-        {original && <Typography fontSize={15}>Defining Variables</Typography>}
+        {original && (
+          <Typography fontSize={15} className="text-gray-400">
+            Defining Variables
+          </Typography>
+        )}
       </>
     );
   };
@@ -77,14 +88,16 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
         <VariablesSection original={false} />
         {ArrowIcon}
         <Icon
-          className={"material-symbols-outlined cursor-pointer"}
+          className={"material-symbols-outlined cursor-pointer text-gray-400"}
           sx={{ fontSize: "15px" }}
           onClick={() => setPageType(NavigationOption.ANNOTATION.title)}
         >
           {NavigationOption.ANNOTATION.icon}
         </Icon>
         {original && (
-          <Typography fontSize={15}>Annotating Variables</Typography>
+          <Typography fontSize={15} className="text-gray-400">
+            Annotating Variables
+          </Typography>
         )}
       </>
     );
@@ -96,13 +109,15 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
         <AnnotationSection original={false} />
         {ArrowIcon}
         <Icon
-          className={"material-symbols-outlined cursor-pointer"}
+          className={"material-symbols-outlined cursor-pointer text-gray-400"}
           sx={{ fontSize: "15px" }}
           onClick={() => setPageType(NavigationOption.PARAMETERS.title)}
         >
           {NavigationOption.PARAMETERS.icon}
         </Icon>
-        <Typography fontSize={15}>Choosing Parameters</Typography>
+        <Typography fontSize={15} className="text-gray-400">
+          Choosing Parameters
+        </Typography>
       </>
     );
   };

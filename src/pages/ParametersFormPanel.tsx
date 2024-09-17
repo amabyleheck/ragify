@@ -1,4 +1,5 @@
 import BottomContainer from "@/components/BottomContainer";
+import ParametersForm from "@/components/ParametersForm";
 import { NavigationOptionType } from "@/types";
 import { NavigationOption } from "@/utils/consts";
 import { Typography } from "@mui/material";
@@ -19,10 +20,10 @@ const ParametersFormPanel: React.FC = () => {
             Parameters customization
           </Typography>
         </Stack>
-        {/* <ParametersFormPanel /> */}
-        {/* <BottomContainer
+        <ParametersForm />
+        <BottomContainer
           nextPage={NavigationOption.PARAMETERS.title as NavigationOptionType}
-        /> */}
+        />
       </Stack>
     </div>
   );
