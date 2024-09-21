@@ -2,7 +2,7 @@ import { AnnotationContext } from "@/contexts/annotation";
 import { TabContext } from "@/contexts/tab";
 import { DeleteRounded } from "@mui/icons-material";
 import { TextField, Typography } from "@mui/material";
-import { Box, Stack } from "@mui/system";
+import { Stack } from "@mui/system";
 import React, { useContext } from "react";
 import DocumentPreviewer from "../DocumentPreviewer";
 
@@ -22,8 +22,6 @@ const UploadedFileRow: React.FC<UploadedFileRowProps> = ({
   const { activeTab } = useContext(TabContext);
 
   const { annotationData, updateVariable } = useContext(AnnotationContext);
-
-  let typingTimer: NodeJS.Timeout;
 
   return (
     <Stack

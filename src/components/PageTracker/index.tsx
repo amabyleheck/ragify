@@ -1,5 +1,4 @@
 import { GlobalContext } from "@/contexts/global";
-import { NavigationOptionType } from "@/types";
 import { NavigationOption } from "@/utils/consts";
 import { Icon, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
@@ -103,7 +102,7 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
     );
   };
 
-  const ParametersSection: React.FC<SectionProps> = ({ original = true }) => {
+  const ParametersSection: React.FC<SectionProps> = () => {
     return (
       <>
         <AnnotationSection original={false} />

@@ -85,7 +85,7 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
           spacing={2}
           alignItems={"center"}
           justifyContent={"space-evenly"}
-          className="h-full w-full"
+          className="size-full"
         >
           <Typography variant="h1" fontWeight={800} fontSize={30}>
             Add Variable
@@ -133,7 +133,7 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
 export default AddVariableModal;
 
 const style = {
-  height: "80vh",
+  height: "70vh",
   width: "40vw",
   position: "absolute",
   top: "50%",

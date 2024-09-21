@@ -7,7 +7,7 @@ import { NavigationOptionType } from "@/types";
 import { InfoOutlined } from "@mui/icons-material";
 import { useContext } from "react";
 import { FormContext } from "@/contexts/form";
-import { TabContext, TabProvider } from "@/contexts/tab";
+import { TabProvider } from "@/contexts/tab";
 
 const VariablesAnnotationPanel: React.FC = () => {
   const {

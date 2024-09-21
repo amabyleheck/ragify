@@ -1,8 +1,7 @@
 import { TabContext } from "@/contexts/tab";
-import { Box, Stack } from "@mui/system";
-import React, { act, useContext, useState } from "react";
-import TabItem from "./Tab";
-import { Typography } from "@mui/material";
+import { Stack } from "@mui/system";
+import React, { useContext } from "react";
+import TabItem from "@/components/TabSwitcher/Tab";
 
 interface TabSwitcherProps {
   tabs: string[];

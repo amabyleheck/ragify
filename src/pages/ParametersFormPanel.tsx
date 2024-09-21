@@ -11,14 +11,29 @@ const ParametersFormPanel: React.FC = () => {
     <div className="panel">
       <Stack
         direction={"column"}
-        spacing={3}
+        spacing={1}
         height={"100%"}
         justifyContent={"space-around"}
       >
         <Stack direction={"column"} spacing={3}>
-          <Typography variant="h1" fontWeight={800} align="left" fontSize={25}>
-            Parameters customization
-          </Typography>
+          <Stack direction={"row"} alignItems={"center"} spacing={1}>
+            <Typography
+              variant="h1"
+              fontWeight={800}
+              align="left"
+              fontSize={25}
+            >
+              RAG Parameters Customization
+            </Typography>
+            <Typography
+              variant="body1"
+              fontWeight={100}
+              align="left"
+              fontSize={15}
+            >
+              (Optional)
+            </Typography>
+          </Stack>
         </Stack>
         <ParametersForm />
         <BottomContainer

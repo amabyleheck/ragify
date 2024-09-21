@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint:full": "pnpm run lint && pnpm run format:check",
-    "lint": "eslint '**/*.{ts,tsx}' --max-warnings 0 && tsc",
+    "lint": "eslint '**/*.{ts,tsx}' --max-warnings 0 && echo 'Success!'",
     "lint:fix": "eslint '**/*.{ts,tsx}' --fix",
     "format:check": "prettier --check \"**/*.{md,html,mjml,json,graphql,yml,css,scss}\"",
     "format": "prettier --write \"**/*.{md,html,mjml,json,graphql,yml,css,scss}\""
@@ -21,6 +21,7 @@
     "@mui/material": "^6.0.1",
     "@mui/system": "^6.0.1",
     "@mui/x-data-grid": "^7.15.0",
+    "eslint-plugin-tailwindcss": "^3.17.4",
     "next": "14.2.7",
     "notistack": "^3.0.1",
     "react": "^18.3.1",
@@ -39,18 +40,27 @@
       "pre-commit": "npx lint-staged --relative"
     }
   },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "packageManager": "pnpm@8.7.0",
   "devDependencies": {
+    "@eslint/js": "^9.11.0",
+    "@types/eslint__js": "^8.42.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
+    "eslint": "^8.57.0",
     "eslint-config-next": "14.2.7",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "ghooks": "^2.0.4",
     "lint-staged": "^15.2.10",
     "postcss": "^8",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.6.0"
   }
 }

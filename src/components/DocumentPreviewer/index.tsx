@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal, Typography } from "@mui/material";
 import { Document, Page } from "react-pdf";
 import { Box, Stack } from "@mui/system";
-import {
-  DocumentScannerOutlined,
-  FindInPageOutlined
-} from "@mui/icons-material";
+import { FindInPageOutlined } from "@mui/icons-material";
 
 interface DocumentPreviewerProps {
   file: File;

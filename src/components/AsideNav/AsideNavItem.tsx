@@ -6,7 +6,7 @@ import { Box, Stack } from "@mui/system";
 import React, { useContext } from "react";
 
 interface AsideNavProps {
-  id: Number;
+  id: number;
   icon: string;
   title: NavigationOptionType;
 }
@@ -27,7 +27,7 @@ const AsideNavItem: React.FC<AsideNavProps> = ({ id, icon, title }) => {
       />
       <label htmlFor={elementId}>
         <Box
-          className={`aside-nav-item ${selected ? "selected" : ""} flex max-h-[6vh] min-h-[6vh] max-w-full items-center rounded-bl-[50px] rounded-tl-[50px] text-left`}
+          className={`aside-nav-item ${selected ? "selected" : ""} flex max-h-[6vh] min-h-[6vh] max-w-full items-center rounded-l-[50px] text-left`}
         >
           <Stack
             direction={"row"}

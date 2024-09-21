@@ -66,6 +66,7 @@ export const AnnotationProvider = ({ children }: { children: ReactNode }) => {
       }
     });
     setAnnotationData(initialValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files, variables]);
 
   return (

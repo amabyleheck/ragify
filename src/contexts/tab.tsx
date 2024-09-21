@@ -7,6 +7,7 @@ interface TabContextProps {
 
 export const TabContext = createContext<TabContextProps>({
   activeTab: "",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setActiveTab: (tab: string) => {}
 });
 

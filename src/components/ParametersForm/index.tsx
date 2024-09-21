@@ -1,6 +1,8 @@
 import React from "react";
-import { TextField, Typography, Stack, Divider } from "@mui/material";
+import { TextField, Typography, Stack } from "@mui/material";
 import { Box } from "@mui/system";
+import MultiSelect from "@/components/MultiSelect";
+import { PARAMETER_OPTIONS } from "@/types/Parameters";
 
 const ParametersForm: React.FC = () => {
   return (
@@ -10,7 +12,11 @@ const ParametersForm: React.FC = () => {
       </Typography>
 
       <Box>
-        <TextField size="small" label="LLM" />
+        <MultiSelect
+          title="LLM"
+          values={PARAMETER_OPTIONS.MODEL}
+          onChange={() => {}}
+        />
       </Box>
 
       {/* Embeddings Section */}
@@ -20,16 +26,40 @@ const ParametersForm: React.FC = () => {
 
       <Stack spacing={2}>
         <Stack spacing={2} direction={"row"}>
-          <TextField size="small" label="Chunk Size" />
-          <TextField size="small" label="Chunk Overlap" />
+          <MultiSelect
+            title="Chunk Size"
+            values={PARAMETER_OPTIONS.CHUNK_SIZE}
+            onChange={() => {}}
+          />
+          <MultiSelect
+            title="Chunk Overlap"
+            values={PARAMETER_OPTIONS.CHUNK_OVERLAP}
+            onChange={() => {}}
+          />
         </Stack>
         <Stack spacing={2} direction={"row"}>
-          <TextField size="small" label="Vector Database" />
-          <TextField size="small" label="Embedding Model" />
+          <MultiSelect
+            title="Vector Database"
+            values={PARAMETER_OPTIONS.VECTOR_DATABASE}
+            onChange={() => {}}
+          />
+          <MultiSelect
+            title="Embedding Model"
+            values={PARAMETER_OPTIONS.EMBEDDING_MODEL}
+            onChange={() => {}}
+          />
         </Stack>
         <Stack spacing={2} direction={"row"}>
-          <TextField size="small" label="Bert Model" />
-          <TextField size="small" label="Text Splitter" />
+          <MultiSelect
+            title="Bert Model"
+            values={PARAMETER_OPTIONS.BERT_MODEL}
+            onChange={() => {}}
+          />
+          <MultiSelect
+            title="Text Splitter"
+            values={PARAMETER_OPTIONS.TEXT_SPLITTER}
+            onChange={() => {}}
+          />
         </Stack>
       </Stack>
 
@@ -40,11 +70,19 @@ const ParametersForm: React.FC = () => {
 
       <Stack spacing={2}>
         <Stack spacing={2} direction={"row"}>
-          <TextField size="small" label="Top K" />
-          <TextField size="small" label="Device Map (CUDA)" />
+          <MultiSelect
+            title="Top K"
+            values={PARAMETER_OPTIONS.TOP_K}
+            onChange={() => {}}
+          />
+          <TextField label="Device Map (CUDA)" />
         </Stack>
         <Box className="flex">
-          <TextField size="small" label="Chain Type" />
+          <MultiSelect
+            title="Chain Type"
+            values={PARAMETER_OPTIONS.CHAIN_TYPE}
+            onChange={() => {}}
+          />
         </Box>
       </Stack>
     </Stack>
