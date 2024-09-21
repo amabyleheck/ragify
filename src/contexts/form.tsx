@@ -12,36 +12,47 @@ interface FormContextProps {
   formData: GlobalFormContext;
   setFormData: (context: GlobalFormContext) => void;
   setFiles: (files: File[]) => void;
-  setParameters: (parameters: ParametersFormData) => void;
   setVariables: (variables: Variable[]) => void;
+  setModelParameter: (value: string[]) => void;
+  setEmbeddingKey: (
+    key: keyof Partial<GlobalFormContext["parameters"]["embeddings"]>,
+    value: string[]
+  ) => void;
+  setRetrievalKey: (
+    key: keyof Partial<GlobalFormContext["parameters"]["retrieval"]>,
+    value: { device: string } | string[]
+  ) => void;
 }
 
 export const FormContext = createContext<FormContextProps>({
   formData: {
+    variables: [],
     files: [],
     parameters: {
-      prompts: [],
       model: [],
       embeddings: {
-        bert_model: "bert-large-portuuguese-cased",
-        chunk_size: 512,
-        chunk_overlap: 20,
-        embedding_model: "HuggingFaceBgeEmbeddings",
-        vector_db: "Chroma",
-        text_splitter: ""
+        bert_model: ["bert-large-portuguese-cased"],
+        chunk_size: ["512"],
+        chunk_overlap: ["20"],
+        embedding_model: ["HuggingFaceBgeEmbeddings"],
+        vector_db: ["Chroma"],
+        text_splitter: ["RecursiveCharacterSplitter"]
       },
       retrieval: {
-        chain_type: "stuff",
-        top_k: 3,
-        device_map: { device: "cuda:0" }
+        chain_type: ["stuff"],
+        top_k: ["3"],
+        device_map: {
+          device: "cuda:0"
+        }
       }
-    },
-    variables: []
+    }
   },
   setFormData: () => {},
   setFiles: () => {},
-  setParameters: () => {},
-  setVariables: () => {}
+  setVariables: () => {},
+  setModelParameter: () => {},
+  setEmbeddingKey: () => {},
+  setRetrievalKey: () => {}
 });
 
 export const useFormContext = () => {
@@ -57,19 +68,18 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
     variables: [],
     files: [],
     parameters: {
-      prompts: [],
       model: [],
       embeddings: {
-        bert_model: "bert-large-portuuguese-cased",
-        chunk_size: 512,
-        chunk_overlap: 20,
-        embedding_model: "HuggingFaceBgeEmbeddings",
-        vector_db: "Chroma",
-        text_splitter: ""
+        bert_model: ["bert-large-portuguese-cased"],
+        chunk_size: ["512"],
+        chunk_overlap: ["20"],
+        embedding_model: ["HuggingFaceBgeEmbeddings"],
+        vector_db: ["Chroma"],
+        text_splitter: ["RecursiveCharacterSplitter"]
       },
       retrieval: {
-        chain_type: "stuff",
-        top_k: 3,
+        chain_type: ["stuff"],
+        top_k: ["3"],
         device_map: {
           device: "cuda:0"
         }
@@ -81,17 +91,63 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
     setFormData(prev => ({ ...prev, files }));
   };
 
-  const setParameters = (parameters: ParametersFormData) => {
-    setFormData(prev => ({ ...prev, parameters }));
-  };
-
   const setVariables = (variables: Variable[]) => {
     setFormData(prev => ({ ...prev, variables }));
   };
 
+  const setModelParameter = (value: string[]) => {
+    setFormData(prev => ({
+      ...prev,
+      parameters: {
+        ...prev.parameters,
+        ["model"]: value
+      }
+    }));
+  };
+
+  const setEmbeddingKey = (
+    key: keyof Partial<GlobalFormContext["parameters"]["embeddings"]>,
+    value: string[]
+  ) => {
+    setFormData(prev => ({
+      ...prev,
+      parameters: {
+        ...prev.parameters,
+        embeddings: {
+          ...prev.parameters.embeddings,
+          [key]: value
+        }
+      }
+    }));
+  };
+
+  const setRetrievalKey = (
+    key: keyof Partial<GlobalFormContext["parameters"]["retrieval"]>,
+    value: { device: string } | string[]
+  ) => {
+    setFormData(prev => ({
+      ...prev,
+      parameters: {
+        ...prev.parameters,
+        retrieval: {
+          ...prev.parameters.retrieval,
+          [key]: value
+        }
+      }
+    }));
+  };
+
   return (
     <FormContext.Provider
-      value={{ formData, setFormData, setFiles, setParameters, setVariables }}
+      value={{
+        formData,
+        setFormData,
+        setFiles,
+        setVariables,
+        setModelParameter,
+        setEmbeddingKey,
+        setRetrievalKey
+      }}
     >
       {children}
     </FormContext.Provider>

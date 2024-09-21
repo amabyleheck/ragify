@@ -3,7 +3,6 @@ import React, { useContext } from "react";
 import UploadedFileRow from "@/components/UploadedFilesGrid/UploadedFileRow";
 import PanelBox from "@/components/PanelBox";
 import { FormContext } from "@/contexts/form";
-// import { TabContext } from "@/contexts/tab";
 import { useSnackbar } from "notistack";
 
 interface UploadedFilesGridProps {
@@ -18,7 +17,6 @@ const UploadedFilesGrid: React.FC<UploadedFilesGridProps> = ({
     setFiles
   } = useContext(FormContext);
 
-  // const { activeTab } = useContext(TabContext);
   const { enqueueSnackbar } = useSnackbar();
 
   function handleDeleteFile(name: string) {

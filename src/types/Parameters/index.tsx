@@ -1,29 +1,22 @@
-interface Prompts {
-  key: string;
-  question: string;
-  type: string;
+export interface Embeddings {
+  bert_model: string[];
+  chunk_size: string[];
+  chunk_overlap: string[];
+  embedding_model: string[];
+  vector_db: string[];
+  text_splitter: string[];
 }
 
-interface Embeddings {
-  bert_model: string | string[];
-  chunk_size: number | number[];
-  chunk_overlap: number | number[];
-  embedding_model: string | string[];
-  vector_db: string | string[];
-  text_splitter: string | string[];
-}
-
-interface Retrieval {
-  chain_type: string | string[];
-  top_k: number | number[];
+export interface Retrieval {
+  chain_type: string[];
+  top_k: string[];
   device_map: {
     device: string;
   };
 }
 
 export interface ParametersFormData {
-  prompts: Prompts[];
-  model: string | string[];
+  model: string[];
   embeddings: Embeddings;
   retrieval: Retrieval;
 }

@@ -1,10 +1,63 @@
-import React from "react";
-import { TextField, Typography, Stack } from "@mui/material";
+import React, { useContext } from "react";
+import { TextField, Typography, Stack, SelectChangeEvent } from "@mui/material";
 import { Box } from "@mui/system";
 import MultiSelect from "@/components/MultiSelect";
-import { PARAMETER_OPTIONS } from "@/types/Parameters";
+import { Embeddings, PARAMETER_OPTIONS, Retrieval } from "@/types/Parameters";
+import { FormContext } from "@/contexts/form";
 
 const ParametersForm: React.FC = () => {
+  const {
+    formData: {
+      parameters: {
+        embeddings: {
+          bert_model,
+          chunk_overlap,
+          chunk_size,
+          embedding_model,
+          text_splitter,
+          vector_db
+        },
+        model,
+        retrieval: { chain_type, device_map, top_k }
+      }
+    },
+    setModelParameter,
+    setEmbeddingKey,
+    setRetrievalKey
+  } = useContext(FormContext);
+
+  const getUpdatedValue = (event: SelectChangeEvent<string[]>) => {
+    const {
+      target: { value }
+    } = event;
+
+    return typeof value === "string" ? value.split(",") : value;
+  };
+
+  const handleChangeModel = (event: SelectChangeEvent<string[]>) => {
+    setModelParameter(getUpdatedValue(event));
+  };
+
+  const handleChangeDeviceMap = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRetrievalKey("device_map", { device: event.target.value });
+  };
+
+  const handleChangeEmbeddings = (
+    event: SelectChangeEvent<string[]>,
+    key: keyof Partial<Embeddings>
+  ) => {
+    setEmbeddingKey(key, getUpdatedValue(event));
+  };
+
+  const handleChangeRetrieval = (
+    event: SelectChangeEvent<string[]>,
+    key: keyof Partial<Retrieval>
+  ) => {
+    setRetrievalKey(key, getUpdatedValue(event));
+  };
+
   return (
     <Stack direction="column" spacing={1} alignItems={"flex-start"}>
       <Typography variant="subtitle1" fontWeight={800}>
@@ -15,7 +68,8 @@ const ParametersForm: React.FC = () => {
         <MultiSelect
           title="LLM"
           values={PARAMETER_OPTIONS.MODEL}
-          onChange={() => {}}
+          selectedValue={model}
+          onChange={handleChangeModel}
         />
       </Box>
 
@@ -29,36 +83,42 @@ const ParametersForm: React.FC = () => {
           <MultiSelect
             title="Chunk Size"
             values={PARAMETER_OPTIONS.CHUNK_SIZE}
-            onChange={() => {}}
+            selectedValue={chunk_size}
+            onChange={e => handleChangeEmbeddings(e, "chunk_size")}
           />
           <MultiSelect
             title="Chunk Overlap"
             values={PARAMETER_OPTIONS.CHUNK_OVERLAP}
-            onChange={() => {}}
+            selectedValue={chunk_overlap}
+            onChange={e => handleChangeEmbeddings(e, "chunk_overlap")}
           />
         </Stack>
         <Stack spacing={2} direction={"row"}>
           <MultiSelect
             title="Vector Database"
             values={PARAMETER_OPTIONS.VECTOR_DATABASE}
-            onChange={() => {}}
+            selectedValue={vector_db}
+            onChange={e => handleChangeEmbeddings(e, "vector_db")}
           />
           <MultiSelect
             title="Embedding Model"
             values={PARAMETER_OPTIONS.EMBEDDING_MODEL}
-            onChange={() => {}}
+            selectedValue={embedding_model}
+            onChange={e => handleChangeEmbeddings(e, "embedding_model")}
           />
         </Stack>
         <Stack spacing={2} direction={"row"}>
           <MultiSelect
             title="Bert Model"
             values={PARAMETER_OPTIONS.BERT_MODEL}
-            onChange={() => {}}
+            selectedValue={bert_model}
+            onChange={e => handleChangeEmbeddings(e, "bert_model")}
           />
           <MultiSelect
             title="Text Splitter"
             values={PARAMETER_OPTIONS.TEXT_SPLITTER}
-            onChange={() => {}}
+            selectedValue={text_splitter}
+            onChange={e => handleChangeEmbeddings(e, "text_splitter")}
           />
         </Stack>
       </Stack>
@@ -73,15 +133,21 @@ const ParametersForm: React.FC = () => {
           <MultiSelect
             title="Top K"
             values={PARAMETER_OPTIONS.TOP_K}
-            onChange={() => {}}
+            selectedValue={top_k}
+            onChange={e => handleChangeRetrieval(e, "top_k")}
           />
-          <TextField label="Device Map (CUDA)" />
+          <TextField
+            label="Device Map (CUDA or CPU)"
+            value={device_map.device}
+            onChange={handleChangeDeviceMap}
+          />
         </Stack>
         <Box className="flex">
           <MultiSelect
             title="Chain Type"
             values={PARAMETER_OPTIONS.CHAIN_TYPE}
-            onChange={() => {}}
+            selectedValue={chain_type}
+            onChange={e => handleChangeRetrieval(e, "chain_type")}
           />
         </Box>
       </Stack>

@@ -3,29 +3,22 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useState } from "react";
 
-type MultiSelectType = string[] | number[];
+type MultiSelectType = string[];
 
 interface MultiSelectProps {
   title: string;
+  selectedValue: MultiSelectType;
   values: MultiSelectType;
-  onChange: (value: MultiSelectType) => void;
+  onChange: (event: SelectChangeEvent<string[]>) => void;
 }
 
-const MultiSelect: React.FC<MultiSelectProps> = ({ title, values }) => {
-  const [value, setValue] = useState<MultiSelectType>([]);
-
-  const handleChange = (event: SelectChangeEvent<MultiSelectType>) => {
-    const {
-      target: { value }
-    } = event;
-    setValue(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
-
+const MultiSelect: React.FC<MultiSelectProps> = ({
+  title,
+  selectedValue,
+  values,
+  onChange
+}) => {
   return (
     <div>
       <FormControl sx={{ width: 200, maxHeight: "100px" }}>
@@ -34,8 +27,8 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ title, values }) => {
           labelId="demo-multiple-chip-label"
           multiple
           label={"TESTE"}
-          value={value}
-          onChange={handleChange}
+          value={selectedValue}
+          onChange={onChange}
           input={<OutlinedInput label={title} />}
           renderValue={selected => selected.join(", ")}
         >
