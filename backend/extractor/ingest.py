@@ -96,18 +96,19 @@ class LocalVectorStoreGenerator:
 
         # Se já existir banco de vetores com determinada configuração, não recria-o
         if os.path.isdir(self.DB_DIR):
-            vector_database = self.vector_db_class(
-                persist_directory=self.DB_DIR,
-                embedding_function=embedding_function
-            )
-            print("Retrieving existing db...")
+            shutil.rmtree(path=self.DB_DIR, ignore_errors=True)
+#             vector_database = self.vector_db_class(
+#                 persist_directory=self.DB_DIR,
+#                 embedding_function=embedding_function
+#             )
+#             print("Retrieving existing db...")
 
-        else:
-            vector_database = self.vector_db_class.from_documents(
-                documents=chunks,
-                embedding=embedding_function,
-                persist_directory=self.DB_DIR
-            )
+#         else:
+        vector_database = self.vector_db_class.from_documents(
+            documents=chunks,
+            embedding=embedding_function,
+            persist_directory=self.DB_DIR
+        )
 
         end = time.time()
         
@@ -116,9 +117,9 @@ class LocalVectorStoreGenerator:
         return vector_database
 
     def split_documents(self, single_file: bool = False, file_path: str = None) -> List[Document]:
-        if os.path.isdir(self.DB_DIR):
-            print("Skipping splitting since db already exists...")
-            return []
+        # if os.path.isdir(self.DB_DIR):
+        #     print("Skipping splitting since db already exists...")
+        #     return []
         tokenizer_bert = AutoTokenizer.from_pretrained(self.bert_model_dir)
         len_function = lambda x: len(tokenizer_bert.tokenize(x))
 

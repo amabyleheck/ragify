@@ -10,7 +10,7 @@ from utils.utils import get_extraction_variables, copy_file_to_dir
 
 CHUNK_SIZES = [128, 256, 512, 1024, 2048]
 CHUNK_OVERLAP = [20, 50, 100, 200, 300]
-TOP_K = [1, 3, 5, 8, 10]
+TOP_K = [1, 3, 5, 8, 10, 12]
 
 
 def plot_graph(title: str, x_label: str, x_values, data):
@@ -34,12 +34,12 @@ def plot_graph(title: str, x_label: str, x_values, data):
         retriever_accuracies = data[key]['retriever_accuracy'].values()
         plt.plot(x_index, accuracies, marker=markers[index], label=key)
     # Plotting maximum potential accuracies
-    plt.plot(x_index, retriever_accuracies, marker='.', color='gray', linestyle=':', label='Potential Accuracy')
+    plt.plot(x_index, retriever_accuracies, marker='.', color='gray', linestyle=':', label='Acurácia Potencial')
 
     # Formatting
     plt.title(title)
     plt.xlabel(x_label)
-    plt.ylabel('Accuracy') # Since all these graphs are compared to accuracy, this will be static
+    plt.ylabel('Acurácia') # Since all these graphs are compared to accuracy, this will be static
     plt.xticks(range(len(x)), x)
     plt.yticks(y)
     plt.grid(True)
@@ -146,16 +146,18 @@ def plot_chunk_overlap_sizes_graph(x_values=CHUNK_OVERLAP, directory='chunk_over
     generate_comparison_by_parameter(title, label, parameter, x_values, directory)
 
 
-def plot_top_ks_graph(x_values=TOP_K, directory='top_k'):
+def plot_top_ks_graph(
+    title="Model accuracy comparison with different top k values",
+    label = "Top K",
+    parameter = "top_k",
+    x_values=TOP_K,
+    directory='top_k'):
     """Gera gráfico de comparação de chunk sizes. 
     É necessário criar um diretório separando todos os arquivos testados para esse cenário de teste específico
 
     Args:
         directory (str, optional): Diretório onde estarão armazenados os arquivos de testes. Defaults 'top_k/'.
     """
-    title = "Model accuracy comparison with different top k values"
-    label = "Top K"
-    parameter = "top_k"
 
     generate_comparison_by_parameter(title, label, parameter, x_values, directory)
 
@@ -167,6 +169,7 @@ def set_up_results_dir(dir='outputs/'):
                 for chain_type in os.scandir(vector_store):
                     for k in os.scandir(chain_type):
                         for file in os.scandir(k):
+                            print(file.name)
                             chunk_size, chunk_overlap, top_k = get_extraction_variables(file.name)
                             chunk_size_dir = f'results/chunk_sizes/{top_k}/{chunk_overlap}/'
                             chunk_overlap_dir = f'results/chunk_overlaps/{top_k}/{chunk_size}/'

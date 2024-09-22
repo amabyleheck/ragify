@@ -1,11 +1,46 @@
 from extract_multiple import extract
-from utils.utils import get_extraction_final_path, get_or_list
 import torch
 
 import gc
 import os
 import time
 import shutil
+
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "garbage_collection_threshold:0.6,max_split_size_mb:128"
+#os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "garbage_collection_threshold:0.6,backend:cudaMallocAsync"
+
+
+variables = {
+    "prompts": [{
+        "key": "zero_shot",
+        "question": "Dada a seguinte descrição: O município de irregularidade é geralmente o Município onde determinada irregularidade, fraude ou crime foi cometido.\n Qual é o Município de irregularidade citado no contexto acima?\nRESPONDA APENAS O NOME DO MUNICÍPIO, SEM APÓSTROFES."
+    }],
+    "model": ["llama-2-7b-chat-hf"],
+    "embeddings": {
+        "bert_model": ["bert-large-portuguese-cased"],
+        "chunk_size": [128],
+        "chunk_overlap": [20, 50, 100],
+        "embedding_model": "HuggingFaceBgeEmbeddings",
+        "vector_db": "Chroma",
+        "text_splitter": "RecursiveCharacterTextSplitter"
+    },
+    "retrieval":  {
+        "chain_type": ["stuff"],
+        "top_k": [10, 12],
+        "device_map": {"device": "cuda:0"}
+    }
+}
+
+
+def get_or_list(values):
+    if not isinstance(values, list):
+        return [values]
+    return values
+
+def extraction_final_path(dir, model_name, size, overlap, k):
+    variables_section = f'chunk_s{size}-o{overlap}_top_k{k}'
+    results_file_name = f'RESULTADOS_{model_name}__{variables_section}.xlsx'
+    return dir + results_file_name
 
 
 def main():
@@ -42,28 +77,24 @@ def main():
                             variables["embeddings"]["chunk_size"] = size
                             for overlap in chunk_overlap:
                                 variables["embeddings"]["chunk_overlap"] = overlap
-
-                                if overlap >= size:
-                                    print("Tamanho de chunk overlap não pode ser maior ou igual que chunk size. Carregando próximo cenário...")
-                                    continue
-
-                                if (k*size) > 3000:
-                                    print("Quantidade de tokens carregada no contexto não pode superar 3000. Carregando próximo cenário...")
-                                    continue
-
-                                if os.path.isfile(get_extraction_final_path(directory, model, size, overlap, k)):
-                                    print("Configuração já gerou resultado. Carregando próximo cenário...")
-                                    continue
-
-                                extract(variables, directory=directory)
                                 counter += 1
+                                if (k*size) > 3500:
+                                    continue
+
+                                if os.path.isfile(extraction_final_path(directory, model, size, overlap, k)):
+                                    print("Configuração já gerou resultado. Carregado próximo cenário...")
+                                    continue
+                                    
+                                if overlap > size:
+                                    print("Chunk overlap maior que chunk size. Carregado próximo cenário...")
+                                    continue
+                                # try:
+                                print(extraction_final_path(directory, model, size, overlap, k))
+                                extract(variables, directory=directory)
                                 gc.collect()
                                 torch.cuda.empty_cache()
-                                
-                                # Emptying embeddings folder
                                 shutil.rmtree(path="embeddings/", ignore_errors=True)
                                 os.makedirs(os.path.dirname("embeddings/"), exist_ok=True)
-
                         directory = directory.replace(f'{k}/', '')       
                     directory = directory.replace(f'{chain_type}/', '')
                 directory = directory.replace(f'{vector_store}/', '')
@@ -72,6 +103,10 @@ def main():
 
     end = time.time() - start
     print(f"{counter} cenário de testes executados em {end} segundos.")
+
+    # Emptying embeddings folder
+    #shutil.rmtree(path="embeddings/", ignore_errors=True)
+    #os.makedirs(os.path.dirname("embeddings/"), exist_ok=True)
 
 
 if __name__ == '__main__':

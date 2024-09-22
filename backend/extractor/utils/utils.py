@@ -53,6 +53,7 @@ def get_extraction_file_name(model_name, size, overlap, k):
 def get_extraction_variables(file_name):
     pattern = r'.*chunk_s(\d+)-o(\d+)_top_k(\d+)\.xlsx'
     match = re.match(pattern, file_name)
+    print(match)
     if match:
         size = int(match.group(1))
         overlap = int(match.group(2))
