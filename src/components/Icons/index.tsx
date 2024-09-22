@@ -7,7 +7,7 @@ import { createSvgIcon } from "@mui/material/utils";
 import { SvgIconProps } from "@mui/material/SvgIcon";
 
 interface CustomSvgProps extends SvgIconProps {
-  Icon: any;
+  Icon: React.FC;
   name: string;
   clickable?: boolean;
   stroke?: string;

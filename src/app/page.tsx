@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import AsideNav from "@/components/AsideNav/index";
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 import { NavigationOption } from "@/utils/consts";
 import DocumentsUploadPanel from "@/pages/DocumentsUploadPanel";
 import VariablesAnnotationPanel from "@/pages/VariablesAnnotationPanel";

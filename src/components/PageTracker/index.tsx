@@ -1,6 +1,6 @@
 import { GlobalContext } from "@/contexts/global";
 import { NavigationOption } from "@/utils/consts";
-import { Icon, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useContext } from "react";
 import {
