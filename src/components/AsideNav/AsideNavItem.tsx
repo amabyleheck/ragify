@@ -1,5 +1,6 @@
 import { GlobalContext } from "@/contexts/global";
 import { NavigationOptionType } from "@/types";
+import { NavigationOption } from "@/utils/consts";
 import { Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React, { useContext } from "react";
@@ -26,16 +27,36 @@ const AsideNavItem: React.FC<AsideNavProps> = ({ id, icon, title }) => {
       />
       <label htmlFor={elementId}>
         <Box
-          className={`aside-nav-item ${selected ? "selected" : ""} flex max-h-[6vh] min-h-[6vh] max-w-full items-center rounded-l-[50px] text-left`}
+          className={
+            `aside-nav-item ${selected ? "selected" : ""} ` +
+            "flex h-[8vh] max-w-full items-center rounded-l-[50px] text-left"
+          }
         >
-          <Stack
-            direction={"row"}
-            spacing={1}
-            sx={{ paddingLeft: "15px" }}
-            alignItems={"center"}
-          >
-            {icon}
-            <Typography variant="subtitle1">{title}</Typography>
+          <Stack>
+            <Stack
+              direction={"row"}
+              spacing={1}
+              sx={{ paddingLeft: "15px" }}
+              alignItems={"center"}
+            >
+              {icon}
+              <Typography
+                variant="subtitle1"
+                className={`${title === NavigationOption.PARAMETERS.title ? "text-gray-400" : ""} `}
+              >
+                {title}
+              </Typography>
+            </Stack>
+            {title === NavigationOption.PARAMETERS.title && (
+              <Typography
+                variant="body1"
+                className="text-gray-400"
+                fontSize={12}
+                alignSelf={"end"}
+              >
+                (Optional)
+              </Typography>
+            )}
           </Stack>
         </Box>
       </label>

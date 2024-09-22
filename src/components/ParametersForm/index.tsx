@@ -78,7 +78,7 @@ const ParametersForm: React.FC = () => {
         Embeddings
       </Typography>
 
-      <Stack spacing={2}>
+      <Stack spacing={2} direction={"column"}>
         <Stack spacing={2} direction={"row"}>
           <MultiSelect
             title="Chunk Size"
@@ -92,6 +92,12 @@ const ParametersForm: React.FC = () => {
             selectedValue={chunk_overlap}
             onChange={e => handleChangeEmbeddings(e, "chunk_overlap")}
           />
+          <MultiSelect
+            title="Text Splitter"
+            values={PARAMETER_OPTIONS.TEXT_SPLITTER}
+            selectedValue={text_splitter}
+            onChange={e => handleChangeEmbeddings(e, "text_splitter")}
+          />
         </Stack>
         <Stack spacing={2} direction={"row"}>
           <MultiSelect
@@ -101,24 +107,16 @@ const ParametersForm: React.FC = () => {
             onChange={e => handleChangeEmbeddings(e, "vector_db")}
           />
           <MultiSelect
-            title="Embedding Model"
-            values={PARAMETER_OPTIONS.EMBEDDING_MODEL}
-            selectedValue={embedding_model}
-            onChange={e => handleChangeEmbeddings(e, "embedding_model")}
-          />
-        </Stack>
-        <Stack spacing={2} direction={"row"}>
-          <MultiSelect
             title="Bert Model"
             values={PARAMETER_OPTIONS.BERT_MODEL}
             selectedValue={bert_model}
             onChange={e => handleChangeEmbeddings(e, "bert_model")}
           />
           <MultiSelect
-            title="Text Splitter"
-            values={PARAMETER_OPTIONS.TEXT_SPLITTER}
-            selectedValue={text_splitter}
-            onChange={e => handleChangeEmbeddings(e, "text_splitter")}
+            title="Embedding Model"
+            values={PARAMETER_OPTIONS.EMBEDDING_MODEL}
+            selectedValue={embedding_model}
+            onChange={e => handleChangeEmbeddings(e, "embedding_model")}
           />
         </Stack>
       </Stack>

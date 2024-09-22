@@ -66,7 +66,7 @@
   position: relative;
   background-color: #ffffff;
   height: 85vh;
-  width: 80vw;
+  width: 75vw;
   border-radius: 10px;
   padding: 1.5rem;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
@@ -91,12 +91,11 @@
 
 .glider {
   /* transition: 0.15s ease-out; */
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Adjust as needed */
+  transition: transform 0.3s cubic-bezier(0.4, 0.5, 0.2, 1.3); /* Adjust as needed */
   z-index: 1 !important;
   position: absolute;
   background-color: #dbdbdb;
-  min-height: 6vh;
-  max-height: 6vh;
+  height: 8vh;
   min-width: calc(15vw - 5px);
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;

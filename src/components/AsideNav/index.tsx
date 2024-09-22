@@ -36,7 +36,7 @@ const AsideNav: React.FC = () => {
           <span
             className="glider"
             style={{
-              transform: `translateY(calc(${selectedIndex} * (6vh + ${gapVh}vh)))`
+              transform: `translateY(calc(${selectedIndex} * (8vh + ${gapVh}vh)))`
             }}
           ></span>
         </Stack>
