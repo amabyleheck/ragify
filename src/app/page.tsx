@@ -14,7 +14,7 @@ import { AnnotationProvider } from "@/contexts/annotation";
 import { SnackbarProvider } from "notistack";
 
 export default function Home() {
-  const [pageType, setPageType] = useState(NavigationOption.PARAMETERS.title);
+  const [pageType, setPageType] = useState(NavigationOption.DOCUMENTS.title);
 
   const componentMap = {
     [NavigationOption.DOCUMENTS.title]: DocumentsUploadPanel,
