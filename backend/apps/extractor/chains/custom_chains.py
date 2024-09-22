@@ -3,7 +3,12 @@ from typing_extensions import override
 import inspect
 
 from langchain.chains.retrieval_qa.base import RetrievalQA
-from langchain.callbacks.manager import CallbackManagerForChainRun, AsyncCallbackManagerForChainRun, CallbackManagerForRetrieverRun, AsyncCallbackManagerForRetrieverRun
+from langchain.callbacks.manager import (
+    CallbackManagerForChainRun,
+    AsyncCallbackManagerForChainRun,
+    CallbackManagerForRetrieverRun,
+    AsyncCallbackManagerForRetrieverRun,
+)
 
 from langchain_core.documents import Document
 from langchain_core.vectorstores import VectorStoreRetriever
@@ -11,6 +16,7 @@ from langchain_core.vectorstores import VectorStoreRetriever
 """
 Custom classes inspired by AguirreNicolas provided on this issue https://github.com/langchain-ai/langchain/issues/10031
 """
+
 
 class DynamicRetrievalQA(RetrievalQA):
     search_kwargs_key: str = "search_kwargs"
@@ -65,17 +71,20 @@ class DynamicRetrievalQA(RetrievalQA):
         self, inputs: Dict[str, Any], *, run_manager: AsyncCallbackManagerForChainRun
     ) -> List[Document]:
         question = inputs[self.input_key]
-        search_kwargs = inputs[self.search_kwargs_key]        
+        search_kwargs = inputs[self.search_kwargs_key]
         return await self.retriever.aget_relevant_documents(
             question, callbacks=run_manager.get_child(), **search_kwargs
         )
 
 
 class DynamicRetriever(VectorStoreRetriever):
-
     @override
     def _get_relevant_documents(
-        self, query: str, *, run_manager: CallbackManagerForRetrieverRun, **search_kwargs: Any,
+        self,
+        query: str,
+        *,
+        run_manager: CallbackManagerForRetrieverRun,
+        **search_kwargs: Any,
     ) -> List[Document]:
         if self.search_type == "similarity":
             docs = self.vectorstore.similarity_search(query, **search_kwargs)
@@ -96,12 +105,14 @@ class DynamicRetriever(VectorStoreRetriever):
 
     @override
     async def _aget_relevant_documents(
-        self, query: str, *, run_manager: AsyncCallbackManagerForRetrieverRun,  **search_kwargs: Any,
+        self,
+        query: str,
+        *,
+        run_manager: AsyncCallbackManagerForRetrieverRun,
+        **search_kwargs: Any,
     ) -> List[Document]:
         if self.search_type == "similarity":
-            docs = await self.vectorstore.asimilarity_search(
-                query, **search_kwargs
-            )
+            docs = await self.vectorstore.asimilarity_search(query, **search_kwargs)
         elif self.search_type == "similarity_score_threshold":
             docs_and_similarities = (
                 await self.vectorstore.asimilarity_search_with_relevance_scores(
@@ -115,4 +126,4 @@ class DynamicRetriever(VectorStoreRetriever):
             )
         else:
             raise ValueError(f"search_type of {self.search_type} not allowed.")
-        return docs 
+        return docs

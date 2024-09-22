@@ -1,0 +1,23 @@
+{
+  "prompts": [
+    {
+      "name": "",
+      "label": "",
+      "question": ""
+    }
+  ],
+  "model": "llama-2-7b-chat-hf",
+  "embeddings": {
+    "bert_model": "bert-large-portuguese-cased",
+    "chunk_size": 512,
+    "chunk_overlap": 20,
+    "embedding_model": "HuggingFaceBgeEmbeddings",
+    "vector_db": "Chroma",
+    "text_splitter": "RecursiveCharacterTextSplitter"
+  },
+  "retrieval": {
+    "chain_type": "stuff",
+    "top_k": 3,
+    "device_map": { "device": "cuda:0" }
+  }
+}

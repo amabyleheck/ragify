@@ -17,11 +17,13 @@ class LocalLLM:
         """
 
         tokenizer = AutoTokenizer.from_pretrained(model_path)
-        
+
         # 8 BIT QUANTIZATION
-        quantization_config = BitsAndBytesConfig(load_in_8bit=True, llm_int8_threshold=200.0)
+        quantization_config = BitsAndBytesConfig(
+            load_in_8bit=True, llm_int8_threshold=200.0
+        )
         # 4 BIT QUANTIZATION
-        #quantization_config = BitsAndBytesConfig(load_in_4bit=True, llm_int8_threshold=200.0)
+        # quantization_config = BitsAndBytesConfig(load_in_4bit=True, llm_int8_threshold=200.0)
 
         model = AutoModelForCausalLM.from_pretrained(
             model_path,
@@ -30,7 +32,7 @@ class LocalLLM:
             use_auth_token=True,
             quantization_config=quantization_config,
         )
-    
+
         pipeline = transformers.pipeline(
             "text-generation",
             model=model,
@@ -38,7 +40,7 @@ class LocalLLM:
             tokenizer=tokenizer,
             device_map=device_map.get("device"),
             eos_token_id=tokenizer.eos_token_id,
-            return_full_text=False, # to not repeat the question, set to False
+            return_full_text=False,  # to not repeat the question, set to False
         )
 
         self.llm = HuggingFacePipeline(pipeline=pipeline)
@@ -55,36 +57,42 @@ class LocalLLM:
 
     def get_pipeline(self):
         return self.llm
-        
-    def create_retrieval_qa_chain(self, db: VectorStoreRetriever, chain_type="stuff", prompt_template=None):
+
+    def create_retrieval_qa_chain(
+        self, db: VectorStoreRetriever, chain_type="stuff", prompt_template=None
+    ):
         """
-        Instancia uma chain DynamicRetrivalQA, que recebe um DynamicVectorRetriever 
+        Instancia uma chain DynamicRetrivalQA, que recebe um DynamicVectorRetriever
         (devido ao suporte descontinuado para RetrievalQA e chains relacionadas (map reduce, etc))
         """
 
         # O uso de dos tokens [/INST] é um token especial utilizado em prompts de modelos de linguagem do tipo Instruct.
-        template = """
+        template = (
+            """
         [INST]Você é um assistente de IA útil e fornece a resposta em língua portuguesa para a pergunta com base no contexto fornecido.
         Use os seguintes pedaços de contexto para responder a pergunta ao final. Se não for possível responder a pergunta a partir do contexto, apenas responda que você encontrou a resposta.
         CONTEXTO: {context}
         >>>PERGUNTA<<<: {question}[/INST]
         >>>RESPOSTA<<<:
-        """ if not prompt_template else prompt_template
+        """
+            if not prompt_template
+            else prompt_template
+        )
 
         prompt = PromptTemplate(
-                template=template, input_variables=['context', 'question']
-            )
-        
+            template=template, input_variables=["context", "question"]
+        )
+
         chain_type_kwargs = None
         if chain_type == "stuff":
-            chain_type_kwargs = {'prompt': prompt}
+            chain_type_kwargs = {"prompt": prompt}
 
         qa_chain = DynamicRetrievalQA.from_chain_type(
             llm=self.llm,
             chain_type=chain_type,
             chain_type_kwargs=chain_type_kwargs,
             retriever=DynamicRetriever(vectorstore=db),
-            return_source_documents=True
+            return_source_documents=True,
         )
 
         if not chain_type == "stuff":
@@ -92,12 +100,11 @@ class LocalLLM:
 
         return qa_chain
 
-    
     @staticmethod
     def get_model_kwargs(chain_type, model_name, top_k):
         return {
-            'model_name': model_name,
-            'quantization': '8bit',
-            'top_k': top_k,
-            'chain_type': chain_type
+            "model_name": model_name,
+            "quantization": "8bit",
+            "top_k": top_k,
+            "chain_type": chain_type,
         }

@@ -3,7 +3,7 @@ import re
 
 from typing import List, Dict, Union
 
-from openpyxl import load_workbook # Library for importing excel files
+from openpyxl import load_workbook  # Library for importing excel files
 
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.workbook.workbook import Workbook
@@ -14,17 +14,18 @@ from langchain_core.documents import Document
 from utils.utils import get_timestamp_for_file
 
 ABS_PATH: str = os.path.dirname(os.path.abspath(__file__))
-EXCEL_TEMPLATE_PATH = f'{ABS_PATH}/export_template.xlsx'
+EXCEL_TEMPLATE_PATH = f"{ABS_PATH}/export_template.xlsx"
+
 
 class ExcelResultsExport:
     """
-    Classe principal de geração de resultados e de documento de saída. Recebe os dicionários de n-modelos 
+    Classe principal de geração de resultados e de documento de saída. Recebe os dicionários de n-modelos
     e compara-os a partir do dicionário anotado importado.
 
     Atualmente, conta com três folhas:
 
     1. Resultados: Lista as porcentagens de acurácia de extração de modelo, onde cada linha lista a performance de determinado prompt:
-        - 
+        -
 
     |                   MODELO                    |
     |                 Llama-2-7b                  |
@@ -40,7 +41,7 @@ class ExcelResultsExport:
     |  ID Documento  | Valor Esperado       | Valor Extraído         | Resultado        |
 
 
-    3. Especificações: Tabela que lista todos os parâmetros setados para determinada extração. 
+    3. Especificações: Tabela que lista todos os parâmetros setados para determinada extração.
 
     |                                                              ESPECIFICAÇÕES DA COMPARAÇÃO                                                                                                          |
     |        Modelo       |                                                Embeddings                                               |      Retrieval       |
@@ -58,13 +59,15 @@ class ExcelResultsExport:
 
     INITIAL_RESULTS_COL = 0
 
-    def __init__(self, 
-                 annotated_dict: Dict, 
-                 extracted_dict: Dict, 
-                 prompts: List,
-                 model_name: str,
-                 header_name:str, 
-                 variable_name: str) -> None:
+    def __init__(
+        self,
+        annotated_dict: Dict,
+        extracted_dict: Dict,
+        prompts: List,
+        model_name: str,
+        header_name: str,
+        variable_name: str,
+    ) -> None:
         """
         Salva variáveis em atributos e realiza a comparação de todos os modelos.
         """
@@ -95,8 +98,8 @@ class ExcelResultsExport:
         e calcula ao final valores de acurácia por variável e média total.
 
         :param model_name: String com nome de modelo com mesmo valor de chave do dicionário extraído
-        
-        :return: Retorna dicionário com valores extraídos, anotados e seu resultado de comparação para cada documento 
+
+        :return: Retorna dicionário com valores extraídos, anotados e seu resultado de comparação para cada documento
         somando a uma chave `metricas` que calcula as porcentagens finais a serem utilizadas na página "Resultados"
         """
         current_extracted_dict = self.extracted_dict[prompt_key]
@@ -108,52 +111,70 @@ class ExcelResultsExport:
 
         # REGION: Comparando valor extraído e anotado para cada documento para folha `Detalhes`
         for document in self.documents_ids:
-            annotated_value = self.annotated_dict[document]['value']
-            extracted_value = current_extracted_dict[document]['value']
+            annotated_value = self.annotated_dict[document]["value"]
+            extracted_value = current_extracted_dict[document]["value"]
 
-            retrieved_docs = current_extracted_dict[document]['docs']
+            retrieved_docs = current_extracted_dict[document]["docs"]
 
-            if 'processolicitatório' in self.variable_name.lower():
-                processed_variable = self.process_n_processo_licitatorio(document, annotated_value, extracted_value)
-                has_retriever_found_answer = self.process_n_processo_licitatorio(document, annotated_value, retrieved_docs)
+            if "processolicitatório" in self.variable_name.lower():
+                processed_variable = self.process_n_processo_licitatorio(
+                    document, annotated_value, extracted_value
+                )
+                has_retriever_found_answer = self.process_n_processo_licitatorio(
+                    document, annotated_value, retrieved_docs
+                )
                 if processed_variable and not has_retriever_found_answer:
                     print("Modelo acertou mesmo sem sequência exata nos documentos.")
-                    has_retriever_found_answer = True # Evitar acurácia de retriever menor que acurácia obtida
-            elif 'municípiodeirregularidade' in self.variable_name.lower():
-                processed_variable = self.process_municipio(document, annotated_value, extracted_value)
-                has_retriever_found_answer = self.process_municipio(document, annotated_value, retrieved_docs)
+                    has_retriever_found_answer = (
+                        True  # Evitar acurácia de retriever menor que acurácia obtida
+                    )
+            elif "municípiodeirregularidade" in self.variable_name.lower():
+                processed_variable = self.process_municipio(
+                    document, annotated_value, extracted_value
+                )
+                has_retriever_found_answer = self.process_municipio(
+                    document, annotated_value, retrieved_docs
+                )
             else:
-                processed_variable = self.general_processing(document, annotated_value, extracted_value)
-                has_retriever_found_answer = self.general_processing(document, annotated_value, retrieved_docs)
+                processed_variable = self.general_processing(
+                    document, annotated_value, extracted_value
+                )
+                has_retriever_found_answer = self.general_processing(
+                    document, annotated_value, retrieved_docs
+                )
 
             if processed_variable:
                 total_successes += 1
-            
+
             if has_retriever_found_answer:
-                total_retriever_successes +=1
+                total_retriever_successes += 1
 
             # Final result dict
-            model_result[document] = { 
-                'valor_anotado': annotated_value,
-                'valor_extraido': extracted_value,
-                'resultado': processed_variable,
-                'resultado_retriever': has_retriever_found_answer
+            model_result[document] = {
+                "valor_anotado": annotated_value,
+                "valor_extraido": extracted_value,
+                "resultado": processed_variable,
+                "resultado_retriever": has_retriever_found_answer,
             }
         # ENDREGION
-        
-        # REGION: Calculando porcentagens finais de folha `Resultados`
-        success_rate = round(total_successes/self.total_parsed_documents, 2)
-        retriever_success_rate = round(total_retriever_successes/self.total_parsed_documents, 2)
 
-        model_result['metricas'] = {
-            'success_rate': success_rate,
-            'retriever_success_rate': retriever_success_rate
+        # REGION: Calculando porcentagens finais de folha `Resultados`
+        success_rate = round(total_successes / self.total_parsed_documents, 2)
+        retriever_success_rate = round(
+            total_retriever_successes / self.total_parsed_documents, 2
+        )
+
+        model_result["metricas"] = {
+            "success_rate": success_rate,
+            "retriever_success_rate": retriever_success_rate,
         }
         # ENDREGION
 
         return model_result
-    
-    def general_processing(self, document_id, annotated_value: str, extracted_value: str) -> bool:
+
+    def general_processing(
+        self, document_id, annotated_value: str, extracted_value: str
+    ) -> bool:
         # IMPLEMENTAR AQUI SEU MÉTODO
         if annotated_value.lower() in extracted_value.lower():
             return True
@@ -161,7 +182,9 @@ class ExcelResultsExport:
             return False
 
     @staticmethod
-    def process_n_processo_licitatorio(document_id, annotated_value: str, extracted_value: str | List[Document]) -> bool:
+    def process_n_processo_licitatorio(
+        document_id, annotated_value: str, extracted_value: str | List[Document]
+    ) -> bool:
         """
         Pós-processamento para validação do valor extraído de número do processo licitatório de determinado documento através de Regex.
 
@@ -173,9 +196,11 @@ class ExcelResultsExport:
         """
 
         # QUALQUER SEQUÊNCIA NUMÉRICA + / + QUALQUER SEQUÊNCIA NUMÉRICA
-        pattern = r'\d+/\d+'
+        pattern = r"\d+/\d+"
 
-        annotated_match = re.findall(pattern, annotated_value)[0] # Evitar discrepância de valores importados
+        annotated_match = re.findall(pattern, annotated_value)[
+            0
+        ]  # Evitar discrepância de valores importados
         if not isinstance(extracted_value, list):
             extracted_value = [extracted_value]
 
@@ -191,7 +216,9 @@ class ExcelResultsExport:
         return False
 
     @staticmethod
-    def process_municipio(document_id, annotated_value: str, extracted_value: str) -> bool:
+    def process_municipio(
+        document_id, annotated_value: str, extracted_value: str
+    ) -> bool:
         """
         Pós-processamento para validação do valor extraído de município de irregularidade de determinado documento.
 
@@ -204,8 +231,10 @@ class ExcelResultsExport:
         if annotated_value.lower() in extracted_value.lower():
             return True
         return False
-    
-    def fill_cell(self, value: bool, success_title: str = None, error_title: str = None) -> Union[str, Font]:
+
+    def fill_cell(
+        self, value: bool, success_title: str = None, error_title: str = None
+    ) -> Union[str, Font]:
         """
         Retorna palavra dependendo do resultado de validação de célula.
 
@@ -213,10 +242,14 @@ class ExcelResultsExport:
         :return: 'ERRO' em fonte vermelha caso validação seja falsa, 'ACERTO' em fonte verde caso validação seja bem sucedida
         """
         if not value:
-            return 'ERRO' if not error_title else error_title, Font(color="ff0000", bold=True)
+            return "ERRO" if not error_title else error_title, Font(
+                color="ff0000", bold=True
+            )
         else:
-            return 'ACERTO' if not success_title else success_title, Font(color="31c120", bold=True)
-    
+            return "ACERTO" if not success_title else success_title, Font(
+                color="31c120", bold=True
+            )
+
     def create_details_sheets(self, workbook: Workbook) -> None:
         """
         Copia a folha de detalhes e cola uma após a outra, dependendo da quantidade de extrações, renomeando-as de acordo com o nome dos modelos.
@@ -224,10 +257,10 @@ class ExcelResultsExport:
         :param workbook: Documento excel onde será realizada a cópia
         """
 
-        folha_detalhes = workbook['Detalhes']
+        folha_detalhes = workbook["Detalhes"]
         # Preenchendo nome da coluna com o mesmo valor do arquivo importado
         folha_detalhes.cell(2, 2).value = self.header_name
-        
+
         for index, prompt_dict in enumerate(self.prompts):
             nome_folha = f'Detalhes - Prompt {prompt_dict.get("key")}'
             if index == 0:
@@ -237,16 +270,17 @@ class ExcelResultsExport:
                 copia_folha = workbook.copy_worksheet(folha_detalhes)
                 copia_folha.name = nome_folha
                 copia_folha.title = nome_folha
-                
+
                 # Movendo cópia para antes da folha de Especificações
-                workbook.move_sheet(copia_folha, offset = -1) 
+                workbook.move_sheet(copia_folha, offset=-1)
 
-
-    def export_specs(self, worksheet: Worksheet, model_kwargs: Dict, embedding_kwargs: Dict) -> None:
+    def export_specs(
+        self, worksheet: Worksheet, model_kwargs: Dict, embedding_kwargs: Dict
+    ) -> None:
         """
         Preenche a tabela de especificações com parâmetros de modelo, prompt e embeddings na folha `Especificações`.
 
-        
+
         |                                                              ESPECIFICAÇÕES DA COMPARAÇÃO                                                                                                          |
         |        Modelo       |                                                Embeddings                                               |      Retrieval       |
         |  Nome | Quantização | Tamanho de chunk | Tamanho de chunk overlap | Modelo BERT | Estratégia de splitting  | Banco de vetores |  Chain Type | Top k  |
@@ -256,25 +290,35 @@ class ExcelResultsExport:
         :param model_name: Número do documento para logging
         :param embedding_kwargs: Valor extraído de número de edital
         """
-    
-        for row in worksheet.iter_rows(min_row=self.INITIAL_SPECS_ROW, max_row=self.INITIAL_SPECS_ROW):
+
+        for row in worksheet.iter_rows(
+            min_row=self.INITIAL_SPECS_ROW, max_row=self.INITIAL_SPECS_ROW
+        ):
             # MODEL REGION
-            row[0].value = model_kwargs.get('model_name') # SETTING MODEL'S NAME CELL
-            row[1].value = model_kwargs.get('quantization') # SETTING MODEL'S QUANTIZATION
+            row[0].value = model_kwargs.get("model_name")  # SETTING MODEL'S NAME CELL
+            row[1].value = model_kwargs.get(
+                "quantization"
+            )  # SETTING MODEL'S QUANTIZATION
             # ENDREGION
 
             # EMBEDDINGS REGION
-            row[2].value = embedding_kwargs.get('chunk_size') # SETTING CHUNK SIZE CELL
-            row[3].value = embedding_kwargs.get('chunk_overlap') # SETTING CHUNK OVERLAP SIZE CELL
-            row[4].value = embedding_kwargs.get('bert_model') # SETTING BERT MODEL CELL
-            row[5].value = embedding_kwargs.get('splitter') # SETTING SPLITTING STRATEGY CELL
-            row[6].value = embedding_kwargs.get('vector_db_class') # SETTING SPLITTING STRATEGY CELL
+            row[2].value = embedding_kwargs.get("chunk_size")  # SETTING CHUNK SIZE CELL
+            row[3].value = embedding_kwargs.get(
+                "chunk_overlap"
+            )  # SETTING CHUNK OVERLAP SIZE CELL
+            row[4].value = embedding_kwargs.get("bert_model")  # SETTING BERT MODEL CELL
+            row[5].value = embedding_kwargs.get(
+                "splitter"
+            )  # SETTING SPLITTING STRATEGY CELL
+            row[6].value = embedding_kwargs.get(
+                "vector_db_class"
+            )  # SETTING SPLITTING STRATEGY CELL
             # ENDREGION
 
             # RETRIEVAL CHAIN REGION
-            row[7].value = model_kwargs.get('chain_type') # SETTING CHAIN TYPE CELL
-            row[8].value = model_kwargs.get('top_k') # SETTING CHAIN'S TOP K
-            #ENDREGION
+            row[7].value = model_kwargs.get("chain_type")  # SETTING CHAIN TYPE CELL
+            row[8].value = model_kwargs.get("top_k")  # SETTING CHAIN'S TOP K
+            # ENDREGION
 
     def export_results_details(self, workbook: Workbook):
         """
@@ -286,10 +330,9 @@ class ExcelResultsExport:
 
         :param worksheet: Folha de excel a ser realizada preenchimento (neste caso, sempre será a folha `Detalhes`)
         """
-        
-        # Caso existam mais de um prompt, copia-se os cabeçalhos da tabela detalhes n-vezes, 
-        # onde cada cabeçalho armazenará o resultado de um prompt
 
+        # Caso existam mais de um prompt, copia-se os cabeçalhos da tabela detalhes n-vezes,
+        # onde cada cabeçalho armazenará o resultado de um prompt
 
         self.create_details_sheets(workbook=workbook)
 
@@ -302,32 +345,34 @@ class ExcelResultsExport:
             current_model_dict = self.resultado_geral_dict[prompt_dict.get("key")]
 
             for index, row in enumerate(
-                worksheet.iter_rows(min_row=self.INITIAL_DETAIL_ROW,
-                                    max_row=self.INITIAL_DETAIL_ROW+self.total_parsed_documents
-                                    )
-            ): 
+                worksheet.iter_rows(
+                    min_row=self.INITIAL_DETAIL_ROW,
+                    max_row=self.INITIAL_DETAIL_ROW + self.total_parsed_documents,
+                )
+            ):
                 current_document_id = self.documents_ids[index]
-                
+
                 current_document_results = current_model_dict[current_document_id]
 
                 # ID REGION
-                row[0].value = current_document_id # SETTING DOCUMENT ID
+                row[0].value = current_document_id  # SETTING DOCUMENT ID
                 # ENDREGION
 
-                # NÚMERO DE EDITAL REGION 
-                row[1].value = current_document_results['valor_anotado']
-                row[2].value = current_document_results['valor_extraido']
-                row[3].value, row[3].font = self.fill_cell(current_document_results['resultado'])
+                # NÚMERO DE EDITAL REGION
+                row[1].value = current_document_results["valor_anotado"]
+                row[2].value = current_document_results["valor_extraido"]
+                row[3].value, row[3].font = self.fill_cell(
+                    current_document_results["resultado"]
+                )
                 row[4].value, row[4].font = self.fill_cell(
-                    current_document_results['resultado_retriever'], 
-                    success_title='SIM',
-                    error_title='NÃO'
+                    current_document_results["resultado_retriever"],
+                    success_title="SIM",
+                    error_title="NÃO",
                 )
                 # ENDREGION
-                
+
                 if current_document_id == last_id:
                     break
-                
 
     def export_results(self, worksheet: Worksheet):
         """
@@ -347,11 +392,13 @@ class ExcelResultsExport:
         #     prompt_key, prompt = prompt_dict.values()
         #     current_result_dict = self.resultado_geral_dict[prompt_key]
 
-        for index, row in enumerate(worksheet.iter_rows(
-            min_row=self.INITIAL_RESULTS_ROW, 
-            min_col=self.INITIAL_RESULTS_COL, 
-            max_row=self.INITIAL_RESULTS_ROW + len(list(self.prompts))
-        )): 
+        for index, row in enumerate(
+            worksheet.iter_rows(
+                min_row=self.INITIAL_RESULTS_ROW,
+                min_col=self.INITIAL_RESULTS_COL,
+                max_row=self.INITIAL_RESULTS_ROW + len(list(self.prompts)),
+            )
+        ):
             try:
                 prompt_key, prompt = self.prompts[index].values()
             except IndexError:
@@ -363,23 +410,24 @@ class ExcelResultsExport:
             else:
                 row[0].style = default_style
             row[0].value = prompt_key
-            row[1].value = current_result_dict['metricas']['success_rate']
+            row[1].value = current_result_dict["metricas"]["success_rate"]
             row[2].value = prompt
-            row[3].value = current_result_dict['metricas']['retriever_success_rate']
+            row[3].value = current_result_dict["metricas"]["retriever_success_rate"]
 
-
-    def export(self, model_kwargs: Dict, embedding_kwargs: Dict, directory: str) -> Dict:
+    def export(
+        self, model_kwargs: Dict, embedding_kwargs: Dict, directory: str
+    ) -> Dict:
         """
         Método a ser chamado após instanciação da classe. Invoca todas as funções de preenchimento das folhas.
 
         :param model_kwargs: Dicionário contendo informações de modelo (nome, quantização e top k)
-        :param embedding_kwargs: Dicionário contendo informações de embeddings 
+        :param embedding_kwargs: Dicionário contendo informações de embeddings
         (tamanho de chunk, tamanho de chunk overlap, modelo BERT, splitter e banco de vetores)
         """
         workbook = load_workbook(os.path.abspath(EXCEL_TEMPLATE_PATH))
 
-        folha_resultados = workbook.get_sheet_by_name('Resultado')
-        folha_especificacoes = workbook.get_sheet_by_name('Especificações')
+        folha_resultados = workbook.get_sheet_by_name("Resultado")
+        folha_especificacoes = workbook.get_sheet_by_name("Especificações")
 
         # PÁGINA RESULTADOS REGION
         self.export_results(worksheet=folha_resultados)
@@ -391,9 +439,9 @@ class ExcelResultsExport:
 
         # PÁGINA ESPECIFICAÇÕES REGION
         self.export_specs(
-            worksheet=folha_especificacoes, 
-            model_kwargs=model_kwargs, 
-            embedding_kwargs=embedding_kwargs
+            worksheet=folha_especificacoes,
+            model_kwargs=model_kwargs,
+            embedding_kwargs=embedding_kwargs,
         )
         # ENDREGION
 
@@ -403,19 +451,19 @@ class ExcelResultsExport:
         chunk_overlap = embedding_kwargs.get("chunk_overlap")
         top_k = model_kwargs.get("top_k")
 
-        variables_section = f'chunk_s{chunk_size}-o{chunk_overlap}_top_k{top_k}'
+        variables_section = f"chunk_s{chunk_size}-o{chunk_overlap}_top_k{top_k}"
 
         if directory:
             os.makedirs(directory, exist_ok=True)
 
-        results_file_name = f'RESULTADOS_{model_name}__{variables_section}.xlsx'
+        results_file_name = f"RESULTADOS_{model_name}__{variables_section}.xlsx"
         file_name = directory + results_file_name
         # ENDREGION
 
         workbook.save(filename=file_name)
 
         return self.get_results_dict_from_export(file_name)
-    
+
     @staticmethod
     def get_results_dict_from_export(file_path: str) -> Dict:
         """Retorna um dicionário com todas as informações úteis de um resultado de uma extração (produzida pela mesma classe)
@@ -428,16 +476,16 @@ class ExcelResultsExport:
         """
         workbook = load_workbook(file_path)
 
-        folha_resultados = workbook.get_sheet_by_name('Resultado')
-        folha_especificacoes = workbook.get_sheet_by_name('Especificações')
+        folha_resultados = workbook.get_sheet_by_name("Resultado")
+        folha_especificacoes = workbook.get_sheet_by_name("Especificações")
 
         return {
-            'model': folha_resultados.cell(2, 1).value,
-            'accuracy': folha_resultados.cell(4, 2).value * 100,
-            'retriever_accuracy': folha_resultados.cell(4, 4).value * 100,
-            'chunk_size': folha_especificacoes.cell(4, 3).value,
-            'chunk_overlap': folha_especificacoes.cell(4, 4).value,
-            'top_k': folha_especificacoes.cell(4, 9).value,
-            'bert_model': folha_especificacoes.cell(4, 5).value,
-            'chain_type': folha_especificacoes.cell(4, 7).value,
+            "model": folha_resultados.cell(2, 1).value,
+            "accuracy": folha_resultados.cell(4, 2).value * 100,
+            "retriever_accuracy": folha_resultados.cell(4, 4).value * 100,
+            "chunk_size": folha_especificacoes.cell(4, 3).value,
+            "chunk_overlap": folha_especificacoes.cell(4, 4).value,
+            "top_k": folha_especificacoes.cell(4, 9).value,
+            "bert_model": folha_especificacoes.cell(4, 5).value,
+            "chain_type": folha_especificacoes.cell(4, 7).value,
         }
