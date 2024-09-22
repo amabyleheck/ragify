@@ -1,10 +1,15 @@
+import { Stack } from "@mui/system";
 import React from "react";
 
 const ResultsPanel: React.FC = () => {
   return (
-    <div>
-      <h1>Results Panel</h1>
-      <p>This is the initial implementation of the Results Panel component.</p>
+    <div className="panel">
+      <Stack
+        direction={"column"}
+        spacing={5}
+        height={"100%"}
+        justifyContent={"space-around"}
+      ></Stack>
     </div>
   );
 };

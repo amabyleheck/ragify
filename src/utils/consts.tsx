@@ -1,4 +1,10 @@
-import { ChecksIcon, DevIcon, FileIcon, LayersIcon } from "@/components/Icons";
+import {
+  ChecksIcon,
+  DevIcon,
+  FileIcon,
+  GraphIcon,
+  LayersIcon
+} from "@/components/Icons";
 
 export const NavigationOption = {
   DOCUMENTS: { id: 0, title: "Documents", icon: <FileIcon /> },
@@ -8,5 +14,10 @@ export const NavigationOption = {
     id: 3,
     title: "RAG Parameters",
     icon: <DevIcon className="text-gray-400" />
+  },
+  RESULTS: {
+    id: 4,
+    title: "Results",
+    icon: <GraphIcon />
   }
 };

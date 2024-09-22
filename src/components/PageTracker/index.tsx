@@ -8,6 +8,7 @@ import {
   ChevronIcon,
   DevIcon,
   FileIcon,
+  GraphIcon,
   LayersIcon
 } from "@/components/Icons";
 
@@ -101,7 +102,7 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
     );
   };
 
-  const ParametersSection: React.FC<SectionProps> = () => {
+  const ParametersSection: React.FC<SectionProps> = ({ original = true }) => {
     return (
       <>
         <AnnotationSection original={false} />
@@ -112,8 +113,28 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
           onClick={() => setPageType(NavigationOption.PARAMETERS.title)}
           clickable
         />
+        {original && (
+          <Typography fontSize={15} className="text-gray-400">
+            Choosing Parameters
+          </Typography>
+        )}
+      </>
+    );
+  };
+
+  const ResultsSection: React.FC<SectionProps> = () => {
+    return (
+      <>
+        <ParametersSection original={false} />
+        {ArrowIcon}
+        <GraphIcon
+          fontSize={"small"}
+          stroke={"gray"}
+          onClick={() => setPageType(NavigationOption.RESULTS.title)}
+          clickable
+        />
         <Typography fontSize={15} className="text-gray-400">
-          Choosing Parameters
+          Results
         </Typography>
       </>
     );
@@ -123,6 +144,7 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
     [NavigationOption.DOCUMENTS.title]: DocumentsSection,
     [NavigationOption.VARIABLES.title]: VariablesSection,
     [NavigationOption.ANNOTATION.title]: AnnotationSection,
-    [NavigationOption.PARAMETERS.title]: ParametersSection
+    [NavigationOption.PARAMETERS.title]: ParametersSection,
+    [NavigationOption.RESULTS.title]: ResultsSection
   };
 };

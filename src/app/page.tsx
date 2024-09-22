@@ -12,6 +12,7 @@ import VariablesDefinitionPanel from "@/panels/VariablesDefinitionPanel";
 import { FormProvider } from "@/contexts/form";
 import { AnnotationProvider } from "@/contexts/annotation";
 import { SnackbarProvider } from "notistack";
+import ResultsPanel from "@/panels/ResultsPanel";
 
 export default function Home() {
   const [pageType, setPageType] = useState(NavigationOption.DOCUMENTS.title);
@@ -20,7 +21,8 @@ export default function Home() {
     [NavigationOption.DOCUMENTS.title]: DocumentsUploadPanel,
     [NavigationOption.VARIABLES.title]: VariablesDefinitionPanel,
     [NavigationOption.ANNOTATION.title]: VariablesAnnotationPanel,
-    [NavigationOption.PARAMETERS.title]: ParametersFormPanel
+    [NavigationOption.PARAMETERS.title]: ParametersFormPanel,
+    [NavigationOption.RESULTS.title]: ResultsPanel
   };
 
   const CurrentPanel = componentMap[pageType];

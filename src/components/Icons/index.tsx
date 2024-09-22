@@ -2,6 +2,7 @@ import Checks from "@/app/icons/checks.svg";
 import ChevronSide from "@/app/icons/chevron.svg";
 import Dev from "@/app/icons/code.svg";
 import File from "@/app/icons/file.svg";
+import Graph from "@/app/icons/graph.svg";
 import Layers from "@/app/icons/layers.svg";
 import { createSvgIcon } from "@mui/material/utils";
 import { SvgIconProps } from "@mui/material/SvgIcon";
@@ -61,6 +62,10 @@ export const DevIcon: React.FC<CustomIconProps> = ({
 
 export const FileIcon: React.FC<CustomIconProps> = ({ ...props }) => {
   return <CustomIcon Icon={File} name={"File"} {...props} />;
+};
+
+export const GraphIcon: React.FC<CustomIconProps> = ({ ...props }) => {
+  return <CustomIcon Icon={Graph} name={"Graph"} {...props} />;
 };
 
 export const LayersIcon: React.FC<CustomIconProps> = ({ ...props }) => {
