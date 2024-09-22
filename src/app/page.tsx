@@ -2,23 +2,16 @@
 
 import { useState } from "react";
 import AsideNav from "@/components/AsideNav/index";
-// import Header from "@/components/Header";
 import { NavigationOption } from "@/utils/consts";
-import DocumentsUploadPanel from "@/pages/DocumentsUploadPanel";
-import VariablesAnnotationPanel from "@/pages/VariablesAnnotationPanel";
+import DocumentsUploadPanel from "@/panels/DocumentsUploadPanel";
+import VariablesAnnotationPanel from "@/panels/VariablesAnnotationPanel";
 import { GlobalContext } from "@/contexts/global";
-import ParametersFormPanel from "@/pages/ParametersFormPanel";
+import ParametersFormPanel from "@/panels/ParametersFormPanel";
 import PageTracker from "@/components/PageTracker";
-import VariablesDefinitionPanel from "@/pages/VariablesDefinitionPanel";
+import VariablesDefinitionPanel from "@/panels/VariablesDefinitionPanel";
 import { FormProvider } from "@/contexts/form";
 import { AnnotationProvider } from "@/contexts/annotation";
 import { SnackbarProvider } from "notistack";
-import { pdfjs } from "react-pdf";
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString();
 
 export default function Home() {
   const [pageType, setPageType] = useState(NavigationOption.PARAMETERS.title);
@@ -37,7 +30,6 @@ export default function Home() {
       <GlobalContext.Provider value={{ pageType, setPageType }}>
         <FormProvider>
           <AnnotationProvider>
-            {/* <Header /> */}
             <div className="flex">
               <AsideNav />
               <main>

@@ -1,14 +1,27 @@
-import React, { useState } from "react";
+"use client";
+
+import "@/utils/promisePolyfill";
+import React, { useEffect, useState } from "react";
 import { Button, Modal, Typography } from "@mui/material";
-import { Document, Page } from "react-pdf";
+import { pdfjs, Document, Page } from "react-pdf";
 import { Box, Stack } from "@mui/system";
 import { FindInPageOutlined } from "@mui/icons-material";
+import "react-pdf/dist/Page/TextLayer.css";
+import "react-pdf/dist/Page/AnnotationLayer.css";
 
 interface DocumentPreviewerProps {
   file: File;
 }
 
 const DocumentPreviewer: React.FC<DocumentPreviewerProps> = ({ file }) => {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+        `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`,
+        window.location.origin
+      ).toString();
+    }
+  }, []);
   const [numPages, setNumPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [open, setOpen] = useState(false);

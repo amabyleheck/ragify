@@ -9,13 +9,9 @@ const AsideNav: React.FC = () => {
   const { pageType } = useContext(GlobalContext);
 
   const options = Object.entries(NavigationOption);
-  // Get the index of the selected item
   const selectedIndex = options.findIndex(
     ([, item]) => item.title === pageType
   );
-
-  const gapPx = 4;
-  const gapVh = (gapPx / window.innerHeight) * 100;
 
   return (
     <aside>
@@ -36,7 +32,7 @@ const AsideNav: React.FC = () => {
           <span
             className="glider"
             style={{
-              transform: `translateY(calc(${selectedIndex} * (8vh + ${gapVh}vh)))`
+              transform: `translateY(calc(${selectedIndex} * (8vh + 4px)))`
             }}
           ></span>
         </Stack>
