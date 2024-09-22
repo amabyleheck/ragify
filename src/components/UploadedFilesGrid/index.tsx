@@ -30,7 +30,7 @@ const UploadedFilesGrid: React.FC<UploadedFilesGridProps> = ({
   }
 
   return (
-    <PanelBox height={annotation ? 45 : 20} className="overflow-y-auto">
+    <PanelBox height={annotation ? 45 : 30} className="overflow-y-auto">
       <Stack direction={"column"} className="w-full">
         {files.length === 0 ? (
           <Typography variant="subtitle1" fontWeight={400}>

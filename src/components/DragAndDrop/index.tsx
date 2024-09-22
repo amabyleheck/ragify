@@ -14,10 +14,10 @@ const DragAndDrop: React.FC = () => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadedFiles = event.target.files && Array.from(event.target.files);
+  const handleFileUpload = (uploadedFiles: File[] | null) => {
+    if (!uploadedFiles || uploadedFiles.length === 0) return;
+
     if (
-      uploadedFiles &&
       uploadedFiles.length > 0 &&
       uploadedFiles.some(file => file.type !== "application/pdf")
     ) {
@@ -26,7 +26,6 @@ const DragAndDrop: React.FC = () => {
     }
 
     if (
-      uploadedFiles &&
       uploadedFiles.some(file =>
         files.map(file => file.name).includes(file.name)
       )
@@ -37,11 +36,22 @@ const DragAndDrop: React.FC = () => {
       return;
     }
 
-    if (uploadedFiles) {
-      const filesArray = uploadedFiles.concat(files);
-      setFiles(filesArray);
-      enqueueSnackbar("Files uploaded successfully.", { variant: "success" });
-    }
+    const filesArray = uploadedFiles.concat(files);
+    setFiles(filesArray);
+    enqueueSnackbar("Files uploaded successfully.", { variant: "success" });
+  };
+
+  const handleFileDrag = (event: React.DragEvent<HTMLLabelElement>) => {
+    event.preventDefault();
+    const uploadedFiles =
+      event.dataTransfer.files && Array.from(event.dataTransfer.files);
+    handleFileUpload(uploadedFiles);
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const uploadedFiles = event.target.files && Array.from(event.target.files);
+    handleFileUpload(uploadedFiles);
   };
 
   return (
@@ -57,8 +67,8 @@ const DragAndDrop: React.FC = () => {
           padding: 0,
           ":hover": { borderRadius: "15px" }
         }}
-        // onDrag={e => handleFileUpload(e.target)}
-        // onDrop={e => console.log(e)}
+        onDrop={e => handleFileDrag(e)}
+        onDragOver={e => handleFileDrag(e)}
       >
         <Box className="rounded-border min-h-[20vh] min-w-full content-center border-2 border-dotted border-[#DBDBDB]">
           <CloudUploadIcon sx={{ fontSize: "10vh", color: "#EBEBEB" }} />
@@ -86,7 +96,7 @@ const DragAndDrop: React.FC = () => {
           <HiddenInput
             type="file"
             multiple={true}
-            onChange={handleFileUpload}
+            onChange={handleFileChange}
           />
         </Box>
       </Button>
