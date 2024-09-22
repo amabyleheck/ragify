@@ -37,7 +37,7 @@ export default function Home() {
       <GlobalContext.Provider value={{ pageType, setPageType }}>
         <FormProvider>
           <AnnotationProvider>
-            <Header />
+            {/* <Header /> */}
             <div className="flex">
               <AsideNav />
               <main>

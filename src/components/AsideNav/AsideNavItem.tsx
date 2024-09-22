@@ -1,13 +1,12 @@
 import { GlobalContext } from "@/contexts/global";
 import { NavigationOptionType } from "@/types";
 import { Typography } from "@mui/material";
-import Icon from "@mui/material/Icon";
 import { Box, Stack } from "@mui/system";
 import React, { useContext } from "react";
 
 interface AsideNavProps {
   id: number;
-  icon: string;
+  icon: React.JSX.Element;
   title: NavigationOptionType;
 }
 
@@ -35,12 +34,7 @@ const AsideNavItem: React.FC<AsideNavProps> = ({ id, icon, title }) => {
             sx={{ paddingLeft: "15px" }}
             alignItems={"center"}
           >
-            <Icon
-              className={"material-symbols-outlined"}
-              sx={{ fontSize: "10px" }}
-            >
-              {icon}
-            </Icon>
+            {icon}
             <Typography variant="subtitle1">{title}</Typography>
           </Stack>
         </Box>

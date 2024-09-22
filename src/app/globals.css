@@ -85,9 +85,9 @@
   transition: color 0.3s ease-in;
 }
 
-.aside-nav-item.selected {
+/* .aside-nav-item.selected {
   color: white;
-}
+} */
 
 .glider {
   /* transition: 0.15s ease-out; */

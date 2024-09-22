@@ -3,6 +3,13 @@ import { NavigationOption } from "@/utils/consts";
 import { Icon, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useContext } from "react";
+import {
+  ChecksIcon,
+  ChevronIcon,
+  DevIcon,
+  FileIcon,
+  LayersIcon
+} from "@/components/Icons";
 
 const PageTracker: React.FC = () => {
   const { pageType, setPageType } = useContext(GlobalContext);
@@ -33,24 +40,18 @@ interface SectionProps {
 
 const pageTrackerMapper = (setPageType: (value: string) => void) => {
   const ArrowIcon: React.JSX.Element = (
-    <Icon
-      className={"material-symbols-outlined text-gray-400"}
-      sx={{ fontSize: "15px" }}
-    >
-      arrow_forward_ios
-    </Icon>
+    <ChevronIcon fontSize={"small"} stroke={"gray"} />
   );
 
   const DocumentsSection: React.FC<SectionProps> = ({ original = true }) => {
     return (
       <>
-        <Icon
-          className={"material-symbols-outlined cursor-pointer text-gray-400"}
-          sx={{ fontSize: "15px" }}
+        <FileIcon
+          fontSize={"small"}
+          stroke={"gray"}
           onClick={() => setPageType(NavigationOption.DOCUMENTS.title)}
-        >
-          {NavigationOption.DOCUMENTS.icon}
-        </Icon>
+          clickable
+        />
         {original && (
           <Typography fontSize={15} className="text-gray-400">
             Uploading Documents
@@ -65,13 +66,12 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
       <>
         <DocumentsSection original={false} />
         {ArrowIcon}
-        <Icon
-          className={"material-symbols-outlined cursor-pointer text-gray-400"}
-          sx={{ fontSize: "15px" }}
+        <LayersIcon
+          fontSize={"small"}
+          stroke={"gray"}
           onClick={() => setPageType(NavigationOption.VARIABLES.title)}
-        >
-          {NavigationOption.VARIABLES.icon}
-        </Icon>
+          clickable
+        />
         {original && (
           <Typography fontSize={15} className="text-gray-400">
             Defining Variables
@@ -86,13 +86,12 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
       <>
         <VariablesSection original={false} />
         {ArrowIcon}
-        <Icon
-          className={"material-symbols-outlined cursor-pointer text-gray-400"}
-          sx={{ fontSize: "15px" }}
+        <ChecksIcon
+          fontSize={"small"}
+          stroke={"gray"}
           onClick={() => setPageType(NavigationOption.ANNOTATION.title)}
-        >
-          {NavigationOption.ANNOTATION.icon}
-        </Icon>
+          clickable
+        />
         {original && (
           <Typography fontSize={15} className="text-gray-400">
             Annotating Variables
@@ -107,13 +106,12 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
       <>
         <AnnotationSection original={false} />
         {ArrowIcon}
-        <Icon
-          className={"material-symbols-outlined cursor-pointer text-gray-400"}
-          sx={{ fontSize: "15px" }}
+        <DevIcon
+          fontSize={"small"}
+          stroke={"gray"}
           onClick={() => setPageType(NavigationOption.PARAMETERS.title)}
-        >
-          {NavigationOption.PARAMETERS.icon}
-        </Icon>
+          clickable
+        />
         <Typography fontSize={15} className="text-gray-400">
           Choosing Parameters
         </Typography>
