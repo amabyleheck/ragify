@@ -37,36 +37,12 @@ interface CustomIconProps extends SvgIconProps {
   stroke?: string;
 }
 
-export const FileIcon: React.FC<CustomIconProps> = ({
-  stroke,
-  clickable,
-  ...props
-}) => {
-  return (
-    <CustomIcon
-      Icon={File}
-      name={"File"}
-      stroke={stroke}
-      clickable={clickable}
-      {...props}
-    />
-  );
+export const ChecksIcon: React.FC<CustomIconProps> = ({ ...props }) => {
+  return <CustomIcon Icon={Checks} name={"Checks"} {...props} />;
 };
 
-export const LayersIcon: React.FC<CustomIconProps> = ({
-  stroke,
-  clickable,
-  ...props
-}) => {
-  return (
-    <CustomIcon
-      Icon={Layers}
-      name={"Layers"}
-      stroke={stroke}
-      clickable={clickable}
-      {...props}
-    />
-  );
+export const ChevronIcon: React.FC<CustomIconProps> = ({ ...props }) => {
+  return <CustomIcon Icon={ChevronSide} name={"Checks"} {...props} />;
 };
 
 export const DevIcon: React.FC<CustomIconProps> = ({
@@ -83,34 +59,10 @@ export const DevIcon: React.FC<CustomIconProps> = ({
   return <CustomIconComponent className={`${color} ${cursor}`} {...props} />;
 };
 
-export const ChecksIcon: React.FC<CustomIconProps> = ({
-  stroke,
-  clickable,
-  ...props
-}) => {
-  return (
-    <CustomIcon
-      Icon={Checks}
-      name={"Checks"}
-      stroke={stroke}
-      clickable={clickable}
-      {...props}
-    />
-  );
+export const FileIcon: React.FC<CustomIconProps> = ({ ...props }) => {
+  return <CustomIcon Icon={File} name={"File"} {...props} />;
 };
 
-export const ChevronIcon: React.FC<CustomIconProps> = ({
-  stroke,
-  clickable,
-  ...props
-}) => {
-  return (
-    <CustomIcon
-      Icon={ChevronSide}
-      name={"Checks"}
-      stroke={stroke}
-      clickable={clickable}
-      {...props}
-    />
-  );
+export const LayersIcon: React.FC<CustomIconProps> = ({ ...props }) => {
+  return <CustomIcon Icon={Layers} name={"Layers"} {...props} />;
 };

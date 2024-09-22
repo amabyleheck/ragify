@@ -41,7 +41,7 @@ export default function Home() {
             <div className="flex">
               <AsideNav />
               <main>
-                <div className="content-wrapper relative flex min-h-full min-w-[85vw] items-center justify-center bg-gray-200">
+                <div className="content-wrapper relative flex h-full min-w-[85vw] items-center justify-center bg-gray-200">
                   <PageTracker />
                   <CurrentPanel />
                 </div>

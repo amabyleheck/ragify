@@ -18,7 +18,7 @@ const PageTracker: React.FC = () => {
   const CurrentPage = componentMap[pageType];
 
   return (
-    <div className="absolute left-0 top-0 p-3">
+    <div className="absolute left-0 top-0 p-5">
       <Stack
         direction={"row"}
         gap={1}

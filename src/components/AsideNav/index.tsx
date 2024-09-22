@@ -19,7 +19,7 @@ const AsideNav: React.FC = () => {
 
   return (
     <aside>
-      <Box className="min-h-[93vh] min-w-[15vw] max-w-[15vw] bg-white">
+      <Box className="h-screen w-[15vw] min-w-[15vw] bg-white">
         <Stack
           direction="column"
           spacing={0.5}
