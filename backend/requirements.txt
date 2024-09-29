@@ -9,3 +9,5 @@ openpyxl
 sqlalchemy==2.0.0 
 matplotlib
 openpyxl
+fastapi
+psycopg2
