@@ -1,24 +1,37 @@
-from fastapi import BackgroundTasks, Request
+from typing import List
+from fastapi import BackgroundTasks, UploadFile, Form, File, HTTPException, Depends
 from starlette import status
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
+from database import get_db
 from schemas.extract import ExtractSchema
 from services.extract_service import ExtractService
+
+from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/api/extract")
 
 
 @router.post("/", status_code=status.HTTP_200_OK)
 async def extract(
-    request: Request, extract_api: ExtractSchema, background_tasks: BackgroundTasks
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+    extract_api: str = Form(...),
+    session_uid: str = Form(...),
+    files: list[UploadFile] = File(...),
 ) -> JSONResponse:
-    form_data = await request.form()
-    file_list = [form_data.getlist(key)[0] for key in form_data.keys()]
-    file_bytes = [await file.read() for file in file_list]
+    import json
 
-    response = ExtractService(extract_schema=extract_api).invoke_extract_job(
-        background_tasks
+    try:
+        extract_api_json = json.loads(extract_api)  # Parse the JSON string
+        extract_schema = ExtractSchema(**extract_api_json)
+    except json.JSONDecodeError as e:
+        raise HTTPException(status_code=400, detail="Invalid JSON for extract_api")
+
+    response = ExtractService(extract_schema=extract_schema).invoke_extract_job(
+        background_tasks, files, session_uid, db
     )
 
+    # return response
     return response

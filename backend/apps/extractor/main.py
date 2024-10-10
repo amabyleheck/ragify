@@ -12,7 +12,7 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = (
 )
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "garbage_collection_threshold:0.6,backend:cudaMallocAsync"
 
-variables = json.load(open("variables.json"))
+# variables = json.load(open("variables.json"))
 
 
 def get_or_list(values):
@@ -27,7 +27,7 @@ def extraction_final_path(dir, model_name, size, overlap, k):
     return dir + results_file_name
 
 
-def main():
+def main(variables):
     models = get_or_list(variables["model"])
     embedders = get_or_list(variables["embeddings"]["bert_model"])
     vector_stores = get_or_list(variables["embeddings"]["vector_db"])

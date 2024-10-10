@@ -1,10 +1,14 @@
+from typing import List
 from uuid import uuid4
-from fastapi import BackgroundTasks
+from fastapi import BackgroundTasks, UploadFile
 
+from database_models.job import Job, JobStatus
 from database import get_db
-from crud.job import update_job_status
+from crud.job import create_job, update_job_status
 from schemas.job import JobSchema
-from misc.utils import bufferize_uploaded_files
+from misc.utils import bufferize_uploaded_files, clean_up_uploaded_files
+
+from sqlalchemy.orm import Session
 
 from schemas.extract import ExtractSchema
 
@@ -18,11 +22,17 @@ class ExtractService:
         self.schema = extract_schema
         self.task_uid = uuid4()
 
-    async def background_extract(extract_schema: ExtractSchema, uid: uuid4):
-        db = get_db()
+    async def background_extract(
+        self,
+        extract_schema: ExtractSchema,
+        job_id: int,
+        files: list[UploadFile],
+        db: Session,
+    ):
+        print("got the background extract")
 
-        update_job_status(db, uid, "in_progress")
-        bufferize_uploaded_files(extract_schema.form.files)
+        await bufferize_uploaded_files(files)
+        update_job_status(db, job_id, JobStatus.IN_PROGRESS)
 
         # TODO: add extract logic
         try:
@@ -31,15 +41,30 @@ class ExtractService:
             pass
 
         # ... finally
-        update_job_status(db, uid, "completed")
 
-    def invoke_extract_job(self, background_task: BackgroundTasks):
+        await clean_up_uploaded_files()
+        update_job_status(db, job_id, JobStatus.COMPLETED)
+
+    def invoke_extract_job(
+        self,
+        background_task: BackgroundTasks,
+        files: List[UploadFile],
+        session_uid: uuid4,
+        db: Session,
+    ) -> dict:
+        print("got the invoke extract job")
         """
         Invokes the extract background job
         """
 
         try:
-            background_task.add_task(self.background_extract, self.schema, self.uid)
+            job = create_job(
+                db, Job(session_id=session_uid, background_task_id=self.task_uid)
+            )
+
+            background_task.add_task(
+                self.background_extract, self.schema, job.id, files, db
+            )
 
             return {
                 "status": "success",

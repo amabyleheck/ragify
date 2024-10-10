@@ -45,13 +45,13 @@ def create_app():
 app = create_app()
 
 
-@app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    message = exc.errors()[0].get("msg")
-    message = message.replace("Input", exc.errors()[0].get("loc")[1].capitalize())
-    return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, content={"detail": message}
-    )
+# @app.exception_handler(RequestValidationError)
+# async def validation_exception_handler(request: Request, exc: RequestValidationError):
+#     message = exc.errors()[0].get("msg")
+#     message = message.replace("Input", exc.errors()[0].get("loc")[1].capitalize())
+#     return JSONResponse(
+#         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, content={"detail": message}
+#     )
 
 
 @app.on_event("startup")
