@@ -21,6 +21,7 @@
     "@mui/material": "^6.0.1",
     "@mui/system": "^6.0.1",
     "@mui/x-data-grid": "^7.15.0",
+    "axios": "^1.7.7",
     "eslint-plugin-tailwindcss": "^3.17.4",
     "next": "~14.2.4",
     "notistack": "^3.0.1",
@@ -29,6 +30,7 @@
     "react-hook-form": "^7.53.0",
     "react-pdf": "^9.1.1",
     "react-transition-group": "^4.4.5",
+    "swr": "^2.2.5",
     "uuid": "^10.0.0",
     "zod": "^3.23.8",
     "zustand": "5.0.0-rc.2"

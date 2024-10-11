@@ -4,7 +4,7 @@ import { DeleteRounded } from "@mui/icons-material";
 import { TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useContext } from "react";
-import DocumentPreviewer from "../DocumentPreviewer";
+import DocumentPreviewer from "../../DocumentPreviewer";
 
 interface UploadedFileRowProps {
   file: File;

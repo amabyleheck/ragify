@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import React, { useContext } from "react";
-import UploadedFileRow from "@/components/UploadedFilesGrid/UploadedFileRow";
+import UploadedFileRow from "@/components/Grids/UploadedFilesGrid/UploadedFileRow";
 import PanelBox from "@/components/PanelBox";
 import { FormContext } from "@/contexts/form";
 import { useSnackbar } from "notistack";

@@ -1,3 +1,4 @@
+import time
 from typing import List
 from uuid import uuid4
 from fastapi import BackgroundTasks, UploadFile
@@ -29,8 +30,6 @@ class ExtractService:
         files: list[UploadFile],
         db: Session,
     ):
-        print("got the background extract")
-
         await bufferize_uploaded_files(files)
         update_job_status(db, job_id, JobStatus.IN_PROGRESS)
 
@@ -40,10 +39,12 @@ class ExtractService:
         except:
             pass
 
+        time.sleep(15)
         # ... finally
 
         await clean_up_uploaded_files()
-        update_job_status(db, job_id, JobStatus.COMPLETED)
+        update_job_status(db, job_id, JobStatus.COMPLETED, completed=True)
+        print(f"Job {job_id} completed")
 
     def invoke_extract_job(
         self,

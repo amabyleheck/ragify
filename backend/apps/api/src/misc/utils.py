@@ -21,6 +21,7 @@ async def bufferize_uploaded_files(uploaded_files: List[UploadFile]):
 
     for uploaded_file in uploaded_files:
         file_path = os.path.join(DOCUMENTS_FOLDER_PATH, uploaded_file.filename)
+        print(file_path)
         with open(file_path, "wb") as f:
             f.write(await uploaded_file.read())
 

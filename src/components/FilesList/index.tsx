@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
-import UploadedFilesGrid from "@/components/UploadedFilesGrid";
+import UploadedFilesGrid from "@/components/Grids/UploadedFilesGrid";
 
 interface FilesListProps {
   annotation: boolean;

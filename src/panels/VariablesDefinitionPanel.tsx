@@ -3,7 +3,7 @@ import BottomContainer from "@/components/BottomContainer";
 import { NavigationOption } from "@/utils/consts";
 import { NavigationOptionType } from "@/types";
 import { InfoOutlined } from "@mui/icons-material";
-import VariablesGrid from "@/components/VariablesGrid";
+import VariablesGrid from "@/components/Grids/VariablesGrid";
 import { useState } from "react";
 import AddVariableModal from "@/components/AddVariableModal";
 
