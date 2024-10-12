@@ -13,8 +13,8 @@ const useTriggerExtract = () => {
     } = useContext(FormContext);
 
     const { annotationData } = useContext(AnnotationContext);
-
     const { sessionId } = useSessionStorageId();
+
     const { enqueueSnackbar } = useSnackbar();
 
     setLoading(true);
@@ -40,18 +40,14 @@ const useTriggerExtract = () => {
         })
       );
 
-      formData.append(
-        "session_uid",
-        JSON.stringify({
-          sessionId
-        })
-      );
-
       // TODO: Update fetch URL depending on env
-      const response = await fetch("http://localhost:8000/api/extract", {
-        method: "POST",
-        body: formData
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/extract/?session_uid=${sessionId}`,
+        {
+          method: "POST",
+          body: formData
+        }
+      );
 
       if (!response.ok) {
         enqueueSnackbar("Something went wrong!", { variant: "error" });

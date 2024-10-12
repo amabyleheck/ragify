@@ -13,9 +13,15 @@ import { FormProvider } from "@/contexts/form";
 import { AnnotationProvider } from "@/contexts/annotation";
 import { SnackbarProvider } from "notistack";
 import ResultsPanel from "@/panels/ResultsPanel";
+import useSessionStorageId from "@/utils/localStorageId";
 
 export default function Home() {
+  const { sessionId, initializeId } = useSessionStorageId();
   const [pageType, setPageType] = useState(NavigationOption.DOCUMENTS.title);
+
+  if (!sessionId) {
+    initializeId();
+  }
 
   const componentMap = {
     [NavigationOption.DOCUMENTS.title]: DocumentsUploadPanel,

@@ -6,10 +6,10 @@ import {
   GridArrowDownwardIcon,
   GridColDef
 } from "@mui/x-data-grid";
-import useFetchJobs from "@/api/getJobs";
+import useFetchJobs from "@/api/useFetchJobs";
 
 const ResultsGrid: React.FC = () => {
-  const { data, loading } = useFetchJobs("");
+  const { data, loading } = useFetchJobs();
   //const { enqueueSnackbar } = useSnackbar();
 
   if (loading) return <div>Loading...</div>;
@@ -19,7 +19,7 @@ const ResultsGrid: React.FC = () => {
   return (
     <Stack direction={"column"} spacing={1} sx={{ height: "55vh" }}>
       <DataGrid
-        rows={data.jobs}
+        rows={data?.jobs}
         columns={gridColumns}
         rowHeight={40}
         columnHeaderHeight={40}
