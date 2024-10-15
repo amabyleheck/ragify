@@ -7,16 +7,16 @@ import { useContext, useState } from "react";
 const useTriggerExtract = () => {
   const [loading, setLoading] = useState(false);
 
-  const useTriggerExtractHandler = async () => {
-    const {
-      formData: { files, parameters, variables }
-    } = useContext(FormContext);
+  const {
+    formData: { files, parameters, variables }
+  } = useContext(FormContext);
 
-    const { annotationData } = useContext(AnnotationContext);
-    const { sessionId } = useSessionStorageId();
+  const { annotationData } = useContext(AnnotationContext);
+  const { sessionId } = useSessionStorageId();
 
-    const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
+  const triggerExtractHandler = async () => {
     setLoading(true);
 
     const extractData = {
@@ -33,21 +33,14 @@ const useTriggerExtract = () => {
         formData.append("files", file);
       });
 
-      formData.append(
-        "extract_api",
-        JSON.stringify({
-          extractData
-        })
-      );
+      formData.append("extract_api", JSON.stringify(extractData));
+      if (sessionId) formData.append("session_uid", sessionId);
 
       // TODO: Update fetch URL depending on env
-      const response = await fetch(
-        `http://localhost:8000/api/extract/?session_uid=${sessionId}`,
-        {
-          method: "POST",
-          body: formData
-        }
-      );
+      const response = await fetch(`http://localhost:8000/api/extract/`, {
+        method: "POST",
+        body: formData
+      });
 
       if (!response.ok) {
         enqueueSnackbar("Something went wrong!", { variant: "error" });
@@ -59,13 +52,13 @@ const useTriggerExtract = () => {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.log(err.message);
+      enqueueSnackbar(err.message, { variant: "error" });
     } finally {
       setLoading(false);
     }
   };
 
-  return { useTriggerExtractHandler, loading };
+  return { triggerExtractHandler, loading };
 };
 
 export default useTriggerExtract;

@@ -4,14 +4,14 @@ from uuid import uuid4
 from fastapi import BackgroundTasks, UploadFile
 
 from database_models.job import Job, JobStatus
-from database import get_db
 from crud.job import create_job, update_job_status
-from schemas.job import JobSchema
 from misc.utils import bufferize_uploaded_files, clean_up_uploaded_files
 
 from sqlalchemy.orm import Session
 
 from schemas.extract import ExtractSchema
+
+from extractor.main import extract
 
 
 class ExtractService:
@@ -27,33 +27,24 @@ class ExtractService:
         self,
         extract_schema: ExtractSchema,
         job_id: int,
-        files: list[UploadFile],
         db: Session,
     ):
-        await bufferize_uploaded_files(files)
         update_job_status(db, job_id, JobStatus.IN_PROGRESS)
 
-        # TODO: add extract logic
-        try:
-            pass
-        except:
-            pass
+        print(extract_schema.dict())
+        extract(schema=extract_schema.dict())
 
-        time.sleep(15)
-        # ... finally
+        clean_up_uploaded_files()
 
-        await clean_up_uploaded_files()
         update_job_status(db, job_id, JobStatus.COMPLETED, completed=True)
         print(f"Job {job_id} completed")
 
     def invoke_extract_job(
         self,
         background_task: BackgroundTasks,
-        files: List[UploadFile],
         session_uid: uuid4,
         db: Session,
     ) -> dict:
-        print("got the invoke extract job")
         """
         Invokes the extract background job
         """
@@ -63,9 +54,7 @@ class ExtractService:
                 db, Job(session_id=session_uid, background_task_id=self.task_uid)
             )
 
-            background_task.add_task(
-                self.background_extract, self.schema, job.id, files, db
-            )
+            background_task.add_task(self.background_extract, self.schema, job.id, db)
 
             return {
                 "status": "success",

@@ -14,7 +14,9 @@ from transformers import AutoTokenizer
 from langchain_core.documents import Document
 
 ABS_PATH: str = os.path.dirname(os.path.abspath(__file__))
-DOCUMENTS_DIR = f"{ABS_PATH}/documentos/"
+DOCUMENTS_DIR = os.path.expanduser(
+    "~/dev/ragify-app/backend/apps/extractor/documentos-pdf"
+)
 
 SENTENCE_TRANSFORMER_MODELS_DIR = os.path.expanduser(
     "~/modelos/sentence-transformer-models"
@@ -37,19 +39,15 @@ class LocalVectorStoreGenerator:
 
     def __init__(
         self,
-        documents_ids: List[int] = None,
-        single_file: bool = False,
-        file_path: str = None,
         **kwargs,
     ) -> None:
 
-        if not single_file:
-            self.set_up_documents_dir(documents_ids=documents_ids)
-
         # REGION: Loading kwargs and variables
         self.vector_db_class = self.load_vector_db(kwargs.get("vector_db"))
-        self.splitter = self.load_text_splitter(kwargs.get("text_splitter"))
-        self.embedding_model = self.load_embedding_model(kwargs.get("embedding_model"))
+        self.splitter = self.load_text_splitter(kwargs.get("text_splitter")[0])
+        self.embedding_model = self.load_embedding_model(
+            kwargs.get("embedding_model")[0]
+        )
 
         self.bert_model = kwargs.get("bert_model") or self.DEFAULT_BERT_MODEL
         self.chunk_size = kwargs.get("chunk_size") or self.DEFAULT_CHUNK_SIZE
@@ -59,7 +57,10 @@ class LocalVectorStoreGenerator:
         self.bert_model_dir = f"{SENTENCE_TRANSFORMER_MODELS_DIR}/{self.bert_model}"
         # ENDREGION
 
-        chunks = self.split_documents(single_file=single_file, file_path=file_path)
+        # if os.path.isdir(self.DB_DIR):
+        #     shutil.rmtree(path=self.DB_DIR, ignore_errors=True)
+
+        chunks = self.split_documents()
         self.vector_database = self.create_embeddings(chunks, model_kwargs)
 
     def load_embedding_model(self, embedding_model):
@@ -98,7 +99,6 @@ class LocalVectorStoreGenerator:
 
         embedding_function = self.embedding_model(
             model_name=self.bert_model_dir,
-            model_kwargs=model_kwargs,
             encode_kwargs=encode_kwargs,
         )
 
@@ -110,12 +110,12 @@ class LocalVectorStoreGenerator:
             )
             print("Retrieving existing db...")
 
-        #         else:
-        vector_database = self.vector_db_class.from_documents(
-            documents=chunks,
-            embedding=embedding_function,
-            persist_directory=self.DB_DIR,
-        )
+        else:
+            vector_database = self.vector_db_class.from_documents(
+                documents=chunks,
+                embedding=embedding_function,
+                persist_directory=self.DB_DIR,
+            )
 
         end = time.time()
 
@@ -125,9 +125,7 @@ class LocalVectorStoreGenerator:
 
         return vector_database
 
-    def split_documents(
-        self, single_file: bool = False, file_path: str = None
-    ) -> List[Document]:
+    def split_documents(self) -> List[Document]:
         if os.path.isdir(self.DB_DIR):
             print("Skipping splitting since db already exists...")
             return []
@@ -145,10 +143,7 @@ class LocalVectorStoreGenerator:
 
         start = time.time()
 
-        if single_file:
-            documents = PyPDFLoader(file_path=file_path).load()
-        else:
-            documents = PyPDFDirectoryLoader(DOCUMENTS_DIR).load()
+        documents = PyPDFDirectoryLoader(DOCUMENTS_DIR).load()
 
         chunks = text_splitter.split_documents(documents)
 

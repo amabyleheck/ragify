@@ -4,6 +4,7 @@ from typing import List
 from fastapi import UploadFile
 
 import shutil
+import aiofiles
 
 
 DOCUMENTS_FOLDER_PATH = os.path.join(
@@ -22,11 +23,12 @@ async def bufferize_uploaded_files(uploaded_files: List[UploadFile]):
     for uploaded_file in uploaded_files:
         file_path = os.path.join(DOCUMENTS_FOLDER_PATH, uploaded_file.filename)
         print(file_path)
-        with open(file_path, "wb") as f:
-            f.write(await uploaded_file.read())
+        file_content = await uploaded_file.read()
+        async with aiofiles.open(file_path, "wb") as f:
+            await f.write(file_content)
 
 
-async def clean_up_uploaded_files():
+def clean_up_uploaded_files():
     if os.path.exists(DOCUMENTS_FOLDER_PATH):
         shutil.rmtree(DOCUMENTS_FOLDER_PATH)
     os.makedirs(DOCUMENTS_FOLDER_PATH)

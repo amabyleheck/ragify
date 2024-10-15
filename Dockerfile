@@ -16,15 +16,17 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Install dependencies
-RUN pip install -r requirements.txt
+RUN pip install --use-deprecated=legacy-resolver -r requirements.txt
 
 RUN pip install psycopg2
 
-# Copy the FastAPI app code
-COPY . .
+COPY ./backend .
+
+ENV PYTHONPATH=/app/backend/apps
 
 # Expose port 8000
 EXPOSE 8000
+
 
 # Command to run the FastAPI app
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

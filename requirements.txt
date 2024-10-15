@@ -1,8 +1,5 @@
 langchain==0.1.5
-pypdf 
-optimum 
-accelerate 
-bitsandbytes 
+pypdf
 chromadb==0.4.0
 sentence-transformers==2.2.2 
 openpyxl 
@@ -11,3 +8,4 @@ matplotlib
 openpyxl
 fastapi
 python-multipart
+aiofiles

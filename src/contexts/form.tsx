@@ -36,7 +36,7 @@ export const FormContext = createContext<FormContextProps>({
         chunk_overlap: ["20"],
         embedding_model: ["HuggingFaceBgeEmbeddings"],
         vector_db: ["Chroma"],
-        text_splitter: ["RecursiveCharacterSplitter"]
+        text_splitter: ["RecursiveCharacterTextSplitter"]
       },
       retrieval: {
         chain_type: ["stuff"],
@@ -75,7 +75,7 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
         chunk_overlap: ["20"],
         embedding_model: ["HuggingFaceBgeEmbeddings"],
         vector_db: ["Chroma"],
-        text_splitter: ["RecursiveCharacterSplitter"]
+        text_splitter: ["RecursiveCharacterTextSplitter"]
       },
       retrieval: {
         chain_type: ["stuff"],

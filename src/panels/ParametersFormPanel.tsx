@@ -1,4 +1,5 @@
 import BottomContainer from "@/components/BottomContainer";
+import ExtractButton from "@/components/Button/ExtractButton";
 import ParametersForm from "@/components/ParametersForm";
 import { NavigationOptionType } from "@/types";
 import { NavigationOption } from "@/utils/consts";
@@ -39,6 +40,7 @@ const ParametersFormPanel: React.FC = () => {
         <BottomContainer
           nextPage={NavigationOption.PARAMETERS.title as NavigationOptionType}
         />
+        <ExtractButton />
       </Stack>
     </div>
   );

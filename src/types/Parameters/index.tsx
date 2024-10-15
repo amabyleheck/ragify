@@ -23,7 +23,7 @@ export interface ParametersFormData {
 
 export const PARAMETER_OPTIONS = {
   // MODELS
-  MODEL: ["llama-2-7b", "llama-2-13b", "Mistral-7b"], // TODO: Add lazy fetch of locally downloaded models
+  MODEL: ["llama-2-7b", "llama-2-13b", "Mistral-7b", "llama3.2"], // TODO: Add lazy fetch of locally downloaded models
   // CHUNKING
   CHUNK_SIZE: ["128", "256", "512", "1024", "2048"],
   CHUNK_OVERLAP: ["20", "50", "100", "200", "300"],
@@ -31,7 +31,7 @@ export const PARAMETER_OPTIONS = {
   VECTOR_DATABASE: ["Chroma"],
   BERT_MODEL: ["bert-large-portuguese-cased"],
   EMBEDDING_MODEL: ["HuggingFaceBgeEmbeddings"], // TODO: Add lazy fetch from LangChain repo
-  TEXT_SPLITTER: ["RecursiveCharacterSplitter"], // TODO: Add lazy fetch from LangChain repo
+  TEXT_SPLITTER: ["RecursiveCharacterTextSplitter"], // TODO: Add lazy fetch from LangChain repo
   // RETRIEVAL
   CHAIN_TYPE: ["stuff"],
   TOP_K: ["1", "3", "5", "10", "12"]
