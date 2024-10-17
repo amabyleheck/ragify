@@ -23,7 +23,13 @@ export interface ParametersFormData {
 
 export const PARAMETER_OPTIONS = {
   // MODELS
-  MODEL: ["llama-2-7b", "llama-2-13b", "Mistral-7b", "llama3.2"], // TODO: Add lazy fetch of locally downloaded models
+  MODEL: [
+    "llama-2-7b",
+    "llama-2-13b",
+    "Mistral-7b",
+    "llama3.2",
+    "llama3.1:70b"
+  ], // TODO: Add lazy fetch of locally downloaded models
   // CHUNKING
   CHUNK_SIZE: ["128", "256", "512", "1024", "2048"],
   CHUNK_OVERLAP: ["20", "50", "100", "200", "300"],

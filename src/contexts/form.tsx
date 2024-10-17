@@ -26,10 +26,16 @@ interface FormContextProps {
 
 export const FormContext = createContext<FormContextProps>({
   formData: {
-    variables: [],
+    variables: [
+      {
+        name: "Numero da Licitacao",
+        prompt:
+          "Dada a seguinte descrição: O número do processo licitatório (ou número da licitação, Licitação n°) refere-se à identificação única atribuída a cada processo licitatório, geralmente no formato `número/ano`. Qual é o número do número do processo licitatório citado no contexto acima? RESPONDA APENAS O NÚMERO DO PROCESSO."
+      }
+    ],
     files: [],
     parameters: {
-      model: [],
+      model: ["llama3.1:70b"],
       embeddings: {
         bert_model: ["bert-large-portuguese-cased"],
         chunk_size: ["512"],
@@ -42,7 +48,7 @@ export const FormContext = createContext<FormContextProps>({
         chain_type: ["stuff"],
         top_k: ["3"],
         device_map: {
-          device: "cuda:0"
+          device: "mps"
         }
       }
     }
@@ -65,10 +71,16 @@ export const useFormContext = () => {
 
 export const FormProvider = ({ children }: { children: ReactNode }) => {
   const [formData, setFormData] = useState<GlobalFormContext>({
-    variables: [],
+    variables: [
+      {
+        name: "Numero da Licitacao",
+        prompt:
+          "Dada a seguinte descrição: O número do processo licitatório (ou número da licitação, Licitação n°) refere-se à identificação única atribuída a cada processo licitatório, geralmente no formato `número/ano`. Qual é o número do número do processo licitatório citado no contexto acima? RESPONDA APENAS O NÚMERO DO PROCESSO."
+      }
+    ],
     files: [],
     parameters: {
-      model: [],
+      model: ["llama3.1:70b"],
       embeddings: {
         bert_model: ["bert-large-portuguese-cased"],
         chunk_size: ["512"],
@@ -81,7 +93,7 @@ export const FormProvider = ({ children }: { children: ReactNode }) => {
         chain_type: ["stuff"],
         top_k: ["3"],
         device_map: {
-          device: "cuda:0"
+          device: "mps"
         }
       }
     }

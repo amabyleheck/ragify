@@ -2,20 +2,14 @@ import time
 from pathlib import Path
 import os
 
-from extractor.utils.utils import get_local_model_dir, get_variable_form
-from extractor.exporter.exporter import ExcelResultsExport
+from dotenv import load_dotenv
 
 from extractor.embeddings.ingest import LocalVectorStoreGenerator
 from extractor.chains.llm import LocalLLM
 
-import json
+load_dotenv()
 
-ABS_PATH: str = os.path.dirname(os.path.abspath(__file__))
-
-## UPDATE IT AS NEEDED
-DOCUMENTS_DIR = os.path.expanduser(
-    "~/dev/ragify-app/backend/apps/extractor/documentos-pdf"
-)
+DOCUMENTS_DIR = os.getenv("DOCUMENTS_DIR")
 
 
 def extract(parameters: dict, variables: dict, annotation: dict, directory=""):
@@ -30,7 +24,6 @@ def extract(parameters: dict, variables: dict, annotation: dict, directory=""):
     documents_ids = [doc.stem for doc in documents_dir_path.glob("*.pdf")]
 
     model_name = parameters.get("model")
-
     retrieval_kwargs = parameters.get("retrieval")
     embedding_kwargs = parameters.get("embeddings")
 
@@ -40,7 +33,7 @@ def extract(parameters: dict, variables: dict, annotation: dict, directory=""):
     # ENDREGION
 
     # LOADING LOCAL MODEL REGION
-    llm = LocalLLM(model_path=model_name)
+    llm = LocalLLM(model_path=model_name, local=False)
 
     print(f"{model_name} MODEL LOADED!")
     # ENDREGION
