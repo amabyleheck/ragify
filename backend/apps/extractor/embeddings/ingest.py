@@ -5,22 +5,21 @@ import importlib
 
 from typing import List
 
-from langchain_community.document_loaders import PyPDFDirectoryLoader, PyPDFLoader
+from dotenv import load_dotenv
+
+from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_community.embeddings import HuggingFaceBgeEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores.chroma import Chroma
+
 from transformers import AutoTokenizer
 
 from langchain_core.documents import Document
 
-ABS_PATH: str = os.path.dirname(os.path.abspath(__file__))
-DOCUMENTS_DIR = os.path.expanduser(
-    "~/dev/ragify-app/backend/apps/extractor/documentos-pdf"
-)
+load_dotenv()
 
-SENTENCE_TRANSFORMER_MODELS_DIR = os.path.expanduser(
-    "~/modelos/sentence-transformer-models"
-)
+DOCUMENTS_DIR = os.getenv("DOCUMENTS_DIR")
+SENTENCE_TRANSFORMER_MODELS_DIR = os.getenv("SENTENCE_TRANSFORMER_MODELS_DIR")
 
 
 class LocalVectorStoreGenerator:
@@ -52,7 +51,7 @@ class LocalVectorStoreGenerator:
         self.bert_model = kwargs.get("bert_model") or self.DEFAULT_BERT_MODEL
         self.chunk_size = kwargs.get("chunk_size") or self.DEFAULT_CHUNK_SIZE
         self.chunk_overlap = kwargs.get("chunk_overlap") or self.DEFAULT_CHUNK_OVERLAP
-        model_kwargs = kwargs.get("model_kwargs") or {"device": "cuda:0"}
+        model_kwargs = kwargs.get("model_kwargs") or {"device": "mps"}
 
         self.bert_model_dir = f"{SENTENCE_TRANSFORMER_MODELS_DIR}/{self.bert_model}"
         # ENDREGION
@@ -99,6 +98,7 @@ class LocalVectorStoreGenerator:
 
         embedding_function = self.embedding_model(
             model_name=self.bert_model_dir,
+            model_kwargs=model_kwargs,
             encode_kwargs=encode_kwargs,
         )
 
@@ -165,23 +165,6 @@ class LocalVectorStoreGenerator:
     def DB_DIR(self):
         options_str = f"{self.bert_model}__s{self.chunk_size}-o{self.chunk_overlap}"
         return f"embeddings/{self.vector_db_class.__name__}_db_{options_str}/"
-
-    def set_up_documents_dir(self, documents_ids: List[int], recreate_dir=True):
-        """
-        Copia cada documento referenciado por seu ID no arquivo importado no diretório `documentos`
-        """
-
-        # Remoção de diretório caso já exista
-        if recreate_dir:
-            shutil.rmtree(path=f"{DOCUMENTS_DIR}", ignore_errors=True)
-
-        os.makedirs(os.path.dirname(DOCUMENTS_DIR), exist_ok=True)
-
-        ids_string = set([f"{id}.pdf" for id in documents_ids])
-
-        for entry in os.scandir(path="documentos-pdf"):
-            if entry.name in ids_string:
-                shutil.copy(entry, DOCUMENTS_DIR)
 
     def get_embedding_kwargs(self):
         kwargs = {

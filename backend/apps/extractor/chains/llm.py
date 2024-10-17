@@ -6,11 +6,16 @@ from langchain_core.vectorstores import VectorStoreRetriever
 
 
 class LocalLLM:
-    def __init__(self, model_path) -> None:
+    def __init__(self, model_path, local=True) -> None:
         """
         Carrega um modelo de linguagem local e armazena-o em self.llm
         """
-        self.llm = Ollama(model=model_path)
+
+        base_url = (
+            "http://localhost:11434/" if local else "http://ollama-dev.ceos.ufsc.br/"
+        )
+
+        self.llm = Ollama(model=model_path, base_url=base_url)
 
     def get_pipeline(self):
         return self.llm

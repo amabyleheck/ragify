@@ -11,7 +11,7 @@ from openpyxl.workbook.workbook import Workbook
 from openpyxl.styles import Font
 
 from langchain_core.documents import Document
-from utils.utils import get_timestamp_for_file
+from extractor.utils.utils import get_timestamp_for_file
 
 ABS_PATH: str = os.path.dirname(os.path.abspath(__file__))
 EXCEL_TEMPLATE_PATH = f"{ABS_PATH}/export_template.xlsx"

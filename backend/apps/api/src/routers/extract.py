@@ -4,6 +4,7 @@ from starlette import status
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
+from misc.utils import bufferize_uploaded_files
 from database import get_db
 from schemas.extract import ExtractSchema
 from services.extract_service import ExtractService
@@ -29,8 +30,10 @@ async def extract(
     except json.JSONDecodeError as e:
         raise HTTPException(status_code=400, detail="Invalid JSON for extract_api")
 
+    await bufferize_uploaded_files(files)
+
     response = ExtractService(extract_schema=extract_schema).invoke_extract_job(
-        background_tasks, files, session_uid, db
+        background_tasks, session_uid, db
     )
 
     # return response
