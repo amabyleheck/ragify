@@ -20,7 +20,11 @@ RUN pip install --use-deprecated=legacy-resolver -r requirements.txt
 
 RUN pip install psycopg2
 
+RUN pip install torch torchvision
+
 COPY ./backend .
+
+COPY ./backend/.env ./backend/.env
 
 ENV PYTHONPATH=/app/backend/apps
 

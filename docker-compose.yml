@@ -12,7 +12,7 @@ services:
       - db
     stdin_open: true
     volumes:
-      - ./backend/apps/:/app/backend/apps/
+      - ./backend/:/app/backend/
     command: >
       sh -c "
         cd /app/backend/apps/api/src;
