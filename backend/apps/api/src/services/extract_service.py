@@ -1,11 +1,12 @@
-import time
-from typing import List
 from uuid import uuid4
-from fastapi import BackgroundTasks, UploadFile
+from fastapi import BackgroundTasks
 
 from database_models.job import Job, JobStatus
-from crud.job import create_job, update_job_status
-from misc.utils import bufferize_uploaded_files, clean_up_uploaded_files
+from crud.job import create_job, update_job_results_file, update_job_status
+from misc.utils import (
+    clean_up_outputs,
+    clean_up_uploaded_files,
+)
 
 from sqlalchemy.orm import Session
 
@@ -32,8 +33,15 @@ class ExtractService:
         update_job_status(db, job_id, JobStatus.IN_PROGRESS)
 
         print(extract_schema.dict())
-        extract(schema=extract_schema.dict())
+        try:
+            extract(schema=extract_schema.dict())
+        except BaseException:
+            clean_up_uploaded_files()
+            update_job_status(db, job_id, JobStatus.FAILED, completed=True)
+            return
 
+        update_job_results_file(db, job_id)
+        clean_up_outputs()
         clean_up_uploaded_files()
 
         update_job_status(db, job_id, JobStatus.COMPLETED, completed=True)

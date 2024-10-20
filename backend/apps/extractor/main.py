@@ -1,20 +1,15 @@
+from dotenv import load_dotenv
 from extractor.extract_multiple_ollama import (
     extract as extract_multiple_ollama,
 )
-import torch
-
-import gc
 import os
 import time
-import shutil
-import json
 
-# os.environ["PYTORCH_CUDA_ALLOC_CONF"] = (
-#     "garbage_collection_threshold:0.6,max_split_size_mb:128"
-# )
-# os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "garbage_collection_threshold:0.6,backend:cudaMallocAsync"
+from extractor.utils.organize import organize_results
 
-# parameters = json.load(open("parameters.json"))
+load_dotenv()
+
+ABS_PATH = os.getenv("ABS_PATH")
 
 
 def get_or_list(values):
@@ -45,7 +40,7 @@ def extract(schema):
 
     parameters = parameters_schema.copy()
 
-    directory = "outputs/"
+    directory = f"{ABS_PATH}/outputs/"
 
     start = time.time()
     counter = 0
@@ -69,8 +64,6 @@ def extract(schema):
                             parameters["embeddings"]["chunk_size"] = int(size)
                             for overlap in chunk_overlap:
                                 parameters["embeddings"]["chunk_overlap"] = int(overlap)
-                                # if (k * size) > 3500:
-                                #     continue
 
                                 if os.path.isfile(
                                     extraction_final_path(
@@ -82,11 +75,11 @@ def extract(schema):
                                     )
                                     continue
 
-                                # if overlap > size:
-                                #     print(
-                                #         "Chunk overlap maior que chunk size. Carregado próximo cenário..."
-                                #     )
-                                #     continue
+                                if overlap > size:
+                                    print(
+                                        "Chunk overlap maior que chunk size. Carregado próximo cenário..."
+                                    )
+                                    continue
 
                                 counter += 1
                                 print(
@@ -97,9 +90,6 @@ def extract(schema):
                                 extract_multiple_ollama(
                                     parameters, variables, annotation, directory
                                 )
-
-                                # shutil.rmtree(path="embeddings/", ignore_errors=True)
-                                # os.makedirs(os.path.dirname("embeddings/"), exist_ok=True)
                         directory = directory.replace(f"{k}/", "")
                     directory = directory.replace(f"{chain_type}/", "")
                 directory = directory.replace(f"{vector_store}/", "")
@@ -109,43 +99,4 @@ def extract(schema):
     end = time.time() - start
     print(f"{counter} cenário de testes executados em {end} segundos.")
 
-    # Emptying embeddings folder
-    # shutil.rmtree(path="embeddings/", ignore_errors=True)
-    # os.makedirs(os.path.dirname("embeddings/"), exist_ok=True)
-
-
-if __name__ == "__main__":
-    schema = {
-        "form": {
-            "parameters": {
-                "model": ["llama3.2"],
-                "embeddings": {
-                    "bert_model": ["bert-large-portuguese-cased"],
-                    "chunk_size": ["512"],
-                    "chunk_overlap": ["20"],
-                    "embedding_model": ["HuggingFaceBgeEmbeddings"],
-                    "vector_db": ["Chroma"],
-                    "text_splitter": ["RecursiveCharacterTextSplitter"],
-                },
-                "retrieval": {
-                    "chain_type": ["stuff"],
-                    "top_k": ["3"],
-                    "device_map": {"device": "cuda:0"},
-                },
-            },
-            "variables": [
-                {
-                    "name": "Author Names",
-                    "prompt": "Qual o modalidade do edital citado no documento? RESPONDA APENAS O NOME DA MODALIDADE.",
-                    "label": None,
-                },
-                {
-                    "name": "Author Names 2",
-                    "prompt": "Qual é a comarca citada no documento? RESPONDA APENAS O NOME DA COMARCA.",
-                    "label": None,
-                },
-            ],
-        },
-        "annotation": {"Author Names": {"244241.pdf": ""}},
-    }
-    extract(schema)
+    organize_results()

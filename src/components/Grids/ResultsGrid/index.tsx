@@ -101,12 +101,33 @@ const columns = (): GridColDef[] => {
       cellClassName: "actions",
       getActions: ({ id, row }) => {
         if (!row.result_file) return [];
+
+        const handleDownload = () => {
+          const link = document.createElement("a");
+          const byteCharacters = atob(row.result_file);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          });
+          const url = URL.createObjectURL(blob);
+          link.href = url;
+          link.download = `extraction_result_${row.completed_at}.xlsx`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+
         return [
           <GridActionsCellItem
             key={id}
             icon={<GridArrowDownwardIcon />}
             label="Download"
             color="inherit"
+            onClick={handleDownload}
           />
         ];
       },

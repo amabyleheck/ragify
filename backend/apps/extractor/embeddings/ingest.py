@@ -18,6 +18,7 @@ from langchain_core.documents import Document
 
 load_dotenv()
 
+ABS_PATH = os.getenv("ABS_PATH")
 DOCUMENTS_DIR = os.getenv("DOCUMENTS_DIR")
 SENTENCE_TRANSFORMER_MODELS_DIR = os.getenv("SENTENCE_TRANSFORMER_MODELS_DIR")
 
@@ -163,7 +164,9 @@ class LocalVectorStoreGenerator:
     @property
     def DB_DIR(self):
         options_str = f"{self.bert_model}__s{self.chunk_size}-o{self.chunk_overlap}"
-        return f"embeddings/{self.vector_db_class.__name__}_db_{options_str}/"
+        return (
+            f"{ABS_PATH}/embeddings/{self.vector_db_class.__name__}_db_{options_str}/"
+        )
 
     def get_embedding_kwargs(self):
         kwargs = {

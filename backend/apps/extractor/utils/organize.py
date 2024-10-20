@@ -1,6 +1,11 @@
 import os
 import pandas as pd
+from dotenv import load_dotenv
 from openpyxl import load_workbook
+
+load_dotenv()
+
+ABS_PATH = os.getenv("ABS_PATH")
 
 
 def extract_data_from_xlsx(file_path):
@@ -21,7 +26,7 @@ def extract_data_from_xlsx(file_path):
 
     # Extracting data from the "Resultado" sheet
     resultado_sheet = wb["Resultado"]
-    id_prompt = resultado_sheet["A4"].value
+    variavel = resultado_sheet["A4"].value
     resultado = resultado_sheet["B4"].value
     acuracia_maxima = resultado_sheet["D4"].value
 
@@ -35,7 +40,7 @@ def extract_data_from_xlsx(file_path):
         banco_vetores,
         chain_type,
         top_k,
-        id_prompt,
+        variavel,
         resultado,
         acuracia_maxima,
     ]
@@ -61,14 +66,13 @@ def process_files_in_folder(folder_path):
         "Vector Database",
         "Chain type",
         "Top k",
-        "ID Prompt",
+        "Variável",
         "Resultado",
         "Acurácia Máxima",
     ]
     df = pd.DataFrame(csv_rows, columns=columns)
-    df.to_csv("result_summary__municipio.csv", index=False)
-    df.to_excel("result_summary__municipio.xlsx", index=False)
+    df.to_excel(f"{ABS_PATH}/results/result_summary.xlsx", index=False)
 
 
-# Path to the 'result' folder
-process_files_in_folder("outputs/")
+def organize_results():
+    process_files_in_folder(f"{ABS_PATH}/outputs/")

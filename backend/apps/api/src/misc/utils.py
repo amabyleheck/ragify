@@ -10,6 +10,7 @@ import aiofiles
 
 load_dotenv()
 
+ABS_PATH = os.getenv("ABS_PATH")
 DOCUMENTS_DIR = os.getenv("DOCUMENTS_DIR")
 
 
@@ -34,3 +35,13 @@ def clean_up_uploaded_files():
     if os.path.exists(DOCUMENTS_DIR):
         shutil.rmtree(DOCUMENTS_DIR)
     os.makedirs(DOCUMENTS_DIR)
+
+
+def clean_up_outputs():
+    outputs_dir = ABS_PATH + "/outputs/"
+    results_dir = ABS_PATH + "/results/"
+
+    for dir in [outputs_dir, results_dir]:
+        if os.path.exists(dir):
+            shutil.rmtree(dir)
+            os.makedirs(dir)
