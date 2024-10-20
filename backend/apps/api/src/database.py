@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker
 load_dotenv()
 
 # Conexão com banco Postgres através da lib sqlalchemy
-engine = create_engine(os.environ.get("DATABASE_URL"))
+engine = create_engine(os.getenv("DATABASE_URL"))
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

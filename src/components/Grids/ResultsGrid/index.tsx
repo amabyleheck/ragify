@@ -30,17 +30,6 @@ const ResultsGrid: React.FC = () => {
 
 export default ResultsGrid;
 
-// function transformData(data: Job[] | null): GridRowsProp | [] {
-//   return data
-//     ? data.map((item, index) => ({
-//         id: index,
-//         name: item.name,
-//         label: item.label,
-//         prompt: item.prompt
-//       }))
-//     : [];
-// }
-
 const columns = (): GridColDef[] => {
   const sharedProps = {
     hideSortIcons: true,
@@ -110,7 +99,8 @@ const columns = (): GridColDef[] => {
       headerName: "Result File",
       width: 300,
       cellClassName: "actions",
-      getActions: ({ id }) => {
+      getActions: ({ id, row }) => {
+        if (!row.result_file) return [];
         return [
           <GridActionsCellItem
             key={id}

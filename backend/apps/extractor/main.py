@@ -1,4 +1,6 @@
-from extractor.extract_multiple_ollama import extract as extract_multiple_ollama
+from extractor.extract_multiple_ollama import (
+    extract as extract_multiple_ollama,
+)
 import torch
 
 import gc

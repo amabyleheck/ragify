@@ -165,3 +165,6 @@ extracao
 .vscode
 .pdf
 teste.py
+
+outputs/
+embeddings/

@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 from extractor.embeddings.ingest import LocalVectorStoreGenerator
 from extractor.chains.llm import LocalLLM
+from extractor.exporter.exporter import ExcelResultsExport
 
 load_dotenv()
 
@@ -51,11 +52,10 @@ def extract(parameters: dict, variables: dict, annotation: dict, directory=""):
         prompt = variable.get("prompt")
 
         extracted_dict[variable_name] = {}
-
-        # Extraction routine
         start = time.time()
 
         counter = 0
+        # Extraction routine
         for id in documents_ids:
             source = f"{DOCUMENTS_DIR}/{id}.pdf"
 
@@ -72,12 +72,13 @@ def extract(parameters: dict, variables: dict, annotation: dict, directory=""):
             extracted_dict[variable_name][id] = {"value": value, "docs": docs}
             counter += 1
             print(f"Answer for document {id}: {value}")
+            print("-----------")
             print(f"{counter} documents parsed.")
 
             end = time.time()
-            print(
-                f"Extracting {len(documents_ids)} documents with {model_name} took {end - start} seconds!\n"
-            )
+        print(
+            f"Extracting {len(documents_ids)} documents with {model_name} took {end - start} seconds!\n"
+        )
         # ENDREGION
 
         # RESULTS KWARGS REGION
@@ -89,16 +90,15 @@ def extract(parameters: dict, variables: dict, annotation: dict, directory=""):
         # ENDREGION
 
         # EXTRACTION RESULT CALL REGION
-        # ExcelResultsExport(
-        #     annotated_dict=annotation,
-        #     extracted_dict=extracted_dict,
-        #     model_name=model_name,
-        #     prompts=prompts,
-        #     header_name=variable_name,
-        #     variable_name=variable_name,
-        # ).export(
-        #     model_kwargs=model_kwargs,
-        #     embedding_kwargs=embedding_kwargs,
-        #     directory=directory,
-        # )
+        ExcelResultsExport(
+            documents_ids=documents_ids,
+            annotated_dict=annotation,
+            extracted_dict=extracted_dict,
+            model_name=model_name,
+            variables=variables,
+        ).export(
+            model_kwargs=model_kwargs,
+            embedding_kwargs=embedding_kwargs,
+            directory=directory,
+        )
         # ENDREGION

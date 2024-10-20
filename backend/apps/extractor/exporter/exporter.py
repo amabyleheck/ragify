@@ -11,7 +11,7 @@ from openpyxl.workbook.workbook import Workbook
 from openpyxl.styles import Font
 
 from langchain_core.documents import Document
-from extractor.utils.utils import get_timestamp_for_file
+from extractor.utils.utils import get_variable_form
 
 ABS_PATH: str = os.path.dirname(os.path.abspath(__file__))
 EXCEL_TEMPLATE_PATH = f"{ABS_PATH}/export_template.xlsx"
@@ -61,23 +61,22 @@ class ExcelResultsExport:
 
     def __init__(
         self,
+        documents_ids: List,
         annotated_dict: Dict,
         extracted_dict: Dict,
-        prompts: List,
+        variables: List,
         model_name: str,
-        header_name: str,
-        variable_name: str,
     ) -> None:
         """
         Salva variáveis em atributos e realiza a comparação de todos os modelos.
         """
 
-        self.prompts = prompts
-        self.documents_ids = list(annotated_dict.keys())
+        self.variables = variables
+
+        self.documents_ids = documents_ids
         self.total_parsed_documents = len(self.documents_ids)
+
         self.model_name = model_name
-        self.header_name = header_name
-        self.variable_name = variable_name
 
         self.annotated_dict = annotated_dict
         self.extracted_dict = extracted_dict
@@ -85,12 +84,14 @@ class ExcelResultsExport:
         self.resultado_geral_dict = {}
 
         # REGION: Comparando resultados para cada modelo e persistindo no dicionário
-        for prompt_dict in self.prompts:
-            prompt_key, _ = prompt_dict.values()
-            self.resultado_geral_dict[prompt_key] = self.compare(prompt_key)
+        for variable in self.variables:
+            key = variable.get("name")
+            # if label := variable.get("label"):
+            #     key += f" - {label}"
+            self.resultado_geral_dict[key] = self.compare(variable)
         # ENDREGION
 
-    def compare(self, prompt_key: str) -> Dict:
+    def compare(self, variable: dict) -> Dict:
         """
         Rotina de comparação de resultados extraídos X valores anotados.
 
@@ -102,21 +103,26 @@ class ExcelResultsExport:
         :return: Retorna dicionário com valores extraídos, anotados e seu resultado de comparação para cada documento
         somando a uma chave `metricas` que calcula as porcentagens finais a serem utilizadas na página "Resultados"
         """
-        current_extracted_dict = self.extracted_dict[prompt_key]
+        variable_name = variable.get("name")
+        variable_form = get_variable_form(variable_name)
+
+        current_extracted_dict = self.extracted_dict[variable_name]
+        current_annotated_dict = self.annotated_dict[variable_name]
 
         total_successes = 0
         total_retriever_successes = 0
 
-        model_result = {}
+        variable_result = {}
 
         # REGION: Comparando valor extraído e anotado para cada documento para folha `Detalhes`
         for document in self.documents_ids:
-            annotated_value = self.annotated_dict[document]["value"]
-            extracted_value = current_extracted_dict[document]["value"]
 
+            key = document + ".pdf"
+            annotated_value = current_annotated_dict[key]
+            extracted_value = current_extracted_dict[document]["value"]
             retrieved_docs = current_extracted_dict[document]["docs"]
 
-            if "processolicitatório" in self.variable_name.lower():
+            if "processolicitatório" in variable_form:
                 processed_variable = self.process_n_processo_licitatorio(
                     document, annotated_value, extracted_value
                 )
@@ -124,11 +130,13 @@ class ExcelResultsExport:
                     document, annotated_value, retrieved_docs
                 )
                 if processed_variable and not has_retriever_found_answer:
+                    # Comumente, a sequência exata está envolvida por caracteres especiais (e.g '\n'),
+                    # o que muitas vezes nao impede o modelo de acertar a resposta
                     print("Modelo acertou mesmo sem sequência exata nos documentos.")
                     has_retriever_found_answer = (
                         True  # Evitar acurácia de retriever menor que acurácia obtida
                     )
-            elif "municípiodeirregularidade" in self.variable_name.lower():
+            elif "municípiodeirregularidade" in variable_form:
                 processed_variable = self.process_municipio(
                     document, annotated_value, extracted_value
                 )
@@ -150,7 +158,7 @@ class ExcelResultsExport:
                 total_retriever_successes += 1
 
             # Final result dict
-            model_result[document] = {
+            variable_result[document] = {
                 "valor_anotado": annotated_value,
                 "valor_extraido": extracted_value,
                 "resultado": processed_variable,
@@ -164,13 +172,13 @@ class ExcelResultsExport:
             total_retriever_successes / self.total_parsed_documents, 2
         )
 
-        model_result["metricas"] = {
+        variable_result["metricas"] = {
             "success_rate": success_rate,
             "retriever_success_rate": retriever_success_rate,
         }
         # ENDREGION
 
-        return model_result
+        return variable_result
 
     def general_processing(
         self, document_id, annotated_value: str, extracted_value: str
@@ -258,11 +266,9 @@ class ExcelResultsExport:
         """
 
         folha_detalhes = workbook["Detalhes"]
-        # Preenchendo nome da coluna com o mesmo valor do arquivo importado
-        folha_detalhes.cell(2, 2).value = self.header_name
 
-        for index, prompt_dict in enumerate(self.prompts):
-            nome_folha = f'Detalhes - Prompt {prompt_dict.get("key")}'
+        for index, variable_dict in enumerate(self.variables):
+            nome_folha = f'Detalhes - Variable {variable_dict.get("name")} - {variable_dict.get("label")}'
             if index == 0:
                 folha_detalhes.name = nome_folha
                 folha_detalhes.title = nome_folha
@@ -338,11 +344,14 @@ class ExcelResultsExport:
 
         last_id = self.documents_ids[-1]
 
-        for index, prompt_dict in enumerate(self.prompts):
-            nome_folha = f'Detalhes - Prompt {prompt_dict.get("key")}'
+        for index, variable_dict in enumerate(self.variables):
+            nome_folha = f'Detalhes - Variable {variable_dict.get("name")} - {variable_dict.get("label")}'
             worksheet = workbook[nome_folha]
 
-            current_model_dict = self.resultado_geral_dict[prompt_dict.get("key")]
+            # Preenchendo nome da coluna com o mesmo valor do arquivo importado
+            worksheet.cell(2, 2).value = variable_dict.get("name")
+
+            current_model_dict = self.resultado_geral_dict[variable_dict.get("name")]
 
             for index, row in enumerate(
                 worksheet.iter_rows(
@@ -388,30 +397,28 @@ class ExcelResultsExport:
         # Preenchendo nome da coluna com o mesmo valor do arquivo importado
         worksheet.cell(2, 1).value = self.model_name
 
-        # for index, prompt_dict in enumerate(self.prompts):
-        #     prompt_key, prompt = prompt_dict.values()
-        #     current_result_dict = self.resultado_geral_dict[prompt_key]
-
         for index, row in enumerate(
             worksheet.iter_rows(
                 min_row=self.INITIAL_RESULTS_ROW,
                 min_col=self.INITIAL_RESULTS_COL,
-                max_row=self.INITIAL_RESULTS_ROW + len(list(self.prompts)),
+                max_row=self.INITIAL_RESULTS_ROW + len(list(self.variables)),
             )
         ):
             try:
-                prompt_key, prompt = self.prompts[index].values()
+                current_variable = self.variables[index]
+                current_variable_name = current_variable.get("name")
+                current_variable_prompt = current_variable.get("prompt")
             except IndexError:
                 break
 
-            current_result_dict = self.resultado_geral_dict[prompt_key]
+            current_result_dict = self.resultado_geral_dict[current_variable_name]
             if index == 0:
                 default_style = row[0].style
             else:
                 row[0].style = default_style
-            row[0].value = prompt_key
+            row[0].value = current_variable_name
             row[1].value = current_result_dict["metricas"]["success_rate"]
-            row[2].value = prompt
+            row[2].value = current_variable_prompt
             row[3].value = current_result_dict["metricas"]["retriever_success_rate"]
 
     def export(

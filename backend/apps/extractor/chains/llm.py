@@ -12,10 +12,10 @@ class LocalLLM:
         """
 
         base_url = (
-            "http://localhost:11434/" if local else "http://ollama-dev.ceos.ufsc.br/"
+            "http://localhost:11434/" if local else "https://ollama-dev.ceos.ufsc.br/"
         )
 
-        self.llm = Ollama(model=model_path, base_url=base_url)
+        self.llm = Ollama(model=model_path, base_url=base_url, temperature=0, top_k=1)
 
     def get_pipeline(self):
         return self.llm
@@ -28,7 +28,6 @@ class LocalLLM:
         (devido ao suporte descontinuado para RetrievalQA e chains relacionadas (map reduce, etc))
         """
 
-        # O uso de dos tokens [/INST] é um token especial utilizado em prompts de modelos de linguagem do tipo Instruct.
         template = (
             """
         Você é um assistente de IA útil e fornece a resposta em língua portuguesa para a pergunta com base no contexto fornecido.

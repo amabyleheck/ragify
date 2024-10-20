@@ -104,7 +104,6 @@ class LocalVectorStoreGenerator:
 
         # Se já existir banco de vetores com determinada configuração, não recria-o
         if os.path.isdir(self.DB_DIR):
-            shutil.rmtree(path=self.DB_DIR, ignore_errors=True)
             vector_database = self.vector_db_class(
                 persist_directory=self.DB_DIR, embedding_function=embedding_function
             )
