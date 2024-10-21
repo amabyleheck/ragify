@@ -7,17 +7,17 @@ import {
 } from "@/components/Icons";
 
 export const NavigationOption = {
-  DOCUMENTS: { id: 0, title: "Documents", icon: <FileIcon /> },
-  VARIABLES: { id: 1, title: "Variables", icon: <LayersIcon /> },
-  ANNOTATION: { id: 2, title: "Annotation", icon: <ChecksIcon /> },
+  DOCUMENTS: { id: 0, title: "Documentos", icon: <FileIcon /> },
+  VARIABLES: { id: 1, title: "Variáveis", icon: <LayersIcon /> },
+  ANNOTATION: { id: 2, title: "Anotação", icon: <ChecksIcon /> },
   PARAMETERS: {
     id: 3,
-    title: "RAG Parameters",
+    title: "Parâmetros RAG",
     icon: <DevIcon className="text-gray-400" />
   },
   RESULTS: {
     id: 4,
-    title: "Results",
+    title: "Resultados",
     icon: <GraphIcon />
   }
 };

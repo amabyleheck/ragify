@@ -18,7 +18,7 @@ const VariablesAnnotationPanel: React.FC = () => {
     <div className="panel">
       {variables.length === 0 ? (
         <Typography variant="h5" fontWeight={400}>
-          No created variables yet. Go to the variables page and create some!
+          Nenhuma variável criada. Crie variáveis para continuar.
         </Typography>
       ) : (
         <TabProvider defaultTab={variables[0].name}>
@@ -36,7 +36,7 @@ const VariablesAnnotationPanel: React.FC = () => {
                   align="left"
                   fontSize={25}
                 >
-                  Annotate Variables
+                  Anotação de Variáveis
                 </Typography>
                 <InfoOutlined fontSize="small" />
               </Stack>

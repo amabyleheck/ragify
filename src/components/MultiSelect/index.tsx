@@ -26,7 +26,6 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         <Select
           labelId="demo-multiple-chip-label"
           multiple
-          label={"TESTE"}
           value={selectedValue}
           onChange={onChange}
           input={<OutlinedInput label={title} />}

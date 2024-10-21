@@ -61,7 +61,7 @@ const ParametersForm: React.FC = () => {
   return (
     <Stack direction="column" spacing={3} alignItems={"flex-start"}>
       <Typography variant="subtitle1" fontWeight={800}>
-        Models
+        Modelos
       </Typography>
 
       <Box>
@@ -81,13 +81,13 @@ const ParametersForm: React.FC = () => {
       <Stack spacing={2} direction={"column"}>
         <Stack spacing={2} direction={"row"}>
           <MultiSelect
-            title="Chunk Size"
+            title="Tamanho de Chunk"
             values={PARAMETER_OPTIONS.CHUNK_SIZE}
             selectedValue={chunk_size}
             onChange={e => handleChangeEmbeddings(e, "chunk_size")}
           />
           <MultiSelect
-            title="Chunk Overlap"
+            title="Tamanho de Chunk Overlap"
             values={PARAMETER_OPTIONS.CHUNK_OVERLAP}
             selectedValue={chunk_overlap}
             onChange={e => handleChangeEmbeddings(e, "chunk_overlap")}
@@ -101,19 +101,19 @@ const ParametersForm: React.FC = () => {
         </Stack>
         <Stack spacing={2} direction={"row"}>
           <MultiSelect
-            title="Vector Database"
+            title="Banco de Vetores"
             values={PARAMETER_OPTIONS.VECTOR_DATABASE}
             selectedValue={vector_db}
             onChange={e => handleChangeEmbeddings(e, "vector_db")}
           />
           <MultiSelect
-            title="Bert Model"
+            title="Modelo BERT"
             values={PARAMETER_OPTIONS.BERT_MODEL}
             selectedValue={bert_model}
             onChange={e => handleChangeEmbeddings(e, "bert_model")}
           />
           <MultiSelect
-            title="Embedding Model"
+            title="Modelo de Embeddings"
             values={PARAMETER_OPTIONS.EMBEDDING_MODEL}
             selectedValue={embedding_model}
             onChange={e => handleChangeEmbeddings(e, "embedding_model")}
@@ -123,7 +123,7 @@ const ParametersForm: React.FC = () => {
 
       {/* Retrieval Section */}
       <Typography variant="subtitle1" fontWeight={800}>
-        Retrieval
+        Recuperação (retrieval)
       </Typography>
 
       <Stack spacing={2}>
@@ -142,7 +142,7 @@ const ParametersForm: React.FC = () => {
         </Stack>
         <Box className="flex">
           <MultiSelect
-            title="Chain Type"
+            title="Tipo de Chain"
             values={PARAMETER_OPTIONS.CHAIN_TYPE}
             selectedValue={chain_type}
             onChange={e => handleChangeRetrieval(e, "chain_type")}

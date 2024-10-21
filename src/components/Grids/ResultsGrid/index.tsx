@@ -10,7 +10,6 @@ import useFetchJobs from "@/api/useFetchJobs";
 
 const ResultsGrid: React.FC = () => {
   const { data, loading } = useFetchJobs();
-  //const { enqueueSnackbar } = useSnackbar();
 
   if (loading) return <div>Loading...</div>;
 
@@ -43,7 +42,7 @@ const columns = (): GridColDef[] => {
   return [
     {
       field: "id",
-      headerName: "Extraction ID",
+      headerName: "ID de Extração",
       width: 150,
       ...sharedProps
     },
@@ -71,7 +70,7 @@ const columns = (): GridColDef[] => {
     },
     {
       field: "started_at",
-      headerName: "Started At",
+      headerName: "Iniciado Em",
       width: 300,
       renderCell: params => {
         const date = params.value
@@ -83,7 +82,7 @@ const columns = (): GridColDef[] => {
     },
     {
       field: "completed_at",
-      headerName: "Completed At",
+      headerName: "Concluído Em",
       width: 300,
       renderCell: params => {
         const date = params.value
@@ -96,7 +95,7 @@ const columns = (): GridColDef[] => {
     {
       field: "result_file",
       type: "actions",
-      headerName: "Result File",
+      headerName: "Arquivo de Resultado",
       width: 300,
       cellClassName: "actions",
       getActions: ({ id, row }) => {
@@ -115,7 +114,7 @@ const columns = (): GridColDef[] => {
           });
           const url = URL.createObjectURL(blob);
           link.href = url;
-          link.download = `extraction_result_${row.completed_at}.xlsx`;
+          link.download = `resultado_extracao_${row.completed_at}.xlsx`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -125,7 +124,7 @@ const columns = (): GridColDef[] => {
           <GridActionsCellItem
             key={id}
             icon={<GridArrowDownwardIcon />}
-            label="Download"
+            label="Baixar"
             color="inherit"
             onClick={handleDownload}
           />

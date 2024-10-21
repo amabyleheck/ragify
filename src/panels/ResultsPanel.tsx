@@ -19,7 +19,7 @@ const ResultsPanel: React.FC = () => {
             fontSize={25}
             className={"pb-6"}
           >
-            Extraction Results
+            Resultados de extração
           </Typography>
         </Stack>
         <ResultsGrid />

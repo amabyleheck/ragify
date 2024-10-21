@@ -26,7 +26,7 @@ const UploadedFilesGrid: React.FC<UploadedFilesGridProps> = ({
     });
 
     setFiles(updatedFiles);
-    enqueueSnackbar("File deleted successfully.", { variant: "success" });
+    enqueueSnackbar("Arquivo deletado com sucesso.", { variant: "success" });
   }
 
   return (
@@ -34,7 +34,7 @@ const UploadedFilesGrid: React.FC<UploadedFilesGridProps> = ({
       <Stack direction={"column"} className="w-full">
         {files.length === 0 ? (
           <Typography variant="subtitle1" fontWeight={400}>
-            No uploaded files yet.
+            Nenhum documento carregado até o momento.
           </Typography>
         ) : (
           files.map((file, index) => (

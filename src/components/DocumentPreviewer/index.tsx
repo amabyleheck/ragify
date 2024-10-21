@@ -62,7 +62,7 @@ const DocumentPreviewer: React.FC<DocumentPreviewerProps> = ({ file }) => {
               disabled={currentPage <= 1}
               className="cursor-pointer"
             >
-              Previous Page
+              Página Anterior
             </Button>
             <Box>
               <Typography
@@ -71,7 +71,7 @@ const DocumentPreviewer: React.FC<DocumentPreviewerProps> = ({ file }) => {
                 align="center"
                 fontSize={20}
               >
-                Document Preview
+                Prévia de Documento
               </Typography>
               <Typography
                 variant="h5"
@@ -79,7 +79,7 @@ const DocumentPreviewer: React.FC<DocumentPreviewerProps> = ({ file }) => {
                 align="center"
                 fontSize={15}
               >
-                Page {currentPage} of {numPages}
+                Página {currentPage} de {numPages}
               </Typography>
             </Box>
             <Button
@@ -87,7 +87,7 @@ const DocumentPreviewer: React.FC<DocumentPreviewerProps> = ({ file }) => {
               disabled={currentPage >= numPages}
               className="cursor-pointer"
             >
-              Next Page
+              Próxima Página
             </Button>
           </Stack>
           <Box className="row flex items-center justify-center">

@@ -17,7 +17,7 @@ const FilesList: React.FC<FilesListProps> = ({ annotation }) => {
     <Stack spacing={1}>
       <Stack direction={"row"} justifyContent={"space-between"}>
         <Typography variant="h5" fontWeight={800} align="left" fontSize={20}>
-          List of documents
+          Lista de documentos
         </Typography>
         <Typography
           variant="body1"

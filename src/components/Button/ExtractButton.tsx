@@ -12,7 +12,7 @@ const ExtractButton: React.FC = () => {
   return (
     <Button variant="contained" color="primary" onClick={handleClick}>
       {loading && <span className="spinner" />}
-      Extract
+      Extrair
     </Button>
   );
 };

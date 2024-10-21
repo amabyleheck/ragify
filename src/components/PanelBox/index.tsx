@@ -18,7 +18,7 @@ const PanelBox: React.FC<React.PropsWithChildren<PanelBoxProps>> = ({
       }}
     >
       <Box
-        className={`styled-scrollbar h-[ flex content-center items-center justify-center${height - 2}vh] overflow-y-auto px-[10px]`}
+        className={`styled-scrollbar flex content-center items-center justify-center${height - 2}vh] overflow-y-auto px-[10px]`}
       >
         {children}
       </Box>

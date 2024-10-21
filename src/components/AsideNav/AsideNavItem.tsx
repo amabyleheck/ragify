@@ -54,7 +54,7 @@ const AsideNavItem: React.FC<AsideNavProps> = ({ id, icon, title }) => {
                 fontSize={12}
                 alignSelf={"end"}
               >
-                (Optional)
+                (Opcional)
               </Typography>
             )}
           </Stack>

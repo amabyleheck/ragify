@@ -55,7 +55,7 @@ const UploadedFileRow: React.FC<UploadedFileRowProps> = ({
         <Stack spacing={1} direction={"row"} alignItems={"center"}>
           <DocumentPreviewer file={file} />
           <TextField
-            placeholder="Fill with correct value..."
+            placeholder="Preencha com a resposta esperada..."
             size={"small"}
             value={annotationData[activeTab]?.[file.name] || ""}
             onChange={e => updateVariable(activeTab, file.name, e.target.value)}

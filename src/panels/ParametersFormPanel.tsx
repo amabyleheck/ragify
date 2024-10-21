@@ -20,7 +20,7 @@ const ParametersFormPanel: React.FC = () => {
               align="left"
               fontSize={25}
             >
-              RAG Parameters Customization
+              Customização de Parâmetros RAG
             </Typography>
             <Typography
               variant="body1"
@@ -28,7 +28,7 @@ const ParametersFormPanel: React.FC = () => {
               align="left"
               fontSize={15}
             >
-              (Optional)
+              (Opcional)
             </Typography>
           </Stack>
         </Stack>

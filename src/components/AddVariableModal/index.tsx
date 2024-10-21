@@ -43,16 +43,19 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
     e.preventDefault();
 
     if (!variableName) {
-      enqueueSnackbar("Please fill in all required fields.", {
+      enqueueSnackbar("Por favor, preencha todos os campos obrigatórios.", {
         variant: "error"
       });
       setTimetoutError();
     }
 
     if (variables.find(variable => variable.name === variableName)) {
-      enqueueSnackbar("Variable name already exists. Please try again.", {
-        variant: "error"
-      });
+      enqueueSnackbar(
+        "Uma variável com esse nome já existe. Por favor tente novamente.",
+        {
+          variant: "error"
+        }
+      );
       setTimetoutError();
       return;
     }
@@ -66,7 +69,7 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
     const newVariables = [...variables, newVariable];
     setVariables(newVariables);
 
-    enqueueSnackbar("Variable added successfully.", { variant: "success" });
+    enqueueSnackbar("Variável criada com sucesso.", { variant: "success" });
 
     handleClearForm();
     handleClose();
@@ -88,13 +91,13 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
           className="size-full"
         >
           <Typography variant="h1" fontWeight={800} fontSize={30}>
-            Add Variable
+            Adicionar variável
           </Typography>
           <FormControl required fullWidth>
             <Stack spacing={3}>
               <TextField
                 id="outlined-basic"
-                label="Variable Name"
+                label="Nome da Variável"
                 variant="outlined"
                 value={variableName}
                 onChange={e => setVariableName(e.target.value)}
@@ -105,7 +108,7 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
                 <LabelSelect label={label} setLabel={setLabel} />
               </Box>
               <TextField
-                placeholder="Write your prompt..."
+                placeholder="Digite seu prompt..."
                 label="Prompt"
                 multiline
                 rows={5}
@@ -121,7 +124,7 @@ const AddVariableModal: React.FC<ModalProps> = ({ open, handleClose }) => {
               tabIndex={-1}
               onClick={handleSubmit}
             >
-              Save
+              Salvar
             </Button>
           </Stack>
         </Stack>

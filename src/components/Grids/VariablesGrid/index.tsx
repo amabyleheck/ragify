@@ -24,7 +24,7 @@ const VariablesGrid: React.FC<VariablesGridProps> = ({ setOpen }) => {
 
   const handleDeleteVariable = (name: string) => {
     setVariables(variables.filter(variable => variable.name !== name));
-    enqueueSnackbar("Variable deleted successfully.", { variant: "success" });
+    enqueueSnackbar("Variável deletada com sucesso.", { variant: "success" });
   };
 
   return (
@@ -43,7 +43,7 @@ const VariablesGrid: React.FC<VariablesGridProps> = ({ setOpen }) => {
           className="w-60"
           onClick={() => setOpen(true)}
         >
-          Add new variable
+          Adicione uma variável
         </Button>
       </Stack>
     </Stack>
@@ -78,7 +78,7 @@ const columns = (
   return [
     {
       field: "name",
-      headerName: "Variable Name",
+      headerName: "Nome da Variável",
       width: 200,
       ...sharedProps
     },
@@ -100,7 +100,7 @@ const columns = (
     },
     {
       field: "label",
-      headerName: "Label",
+      headerName: "Tipo",
       width: 300,
       renderCell: params => {
         const label = VariableLabel[params.value as VariableLabelType];
@@ -122,7 +122,7 @@ const columns = (
     {
       field: "actions",
       type: "actions",
-      headerName: "Actions",
+      headerName: "Ações",
       width: 100,
       cellClassName: "actions",
       getActions: ({ id, row }) => {

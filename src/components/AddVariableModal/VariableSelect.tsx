@@ -11,7 +11,7 @@ const LabelSelect: React.FC<VariableSelectProps> = ({ label, setLabel }) => {
   return (
     <TextField
       select
-      label="Label"
+      label="Tipo"
       value={label ? label : ""}
       onChange={e => setLabel(e.target.value as VariableLabelType)}
       sx={{ width: "100%" }}

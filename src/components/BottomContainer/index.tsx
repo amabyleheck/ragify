@@ -13,16 +13,16 @@ const BottomContainer: React.FC<BottomContainerProps> = ({ nextPage }) => {
 
   return (
     <Stack direction={"row"} justifyContent={"flex-end"} spacing={2}>
-      <Button type="button" variant="outlined" tabIndex={-1}>
-        Discard
-      </Button>
+      {/* <Button type="button" variant="outlined" tabIndex={-1}>
+        Descartar
+      </Button> */}
       <Button
         type="button"
         variant="contained"
         tabIndex={-1}
         onClick={() => setPageType(nextPage)}
       >
-        Next
+        Próximo
       </Button>
     </Stack>
   );

@@ -21,7 +21,9 @@ const DragAndDrop: React.FC = () => {
       uploadedFiles.length > 0 &&
       uploadedFiles.some(file => file.type !== "application/pdf")
     ) {
-      enqueueSnackbar("Only .pdf documents are allowed", { variant: "error" });
+      enqueueSnackbar("Apenas arquivos .pdf são permitidos.", {
+        variant: "error"
+      });
       return;
     }
 
@@ -30,15 +32,18 @@ const DragAndDrop: React.FC = () => {
         files.map(file => file.name).includes(file.name)
       )
     ) {
-      enqueueSnackbar("Duplicate files are not allowed. Please try again.", {
-        variant: "error"
-      });
+      enqueueSnackbar(
+        "Arquivos duplicados não são permitidos. Por favor, tente novamente.",
+        {
+          variant: "error"
+        }
+      );
       return;
     }
 
     const filesArray = uploadedFiles.concat(files);
     setFiles(filesArray);
-    enqueueSnackbar("Files uploaded successfully.", { variant: "success" });
+    enqueueSnackbar("Arquivos carregados com sucesso.", { variant: "success" });
   };
 
   const handleFileDrag = (event: React.DragEvent<HTMLLabelElement>) => {
@@ -57,7 +62,7 @@ const DragAndDrop: React.FC = () => {
   return (
     <Stack spacing={2}>
       <Typography variant="h5" fontWeight={800} align="left" fontSize={25}>
-        Upload documents
+        Carregue documentos
       </Typography>
       <Button
         component="label"
@@ -80,7 +85,7 @@ const DragAndDrop: React.FC = () => {
             color={"black"}
             textTransform={"none"}
           >
-            Drag and drop your documents
+            Arraste e solte seus documentos
           </Typography>
           <Typography
             variant="h6"
@@ -91,7 +96,7 @@ const DragAndDrop: React.FC = () => {
             color={"black"}
             textTransform={"none"}
           >
-            Only .pdf documents are allowed
+            Apenas arquivos .pdf são permitidos
           </Typography>
           <HiddenInput
             type="file"

@@ -55,7 +55,7 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
         />
         {original && (
           <Typography fontSize={15} className="text-gray-400">
-            Uploading Documents
+            Carregando Documentos
           </Typography>
         )}
       </>
@@ -75,7 +75,7 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
         />
         {original && (
           <Typography fontSize={15} className="text-gray-400">
-            Defining Variables
+            Definindo Variáveis
           </Typography>
         )}
       </>
@@ -95,7 +95,7 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
         />
         {original && (
           <Typography fontSize={15} className="text-gray-400">
-            Annotating Variables
+            Anotando Variáveis
           </Typography>
         )}
       </>
@@ -115,7 +115,7 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
         />
         {original && (
           <Typography fontSize={15} className="text-gray-400">
-            Choosing Parameters
+            Configurando Parâmetros
           </Typography>
         )}
       </>
@@ -134,7 +134,7 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
           clickable
         />
         <Typography fontSize={15} className="text-gray-400">
-          Results
+          Resultados
         </Typography>
       </>
     );

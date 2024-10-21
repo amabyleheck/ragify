@@ -26,7 +26,7 @@ const VariablesDefinition: React.FC = () => {
               align="left"
               fontSize={25}
             >
-              Variables
+              Variáveis
             </Typography>
             <Tooltip title="" placement="top">
               <InfoOutlined fontSize="small" />
