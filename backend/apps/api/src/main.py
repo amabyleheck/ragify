@@ -47,7 +47,7 @@ def create_app():
 app = create_app()
 
 
-@app.on_event("startup")
-def startup():
-    # Define the number of background tasks job executed simultaneously.
-    RunVar("_default_thread_limiter").set(CapacityLimiter(1))
+# @app.on_event("startup")
+# def startup():
+#     # Define the number of background tasks job executed simultaneously.
+#     RunVar("_default_thread_limiter").set(CapacityLimiter(1))
