@@ -28,7 +28,7 @@ const VariablesGrid: React.FC<VariablesGridProps> = ({ setOpen }) => {
   };
 
   return (
-    <Stack direction={"column"} spacing={1} sx={{ height: "55vh" }}>
+    <Stack direction={"column"} spacing={1} sx={{ height: "65vh" }}>
       <DataGrid
         rows={transformData(variables)}
         columns={columns(handleDeleteVariable)}

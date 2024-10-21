@@ -16,7 +16,7 @@ const VariablesDefinition: React.FC = () => {
         direction={"column"}
         spacing={3}
         height={"100%"}
-        justifyContent={"space-around"}
+        justifyContent={"space-between"}
       >
         <Stack direction={"column"} spacing={3}>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>

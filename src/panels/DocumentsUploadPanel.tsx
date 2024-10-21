@@ -12,12 +12,12 @@ const DocumentsUploadPanel: React.FC = () => {
         direction={"column"}
         spacing={5}
         height={"100%"}
-        justifyContent={"space-around"}
+        justifyContent={"space-between"}
       >
         <DragAndDrop />
         <FilesList annotation={false} />
         <BottomContainer
-          nextPage={NavigationOption.PARAMETERS.title as NavigationOptionType}
+          nextPage={NavigationOption.VARIABLES.title as NavigationOptionType}
         />
       </Stack>
     </div>

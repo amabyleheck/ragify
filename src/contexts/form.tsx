@@ -26,13 +26,7 @@ interface FormContextProps {
 
 export const FormContext = createContext<FormContextProps>({
   formData: {
-    variables: [
-      {
-        name: "Numero da Licitacao",
-        prompt:
-          "Dada a seguinte descrição: O número do processo licitatório (ou número da licitação, Licitação n°) refere-se à identificação única atribuída a cada processo licitatório, geralmente no formato `número/ano`. Qual é o número do número do processo licitatório citado no contexto acima? RESPONDA APENAS O NÚMERO DO PROCESSO."
-      }
-    ],
+    variables: [],
     files: [],
     parameters: {
       model: ["llama3.1:70b"],
@@ -71,13 +65,7 @@ export const useFormContext = () => {
 
 export const FormProvider = ({ children }: { children: ReactNode }) => {
   const [formData, setFormData] = useState<GlobalFormContext>({
-    variables: [
-      {
-        name: "Numero da Licitacao",
-        prompt:
-          "Dada a seguinte descrição: O número do processo licitatório (ou número da licitação, Licitação n°) refere-se à identificação única atribuída a cada processo licitatório, geralmente no formato `número/ano`. Qual é o número do número do processo licitatório citado no contexto acima? RESPONDA APENAS O NÚMERO DO PROCESSO."
-      }
-    ],
+    variables: [],
     files: [],
     parameters: {
       model: ["llama3.1:70b"],

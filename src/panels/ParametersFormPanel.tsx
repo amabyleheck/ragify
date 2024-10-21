@@ -1,8 +1,5 @@
-import BottomContainer from "@/components/BottomContainer";
 import ExtractButton from "@/components/Button/ExtractButton";
 import ParametersForm from "@/components/ParametersForm";
-import { NavigationOptionType } from "@/types";
-import { NavigationOption } from "@/utils/consts";
 import { Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
@@ -12,11 +9,10 @@ const ParametersFormPanel: React.FC = () => {
     <div className="panel">
       <Stack
         direction={"column"}
-        spacing={1}
         height={"100%"}
-        justifyContent={"space-around"}
+        justifyContent={"space-between"}
       >
-        <Stack direction={"column"} spacing={3}>
+        <Stack direction={"column"}>
           <Stack direction={"row"} alignItems={"center"} spacing={1}>
             <Typography
               variant="h1"
@@ -37,9 +33,6 @@ const ParametersFormPanel: React.FC = () => {
           </Stack>
         </Stack>
         <ParametersForm />
-        <BottomContainer
-          nextPage={NavigationOption.PARAMETERS.title as NavigationOptionType}
-        />
         <ExtractButton />
       </Stack>
     </div>

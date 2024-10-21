@@ -25,10 +25,10 @@ const VariablesAnnotationPanel: React.FC = () => {
           <Stack
             direction={"column"}
             spacing={1}
-            justifyContent={"space-around"}
+            justifyContent={"space-between"}
             height={"100%"}
           >
-            <Stack direction={"column"} spacing={1}>
+            <Stack direction={"column"} spacing={3}>
               <Stack direction={"row"} spacing={1} alignItems={"center"}>
                 <Typography
                   variant="h1"

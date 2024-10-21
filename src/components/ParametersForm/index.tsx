@@ -59,7 +59,7 @@ const ParametersForm: React.FC = () => {
   };
 
   return (
-    <Stack direction="column" spacing={1} alignItems={"flex-start"}>
+    <Stack direction="column" spacing={3} alignItems={"flex-start"}>
       <Typography variant="subtitle1" fontWeight={800}>
         Models
       </Typography>
@@ -135,7 +135,7 @@ const ParametersForm: React.FC = () => {
             onChange={e => handleChangeRetrieval(e, "top_k")}
           />
           <TextField
-            label="Device Map (CUDA or CPU)"
+            label="Device Map"
             value={device_map.device}
             onChange={handleChangeDeviceMap}
           />

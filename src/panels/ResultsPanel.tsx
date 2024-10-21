@@ -8,24 +8,21 @@ const ResultsPanel: React.FC = () => {
     <div className="panel">
       <Stack
         direction={"column"}
-        spacing={1}
         height={"100%"}
-        justifyContent={"space-around"}
+        justifyContent={"space-between"}
       >
-        <Stack direction={"column"} spacing={3}>
-          <Stack direction={"row"} spacing={1} alignItems={"center"}>
-            <Typography
-              variant="h1"
-              fontWeight={800}
-              align="left"
-              fontSize={25}
-              className={"pb-6"}
-            >
-              Extraction Results
-            </Typography>
-          </Stack>
-          <ResultsGrid />
+        <Stack direction={"row"} alignItems={"center"}>
+          <Typography
+            variant="h1"
+            fontWeight={800}
+            align="left"
+            fontSize={25}
+            className={"pb-6"}
+          >
+            Extraction Results
+          </Typography>
         </Stack>
+        <ResultsGrid />
       </Stack>
     </div>
   );

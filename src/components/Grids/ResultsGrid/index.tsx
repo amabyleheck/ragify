@@ -17,7 +17,7 @@ const ResultsGrid: React.FC = () => {
   const gridColumns = columns();
 
   return (
-    <Stack direction={"column"} spacing={1} sx={{ height: "55vh" }}>
+    <Stack direction={"column"} sx={{ height: "70vh" }}>
       <DataGrid
         rows={data?.jobs}
         columns={gridColumns}
