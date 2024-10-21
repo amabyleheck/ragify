@@ -51,6 +51,11 @@ def extract(parameters: dict, variables: dict, annotation: dict, directory=""):
         variable_name = variable.get("name")
         prompt = variable.get("prompt")
 
+        if not prompt:
+            prompt = f"""
+            Qual é o(a) {variable_name} citado(a) no documento?
+            """
+
         extracted_dict[variable_name] = {}
         start = time.time()
 

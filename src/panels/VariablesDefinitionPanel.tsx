@@ -28,7 +28,7 @@ const VariablesDefinition: React.FC = () => {
             >
               Variables
             </Typography>
-            <Tooltip title="Esse eh um teste longo de tooltip!" placement="top">
+            <Tooltip title="" placement="top">
               <InfoOutlined fontSize="small" />
             </Tooltip>
           </Stack>
