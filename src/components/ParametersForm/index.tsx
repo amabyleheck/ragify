@@ -59,7 +59,7 @@ const ParametersForm: React.FC = () => {
   };
 
   return (
-    <Stack direction="column" spacing={3} alignItems={"flex-start"}>
+    <Stack direction="column" spacing={2} alignItems={"flex-start"}>
       <Typography variant="subtitle1" fontWeight={800}>
         Modelos
       </Typography>

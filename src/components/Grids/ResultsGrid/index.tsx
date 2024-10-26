@@ -96,7 +96,7 @@ const columns = (): GridColDef[] => {
       field: "result_file",
       type: "actions",
       headerName: "Arquivo de Resultado",
-      width: 300,
+      width: 100,
       cellClassName: "actions",
       getActions: ({ id, row }) => {
         if (!row.result_file) return [];

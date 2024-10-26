@@ -85,7 +85,7 @@ const columns = (
     {
       field: "prompt",
       headerName: "Prompt",
-      width: 400,
+      width: 550,
       renderCell: params => {
         const prompt = valueOrNA(params?.value);
         const truncatedPrompt =
@@ -101,7 +101,7 @@ const columns = (
     {
       field: "label",
       headerName: "Tipo",
-      width: 300,
+      width: 200,
       renderCell: params => {
         const label = VariableLabel[params.value as VariableLabelType];
         return label ? (

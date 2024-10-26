@@ -27,7 +27,8 @@ export const PARAMETER_OPTIONS = {
     "llama-2-7b",
     "llama-2-13b",
     "Mistral-7b",
-    "llama3.2",
+    "llama3.2:3b",
+    "llama3.1:8b",
     "llama3.1:70b"
   ], // TODO: Add lazy fetch of locally downloaded models
   // CHUNKING
