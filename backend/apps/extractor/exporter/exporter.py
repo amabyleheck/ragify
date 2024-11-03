@@ -147,8 +147,8 @@ class ExcelResultsExport:
                 processed_variable = self.general_processing(
                     document, annotated_value, extracted_value
                 )
-                has_retriever_found_answer = self.general_processing(
-                    document, annotated_value, retrieved_docs
+                has_retriever_found_answer = self.process_retrieved_docs(
+                    annotated_value, retrieved_docs
                 )
 
             if processed_variable:
@@ -184,10 +184,23 @@ class ExcelResultsExport:
         self, document_id, annotated_value: str, extracted_value: str
     ) -> bool:
         # IMPLEMENTAR AQUI SEU MÉTODO
+        print("entrou aqui")
+        print(annotated_value, extracted_value)
         if annotated_value.lower() in extracted_value.lower():
             return True
         else:
             return False
+
+    @staticmethod
+    def process_retrieved_docs(
+        annotated_value: str, retrieved_docs: List[Document]
+    ) -> bool:
+        for doc in retrieved_docs:
+            text = doc.page_content
+            if annotated_value.lower() in text.lower():
+                return True
+
+        return False
 
     @staticmethod
     def process_n_processo_licitatorio(

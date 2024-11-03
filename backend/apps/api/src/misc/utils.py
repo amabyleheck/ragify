@@ -40,8 +40,26 @@ def clean_up_uploaded_files():
 def clean_up_outputs():
     outputs_dir = ABS_PATH + "/outputs/"
     results_dir = ABS_PATH + "/results/"
+    final_results_dir = ABS_PATH + "/final/"
 
-    for dir in [outputs_dir, results_dir]:
+    for dir in [outputs_dir, results_dir, final_results_dir]:
         if os.path.exists(dir):
             shutil.rmtree(dir)
             os.makedirs(dir)
+
+
+def zip_output_and_results():
+    outputs_dir = ABS_PATH + "/outputs/"
+    results_dir = ABS_PATH + "/results/"
+
+    final_results_dir = ABS_PATH + "/final/"
+
+    zip_file_path_results = os.path.join(ABS_PATH, "final", "results")
+
+    zip_file_path_summary = os.path.join(ABS_PATH, "final", "summary")
+    zip_file_path_outputs = os.path.join(ABS_PATH, "final", "outputs")
+
+    shutil.make_archive(zip_file_path_summary, "zip", results_dir)
+    shutil.make_archive(zip_file_path_outputs, "zip", outputs_dir)
+
+    shutil.make_archive(zip_file_path_results, "zip", final_results_dir)

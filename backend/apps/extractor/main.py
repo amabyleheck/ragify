@@ -75,7 +75,7 @@ def extract(schema):
                                     )
                                     continue
 
-                                if overlap > size:
+                                if int(overlap) > int(size):
                                     print(
                                         "Chunk overlap maior que chunk size. Carregado próximo cenário..."
                                     )

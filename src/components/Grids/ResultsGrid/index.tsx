@@ -110,11 +110,11 @@ const columns = (): GridColDef[] => {
           }
           const byteArray = new Uint8Array(byteNumbers);
           const blob = new Blob([byteArray], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            type: "application/zip"
           });
           const url = URL.createObjectURL(blob);
           link.href = url;
-          link.download = `resultado_extracao_${row.completed_at}.xlsx`;
+          link.download = `resultado_extracao_${row.completed_at}.zip`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);

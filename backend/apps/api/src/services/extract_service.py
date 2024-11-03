@@ -6,6 +6,7 @@ from crud.job import create_job, update_job_results_file, update_job_status
 from misc.utils import (
     clean_up_outputs,
     clean_up_uploaded_files,
+    zip_output_and_results,
 )
 
 from sqlalchemy.orm import Session
@@ -35,12 +36,14 @@ class ExtractService:
         print(extract_schema.dict())
         try:
             extract(schema=extract_schema.dict())
-        except BaseException:
+        except BaseException as e:
             clean_up_uploaded_files()
             update_job_status(db, job_id, JobStatus.FAILED, completed=True)
-            return
+            raise e
 
+        zip_output_and_results()
         update_job_results_file(db, job_id)
+
         clean_up_outputs()
         clean_up_uploaded_files()
 
