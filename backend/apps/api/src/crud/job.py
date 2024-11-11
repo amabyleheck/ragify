@@ -47,7 +47,7 @@ def update_job_results_file(db: Session, job_id: int) -> Job:
     job = get_job(db, job_id)
 
     if job:
-        results_file_path = f"{ABS_PATH}/final/results.zip"
+        results_file_path = f"{ABS_PATH}/final.zip"
         with open(results_file_path, "rb") as file:
             job.result_file = file.read()
 

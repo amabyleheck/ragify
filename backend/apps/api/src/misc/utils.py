@@ -54,12 +54,10 @@ def zip_output_and_results():
 
     final_results_dir = ABS_PATH + "/final/"
 
-    zip_file_path_results = os.path.join(ABS_PATH, "final", "results")
-
     zip_file_path_summary = os.path.join(ABS_PATH, "final", "summary")
     zip_file_path_outputs = os.path.join(ABS_PATH, "final", "outputs")
 
     shutil.make_archive(zip_file_path_summary, "zip", results_dir)
     shutil.make_archive(zip_file_path_outputs, "zip", outputs_dir)
 
-    shutil.make_archive(zip_file_path_results, "zip", final_results_dir)
+    shutil.make_archive(ABS_PATH + "/final", "zip", final_results_dir)

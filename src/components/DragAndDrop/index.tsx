@@ -42,7 +42,10 @@ const DragAndDrop: React.FC = () => {
     }
 
     const filesArray = uploadedFiles.concat(files);
-    setFiles(filesArray);
+    const sortedFilesArray = filesArray.sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    setFiles(sortedFilesArray);
     enqueueSnackbar("Arquivos carregados com sucesso.", { variant: "success" });
   };
 
