@@ -39,8 +39,8 @@ Antes de instalar o RAGify, certifique-se de que possui os seguintes
 pré-requisitos instalados:
 
 - **Node.js** (>= 18.x): Para rodar o frontend Next.js.
-- **Python** (>= 3.10): Para rodar o servidor FastAPI e processar tarefas em
-  segundo plano.
+- **Python** (>= 3.10..3.12.x): Para rodar o servidor FastAPI e processar
+  tarefas em segundo plano.
 - **Docker**: Recomendado para containerizar e gerenciar dependências.
 - **PostgreSQL**: A aplicação requer um banco de dados PostgreSQL para armazenar
   resultados processados e informações das tarefas em segundo plano.
@@ -76,10 +76,20 @@ O aplicativo Next.js estará disponível em `http://localhost:3000`.
 
 Crie um ambiente virtual e instale as dependências:
 
+> **Obs**: Certifique-se de que a versão do Python é <=3.12 para evitar
+> problemas de compatibilidade.
+
 ```bash
 python -m venv venv
 source venv/bin/activate # No Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
+```
+
+> Caso tenha problemas com a instalação do sentence-transformers, realize o
+> seguinte passo extra:
+
+```bash
+pip install --upgrade sentence-transformers
 ```
 
 Navegue para o diretório `api`:
@@ -96,14 +106,7 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 O aplicativo FastAPI estará disponível em `http://localhost:8000`.
 
-### 4. Configurando o Banco de Dados 🗄️
-
-1. Certifique-se de que o PostgreSQL está rodando na porta 5433 (conforme
-   configuração do Docker).
-2. Crie um banco de dados e configure as tabelas utilizando `SQLAlchemy` e
-   `alembic`.
-
-### 5. Executando a Aplicação Completa com Docker 🐳
+### 4. Executando a Aplicação Completa com Docker 🐳
 
 A aplicação também pode ser containerizada utilizando Docker. Um arquivo
 `docker-compose.yml` é fornecido para este propósito.
@@ -114,17 +117,50 @@ Construa e inicie os containers:
 docker-compose up --build
 ```
 
+> **OBS**: Caso queira rodar apenas o banco de dados com Docker, basta rodar:
+>
+> ```bash
+> docker-compose up --build db
+> ```
+
+### 5. Configurando o Banco de Dados 🗄️
+
+1. Certifique-se de que o PostgreSQL está rodando na porta 5433 (conforme
+   configuração do Docker).
+2. Crie um banco de dados e configure as tabelas utilizando `SQLAlchemy` e
+   `alembic`.
+
+```bash
+# Dentro do container web, acione as migrações
+docker exec -it fastapi_app bash
+cd /app/backend/apps/api/src
+alembic upgrade head
+```
+
+> Caso esteja apenas rodando o banco com o Docker, ignore o passo anterior e
+> apenas faça:
+>
+> 1.  Atualize o arquivo alembic.ini com a seguinte modificação:
+>     > sqlalchemy.url = postgresql://postgres:postgres@localhost:5433/postgres
+> 2.  ```bash
+>       cd backend/apps/api/src
+>       alembic upgrade head
+>     ```
+
 Acesse a interface em `http://localhost:3000` e a API em
 `http://localhost:8000`.
 
 P.S.: Se estiver utilizando MacOS e deseja usar MPS para gerar embeddings mais
-rápidos, é necessário executar o servidor fora do container.
+rapidamente, é necessário executar o servidor fora do container.
 
 ## Configuração ⚙️
 
 ### Variáveis de Ambiente 🌍
 
 Defina as seguintes variáveis de ambiente para a API:
+
+> Para DATABASE_URL, utilize `localhost` OU `db`, a depender da configuração
+> escolhida.
 
 ```.env
 DOCUMENTS_DIR={caminho_para_sua_aplicação}/backend/apps/extractor/documentos-pdf
@@ -133,7 +169,7 @@ SENTENCE_TRANSFORMER_MODELS_DIR={caminho_para_seus_modelos_sentence_transformer}
 
 ABS_PATH={caminho_para_sua_aplicação}/backend/apps/extractor
 
-DATABASE_URL=postgresql://postgres:postgres@localhost:5433/postgres
+DATABASE_URL=postgresql://postgres:postgres@db:5433/postgres
 ```
 
 ## Uso 🚀
@@ -165,10 +201,3 @@ status das tarefas incluem:
 
 Você pode monitorar o status através do endpoint `/api/jobs/`, que é chamado na
 página de Resultados na interface.
-
-## Contribuição 🤝
-
-1. Faça um fork do repositório.
-2. Crie um novo branch para sua funcionalidade ou correção de bug.
-3. Realize as alterações e faça commits com mensagens descritivas.
-4. Abra um pull request para o branch principal.

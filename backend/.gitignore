@@ -165,6 +165,7 @@ extracao
 .vscode
 .pdf
 teste.py
+.zip
 
 outputs/
 embeddings/
