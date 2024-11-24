@@ -126,8 +126,8 @@ class ExcelResultsExport:
                 processed_variable = self.process_n_processo_licitatorio(
                     document, annotated_value, extracted_value
                 )
-                has_retriever_found_answer = self.process_n_processo_licitatorio(
-                    document, annotated_value, retrieved_docs
+                has_retriever_found_answer = self.process_retrieved_docs(
+                    annotated_value, retrieved_docs
                 )
                 if processed_variable and not has_retriever_found_answer:
                     # Comumente, a sequência exata está envolvida por caracteres especiais (e.g '\n'),
@@ -140,8 +140,8 @@ class ExcelResultsExport:
                 processed_variable = self.process_municipio(
                     document, annotated_value, extracted_value
                 )
-                has_retriever_found_answer = self.process_municipio(
-                    document, annotated_value, retrieved_docs
+                has_retriever_found_answer = self.process_retrieved_docs(
+                    annotated_value, retrieved_docs
                 )
             else:
                 processed_variable = self.general_processing(

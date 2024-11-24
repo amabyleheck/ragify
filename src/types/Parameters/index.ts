@@ -29,7 +29,8 @@ export const PARAMETER_OPTIONS = {
     "Mistral-7b",
     "llama3.2:3b",
     "llama3.1:8b",
-    "llama3.1:70b"
+    "llama3.1:70b",
+    "qwen2.5:72b"
   ], // TODO: Add lazy fetch of locally downloaded models
   // CHUNKING
   CHUNK_SIZE: ["128", "256", "512", "1024", "2048"],

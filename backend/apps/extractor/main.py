@@ -4,12 +4,13 @@ from extractor.extract_multiple_ollama import (
 )
 import os
 import time
+from pathlib import Path
 
 from extractor.utils.organize import organize_results
 
 load_dotenv()
 
-ABS_PATH = os.getenv("ABS_PATH")
+ABS_PATH = Path(os.getenv("ABS_PATH")).expanduser()
 
 
 def get_or_list(values):

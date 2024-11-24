@@ -1,5 +1,5 @@
 import os
-import shutil
+from pathlib import Path
 import time
 import importlib
 
@@ -18,9 +18,11 @@ from langchain_core.documents import Document
 
 load_dotenv()
 
-ABS_PATH = os.getenv("ABS_PATH")
-DOCUMENTS_DIR = os.getenv("DOCUMENTS_DIR")
-SENTENCE_TRANSFORMER_MODELS_DIR = os.getenv("SENTENCE_TRANSFORMER_MODELS_DIR")
+ABS_PATH = Path(os.getenv("ABS_PATH")).expanduser()
+DOCUMENTS_DIR = Path(os.getenv("DOCUMENTS_DIR")).expanduser()
+SENTENCE_TRANSFORMER_MODELS_DIR = Path(
+    os.getenv("SENTENCE_TRANSFORMER_MODELS_DIR")
+).expanduser()
 
 
 class LocalVectorStoreGenerator:

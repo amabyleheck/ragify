@@ -10,7 +10,7 @@ from extractor.exporter.exporter import ExcelResultsExport
 
 load_dotenv()
 
-DOCUMENTS_DIR = os.getenv("DOCUMENTS_DIR")
+DOCUMENTS_DIR = Path(os.getenv("DOCUMENTS_DIR")).expanduser()
 
 
 def extract(parameters: dict, variables: dict, annotation: dict, directory=""):
@@ -21,7 +21,7 @@ def extract(parameters: dict, variables: dict, annotation: dict, directory=""):
         leia a seção "Ajustando os parâmetros" na documentação.
         directory (str, optional): Diretório a ser salvo determinado conjunto de testes. Defaults to ''.
     """
-    documents_dir_path = Path(DOCUMENTS_DIR)
+    documents_dir_path = DOCUMENTS_DIR
     documents_ids = [doc.stem for doc in documents_dir_path.glob("*.pdf")]
 
     model_name = parameters.get("model")
@@ -86,24 +86,24 @@ def extract(parameters: dict, variables: dict, annotation: dict, directory=""):
         )
         # ENDREGION
 
-        # RESULTS KWARGS REGION
-        model_kwargs = LocalLLM.get_model_kwargs(
-            model_name=model_name, chain_type=chain_type, top_k=top_k
-        )
+    # RESULTS KWARGS REGION
+    model_kwargs = LocalLLM.get_model_kwargs(
+        model_name=model_name, chain_type=chain_type, top_k=top_k
+    )
 
-        embedding_kwargs = vectorstore_generator.get_embedding_kwargs()
-        # ENDREGION
+    embedding_kwargs = vectorstore_generator.get_embedding_kwargs()
+    # ENDREGION
 
-        # EXTRACTION RESULT CALL REGION
-        ExcelResultsExport(
-            documents_ids=documents_ids,
-            annotated_dict=annotation,
-            extracted_dict=extracted_dict,
-            model_name=model_name,
-            variables=variables,
-        ).export(
-            model_kwargs=model_kwargs,
-            embedding_kwargs=embedding_kwargs,
-            directory=directory,
-        )
-        # ENDREGION
+    # EXTRACTION RESULT CALL REGION
+    ExcelResultsExport(
+        documents_ids=documents_ids,
+        annotated_dict=annotation,
+        extracted_dict=extracted_dict,
+        model_name=model_name,
+        variables=variables,
+    ).export(
+        model_kwargs=model_kwargs,
+        embedding_kwargs=embedding_kwargs,
+        directory=directory,
+    )
+    # ENDREGION
