@@ -6,6 +6,7 @@ import Graph from "@/app/icons/graph.svg";
 import Layers from "@/app/icons/layers.svg";
 import { createSvgIcon } from "@mui/material/utils";
 import { SvgIconProps } from "@mui/material/SvgIcon";
+import Shuffle from "@/app/icons/shuffle.svg";
 
 interface CustomSvgProps extends SvgIconProps {
   Icon: React.FC;
@@ -70,4 +71,8 @@ export const GraphIcon: React.FC<CustomIconProps> = ({ ...props }) => {
 
 export const LayersIcon: React.FC<CustomIconProps> = ({ ...props }) => {
   return <CustomIcon Icon={Layers} name={"Layers"} {...props} />;
+};
+
+export const ShuffleIcon: React.FC<CustomIconProps> = ({ ...props }) => {
+  return <CustomIcon Icon={Shuffle} name={"Shuffle"} {...props} />;
 };

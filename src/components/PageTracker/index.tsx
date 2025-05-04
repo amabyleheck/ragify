@@ -9,7 +9,8 @@ import {
   DevIcon,
   FileIcon,
   GraphIcon,
-  LayersIcon
+  LayersIcon,
+  ShuffleIcon // ← add this
 } from "@/components/Icons";
 
 const PageTracker: React.FC = () => {
@@ -102,10 +103,30 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
     );
   };
 
+  // ─── Insert the Random Annot step ───
+  const RandomAnnotSection: React.FC<SectionProps> = ({ original = true }) => (
+    <>
+      <AnnotationSection original={false} />
+      {ArrowIcon}
+      <ShuffleIcon
+        fontSize="small"
+        stroke="gray"
+        onClick={() => setPageType(NavigationOption.RANDOM_ANNOT.title)}
+        clickable
+      />
+      {original && (
+        <Typography fontSize={15} className="text-gray-400">
+          Anotação Aleatória de PDF
+        </Typography>
+      )}
+    </>
+  );
+
   const ParametersSection: React.FC<SectionProps> = ({ original = true }) => {
     return (
       <>
         <AnnotationSection original={false} />
+        <RandomAnnotSection original={false} /> {/* ← chain from RandomAnnot */}
         {ArrowIcon}
         <DevIcon
           fontSize={"small"}
@@ -144,6 +165,7 @@ const pageTrackerMapper = (setPageType: (value: string) => void) => {
     [NavigationOption.DOCUMENTS.title]: DocumentsSection,
     [NavigationOption.VARIABLES.title]: VariablesSection,
     [NavigationOption.ANNOTATION.title]: AnnotationSection,
+    [NavigationOption.RANDOM_ANNOT.title]: RandomAnnotSection, // ← add mapping
     [NavigationOption.PARAMETERS.title]: ParametersSection,
     [NavigationOption.RESULTS.title]: ResultsSection
   };
