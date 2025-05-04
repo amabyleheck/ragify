@@ -33,5 +33,16 @@ services:
     volumes:
       - postgres_14_10:/var/lib/postgresql/data
 
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: nextjs_app
+    ports:
+      - "3000:3000"
+    # Optionally, mount volumes to help with live reloading:
+    volumes:
+      - ./:/app
+
 volumes:
   postgres_14_10:
